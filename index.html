@@ -34,13 +34,8 @@
       transition: 0.3s;
     }
 
-    .buttons button:hover {
-      background-color: #333;
-    }
-
-    .buttons button.active {
-      background-color: #555;
-    }
+    .buttons button:hover { background-color: #333; }
+    .buttons button.active { background-color: #555; }
 
     .gallery {
       display: flex;
@@ -60,7 +55,7 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       position: relative;
       display: none;
-      width: 500px; /* aumentado */
+      width: 500px;
     }
 
     .game-card:hover {
@@ -82,11 +77,7 @@
       filter: grayscale(100%);
       opacity: 0.6;
     }
-
-    .game-card[data-status="jogando"] img {
-      filter: grayscale(40%);
-    }
-
+    .game-card[data-status="jogando"] img { filter: grayscale(40%); }
     .game-card[data-status="dropado"] img {
       filter: grayscale(50%) sepia(30%) hue-rotate(250deg) saturate(80%);
       opacity: 0.7;
@@ -139,10 +130,6 @@
       color: #ddd;
     }
 
-    .modal h2 {
-      margin-top: 0;
-    }
-
     .close-btn {
       color: #aaa;
       float: right;
@@ -150,7 +137,6 @@
       font-weight: bold;
       cursor: pointer;
     }
-
     .close-btn:hover { color: #fff; }
 
     .screenshots {
@@ -164,20 +150,35 @@
       width: 180px;
       border-radius: 10px;
       flex-shrink: 0;
+      cursor: pointer;
     }
 
+    /* Setas fullscreen */
+    .gallery-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+      padding: 10px;
+      user-select: none;
+      background: rgba(0,0,0,0.4);
+      border-radius: 50%;
+      z-index: 300;
+    }
+    .gallery-arrow:hover { background: rgba(255,255,255,0.2); }
+    .arrow-left { left: 20px; }
+    .arrow-right { right: 20px; }
+
     @media (max-width: 700px) {
-      .game-card {
-        width: 90%;
-      }
-      .screenshots img {
-        width: 140px;
-      }
+      .game-card { width: 90%; }
+      .screenshots img { width: 140px; }
     }
   </style>
 </head>
 <body>
-  <h1>🎮 Lista de Jogos</h1>
+  <h1>🎮 Reviews & Screenshots</h1>
 
   <div class="buttons">
     <button class="active" onclick="filterGames('jogando', event)">Jogando</button>
@@ -188,52 +189,52 @@
 
   <div class="gallery">
 
-    <div class="game-card" data-status="jogando" data-title="Baldur's Gate 3" data-nota="?" data-review="?">
+    <div class="game-card" data-status="jogando" data-title="Baldur's Gate 3" data-nota="?" data-review="?" data-screens="https://i.imgur.com/hUojvG9.png, https://i.imgur.com/i9h04Uz.png, https://i.imgur.com/2rWqMZB.png, https://i.imgur.com/yJDQY5G.png, https://i.imgur.com/DIMGlBb.png, https://i.imgur.com/ynyF340.png, https://i.imgur.com/MgEpl4c.png, https://i.imgur.com/vo3tTKQ.png, https://i.imgur.com/uLuTWpm.png, https://i.imgur.com/FJ6syHh.png, https://i.imgur.com/7kTyFMy.png, https://i.imgur.com/3z4Gk9B.png, https://i.imgur.com/3iye4qK.png">
       <span class="status-tag">Jogando</span>
       <img src="https://m.media-amazon.com/images/M/MV5BN2I0N2Y3MWUtNjJiNy00NjRjLWE4ZTctOTQ2YWVhM2VhMTM4XkEyXkFqcGc@._V1_.jpg" alt="Baldur's Gate 3">
       <div class="game-info"><h3>Baldur's Gate 3</h3></div>
     </div>
 
-    <div class="game-card" data-status="jogando" data-title="Crash Bandicoot N. Sane Trilogy" data-nota="?" data-review="?">
+    <div class="game-card" data-status="jogando" data-title="Crash Bandicoot N. Sane Trilogy" data-nota="?" data-review="?" data-screens="">
       <span class="status-tag">Jogando</span>
       <img src="https://i.imgur.com/j57M3nM.jpeg" alt="Crash Bandicoot N. Sane Trilogy">
       <div class="game-info"><h3>Crash Bandicoot N. Sane Trilogy</h3></div>
     </div>
 
-    <div class="game-card" data-status="jogando" data-title="Dark Souls: Remastered" data-nota="?" data-review="?">
+    <div class="game-card" data-status="jogando" data-title="Dark Souls: Remastered" data-nota="?" data-review="?" data-screens="">
       <span class="status-tag">Jogando</span>
       <img src="https://m.media-amazon.com/images/M/MV5BNDZhYWVjMTYtZmFjNi00ZjI3LTkzYzctOGM2NGZjMTc3NmNiXkEyXkFqcGc@._V1_.jpg" alt="Dark Souls: Remastered">
       <div class="game-info"><h3>Dark Souls: Remastered</h3></div>
     </div>
 
-    <div class="game-card" data-status="zerado" data-title="Alan Wake" data-nota="8.0/10" data-review="?">
+    <div class="game-card" data-status="zerado" data-title="Alan Wake" data-nota="8.0/10" data-review="?" data-screens="">
       <span class="status-tag">Zerado</span>
       <img src="https://m.media-amazon.com/images/M/MV5BY2RhNzQ4NTItZmE5OC00ZjdlLTk3ZjItZDIxZDhiNTI1OWNiXkEyXkFqcGc@._V1_.jpg" alt="Alan Wake">
       <div class="game-info"><h3>Alan Wake</h3></div>
     </div>
 
-    <div class="game-card" data-status="zerado" data-title="Alan Wake 2" data-nota="10/10" data-review="?">
+    <div class="game-card" data-status="zerado" data-title="Alan Wake 2" data-nota="10/10" data-review="?" data-screens="">
       <span class="status-tag">Zerado</span>
       <img src="https://m.media-amazon.com/images/M/MV5BODRmZDg1NGQtZGU5NS00NzVkLThhZDItMDJkMjQwZGQ5MDg5XkEyXkFqcGc@._V1_.jpg" alt="Alan Wake 2">
       <div class="game-info"><h3>Alan Wake 2</h3></div>
     </div>
 
-    <div class="game-card" data-status="dropado" data-title="SILENT HILL f" data-nota="4.0/10" data-review="Injogável, lixo">
+    <div class="game-card" data-status="dropado" data-title="SILENT HILL f" data-nota="4.0/10" data-review="Antes do lançamento do F, decidi jogar o Silent Hill 2 e foi maravilhoso, então fiquei animado pra esse aqui. Mas já começou o pcismo: jogo cheio de stutter, só melhorou depois de colocar a textura no baixo e aí ficou tudo borrado. A movimentação é horrível, parece jogo mobile; o boneco fica sambando no chão e rodando pra krl, nada a ver com o SH2. No fim, a experiência foi bem desagradável por causa do desempenho. O único ponto positivo foi o combate 👍" data-screens="">
       <span class="status-tag">Dropado</span>
       <img src="https://m.media-amazon.com/images/M/MV5BMGRhYmM4OGEtODMwOS00MDAxLTkzMjUtMDgxNTQ1NGI3ODkwXkEyXkFqcGc@._V1_.jpg" alt="SILENT HILL f">
       <div class="game-info"><h3>SILENT HILL f</h3></div>
     </div>
 
-    <div class="game-card" data-status="dropado" data-title="X-Men Origins: Wolverine" data-nota="4.0/10" data-review="Injogável, lixo">
+    <div class="game-card" data-status="dropado" data-title="X-Men Origins: Wolverine PS2" data-nota="4.0/10" data-review="Primeira vez que joguei esse jogo foi na infância e não passei da primeira fase. Depois de muito tempo, decidi jogar novamente para ver se o game era bom mesmo e pqp, que jogo podre. Combate repetitivo pra krl, só existe uma execução nessa porra, e os inimigos são absurdamente roubados. Nenhum soulslike beira a dificuldade dessa bomba. Lixo." data-screens="">
       <span class="status-tag">Dropado</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BM2FkNDk3NTYtMzg0My00OTVhLTkyZmEtNDI1YzExNWNmNTk4XkEyXkFqcGc@._V1_.jpg" alt="X-Men Origins: Wolverine">
-      <div class="game-info"><h3>X-Men Origins: Wolverine</h3></div>
+      <img src="https://m.media-amazon.com/images/M/MV5BM2FkNDk3NTYtMzg0My00OTVhLTkyZmEtNDI1YzExNWNmNTk4XkEyXkFqcGc@._V1_.jpg" alt="X-Men Origins: Wolverine PS2">
+      <div class="game-info"><h3>X-Men Origins: Wolverine PS2</h3></div>
     </div>
  
-    <div class="game-card" data-status="nao-joguei" data-title="Alice: Madness Returns" data-nota="-" data-review="Ainda não comecei.">
+    <div class="game-card" data-status="nao-joguei" data-title="Jogos Pendentes" data-nota="Recomende um jogo comentando nas lives" data-review="Lista de Jogos Pendentes: Acessar o canal RGWaradam no Youtube " data-screens="">
       <span class="status-tag">Não comecei</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BYWY5ZDA4MWItNmZlYi00MDFkLWI2MjctMjkxOGQ0ZTVkN2YyXkEyXkFqcGc@._V1_.jpg" alt="Alice: Madness Returns">
-      <div class="game-info"><h3>Alice: Madness Returns</h3></div>
+      <img src="https://i.imgur.com/ouQ2mfe.jpeg" alt="Jogos Pendentes">
+      <div class="game-info"><h3>Jogos Pendentes</h3></div>
     </div>
 
   </div>
@@ -274,15 +275,71 @@
         modalNota.textContent = card.dataset.nota;
         modalReview.textContent = card.dataset.review;
         modalScreenshots.innerHTML = "";
+
+        const urls = (card.dataset.screens || "").split(/[\s,]+/).filter(Boolean);
+        urls.forEach(url => {
+          const img = document.createElement("img");
+          img.src = url.trim();
+          img.addEventListener("click", () => openFullscreenGallery(urls, url));
+          modalScreenshots.appendChild(img);
+        });
       });
     });
 
     closeBtn.addEventListener("click", () => modal.style.display = "none");
-    window.addEventListener("click", e => {
-      if (e.target === modal) modal.style.display = "none";
-    });
+    window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
 
     filterGames('jogando', { target: document.querySelector(".buttons button.active") });
+
+    function openFullscreenGallery(urls, currentUrl) {
+      let index = urls.indexOf(currentUrl);
+      const overlay = document.createElement("div");
+      overlay.style.cssText = `
+        position: fixed; top:0; left:0; width:100%; height:100%;
+        background: rgba(0,0,0,0.9); display:flex;
+        align-items:center; justify-content:center;
+        z-index:200; backdrop-filter: blur(4px);
+      `;
+      const img = document.createElement("img");
+      img.src = currentUrl;
+      img.style.maxWidth = "90%";
+      img.style.maxHeight = "90%";
+      img.style.borderRadius = "10px";
+      overlay.appendChild(img);
+
+      const left = document.createElement("div");
+      left.textContent = "❮";
+      left.classList.add("gallery-arrow", "arrow-left");
+      const right = document.createElement("div");
+      right.textContent = "❯";
+      right.classList.add("gallery-arrow", "arrow-right");
+
+      const nav = dir => {
+        index = (index + dir + urls.length) % urls.length;
+        img.src = urls[index];
+      };
+
+      left.onclick = e => { e.stopPropagation(); nav(-1); };
+      right.onclick = e => { e.stopPropagation(); nav(1); };
+      overlay.appendChild(left);
+      overlay.appendChild(right);
+
+      overlay.onclick = e => { if (e.target === overlay) cleanup(); };
+
+      const handleKey = e => {
+        if (e.key === "Escape") cleanup();
+        if (e.key === "ArrowRight") nav(1);
+        if (e.key === "ArrowLeft") nav(-1);
+      };
+      window.addEventListener("keydown", handleKey);
+
+      function cleanup() {
+        window.removeEventListener("keydown", handleKey);
+        overlay.remove();
+      }
+
+      document.body.appendChild(overlay);
+    }
   </script>
 </body>
 </html>
