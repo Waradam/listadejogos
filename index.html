@@ -77,6 +77,7 @@
       background-color: #000;
     }
 
+    /* Status específicos */
     .game-card[data-status="nao-joguei"] img {
       filter: grayscale(100%);
       opacity: 0.6;
@@ -84,6 +85,11 @@
 
     .game-card[data-status="jogando"] img {
       filter: grayscale(40%);
+    }
+
+    .game-card[data-status="dropado"] img {
+      filter: grayscale(50%) sepia(30%) hue-rotate(250deg) saturate(80%);
+      opacity: 0.7;
     }
 
     .game-info {
@@ -171,50 +177,63 @@
   </style>
 </head>
 <body>
-  <h1>🎮 RGWaradam</h1>
+  <h1>🎮 Lista de Jogos</h1>
 
   <div class="buttons">
     <button class="active" onclick="filterGames('jogando', event)">Jogando</button>
     <button onclick="filterGames('zerado', event)">Zerados</button>
+    <button onclick="filterGames('dropado', event)">Dropado</button>
     <button onclick="filterGames('nao-joguei', event)">Não comecei</button>
   </div>
 
   <div class="gallery">
 
-    <div class="game-card" data-status="jogando" data-title="Elden Ring" data-nota="8.5/10" data-review="Explorando as Terras Intermédias.">
+    <div class="game-card" data-status="jogando" data-title="Baldur's Gate 3" data-nota="?" data-review="?">
       <span class="status-tag">Jogando</span>
-      <img src="https://storage.googleapis.com/pod_public/800webp/230646.webp" alt="Elden Ring">
-      <div class="game-info"><h3>Elden Ring</h3></div>
-    </div>
-
-    <div class="game-card" data-status="zerado" data-title="Baldur's Gate 3" data-nota="9.5/10" data-review="Uma das melhores experiências de RPG que já joguei.">
-      <span class="status-tag">Zerado</span>
       <img src="https://m.media-amazon.com/images/M/MV5BN2I0N2Y3MWUtNjJiNy00NjRjLWE4ZTctOTQ2YWVhM2VhMTM4XkEyXkFqcGc@._V1_.jpg" alt="Baldur's Gate 3">
       <div class="game-info"><h3>Baldur's Gate 3</h3></div>
     </div>
 
-    <div class="game-card" data-status="zerado" data-title="God of War 2018" data-nota="9.5/10" data-review="Uma das melhores experiências de RPG que já joguei.">
-      <span class="status-tag">Zerado</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BNjJiNTFhY2QtNzZkYi00MDNiLWEzNGEtNWE1NzBkOWIxNmY5XkEyXkFqcGc@._V1_.jpg" alt="Baldur's Gate 3">
-      <div class="game-info"><h3>God of War 2018</h3></div>
+    <div class="game-card" data-status="jogando" data-title="Crash Bandicoot N. Sane Trilogy" data-nota="?" data-review="?">
+      <span class="status-tag">Jogando</span>
+      <img src="https://i.imgur.com/j57M3nM.jpeg" alt="Crash Bandicoot N. Sane Trilogy">
+      <div class="game-info"><h3>Crash Bandicoot N. Sane Trilogy</h3></div>
     </div>
 
-    <div class="game-card" data-status="zerado" data-title="Resident Evil 4" data-nota="9.5/10" data-review="Uma das melhores experiências de RPG que já joguei.">
-      <span class="status-tag">Zerado</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BZDAxZmJiZmYtZTBmMS00Zjg3LTkzNTUtNGRjMGEwMzljODFlXkEyXkFqcGc@._V1_.jpg" alt="Baldur's Gate 3">
-      <div class="game-info"><h3>Resident Evil 4</h3></div>
+    <div class="game-card" data-status="jogando" data-title="Dark Souls: Remastered" data-nota="?" data-review="?">
+      <span class="status-tag">Jogando</span>
+      <img src="https://m.media-amazon.com/images/M/MV5BNDZhYWVjMTYtZmFjNi00ZjI3LTkzYzctOGM2NGZjMTc3NmNiXkEyXkFqcGc@._V1_.jpg" alt="Dark Souls: Remastered">
+      <div class="game-info"><h3>Dark Souls: Remastered</h3></div>
     </div>
 
-    <div class="game-card" data-status="zerado" data-title="Resident Evil 3" data-nota="9.5/10" data-review="Uma das melhores experiências de RPG que já joguei.">
+    <div class="game-card" data-status="zerado" data-title="Alan Wake" data-nota="8.0/10" data-review="?">
       <span class="status-tag">Zerado</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BMGUzNGMwM2EtOTZkZS00NWJmLTk1NDYtZmI1ZDg0YmJmMTU0XkEyXkFqcGc@._V1_.jpg" alt="Baldur's Gate 3">
-      <div class="game-info"><h3>Resident Evil 3</h3></div>
+      <img src="https://m.media-amazon.com/images/M/MV5BY2RhNzQ4NTItZmE5OC00ZjdlLTk3ZjItZDIxZDhiNTI1OWNiXkEyXkFqcGc@._V1_.jpg" alt="Alan Wake">
+      <div class="game-info"><h3>Alan Wake</h3></div>
     </div>
 
-    <div class="game-card" data-status="nao-joguei" data-title="Hollow Knight" data-nota="-" data-review="Ainda não comecei.">
+    <div class="game-card" data-status="zerado" data-title="Alan Wake 2" data-nota="10/10" data-review="?">
+      <span class="status-tag">Zerado</span>
+      <img src="https://m.media-amazon.com/images/M/MV5BODRmZDg1NGQtZGU5NS00NzVkLThhZDItMDJkMjQwZGQ5MDg5XkEyXkFqcGc@._V1_.jpg" alt="Alan Wake 2">
+      <div class="game-info"><h3>Alan Wake 2</h3></div>
+    </div>
+
+    <div class="game-card" data-status="dropado" data-title="SILENT HILL f" data-nota="4.0/10" data-review="Injogável, lixo">
+      <span class="status-tag">Dropado</span>
+      <img src="https://m.media-amazon.com/images/M/MV5BMGRhYmM4OGEtODMwOS00MDAxLTkzMjUtMDgxNTQ1NGI3ODkwXkEyXkFqcGc@._V1_.jpg" alt="SILENT HILL f">
+      <div class="game-info"><h3>SILENT HILL f</h3></div>
+    </div>
+
+    <div class="game-card" data-status="dropado" data-title="X-Men Origins: Wolverine" data-nota="4.0/10" data-review="Injogável, lixo">
+      <span class="status-tag">Dropado</span>
+      <img src="https://m.media-amazon.com/images/M/MV5BM2FkNDk3NTYtMzg0My00OTVhLTkyZmEtNDI1YzExNWNmNTk4XkEyXkFqcGc@._V1_.jpg" alt="X-Men Origins: Wolverine">
+      <div class="game-info"><h3>X-Men Origins: Wolverine</h3></div>
+    </div>
+ 
+    <div class="game-card" data-status="nao-joguei" data-title="Alice: Madness Returns" data-nota="-" data-review="Ainda não comecei.">
       <span class="status-tag">Não comecei</span>
-      <img src="https://static1.thegamerimages.com/wordpress/wp-content/uploads/2023/11/hollow-knight-cover-art.jpg" alt="Hollow Knight">
-      <div class="game-info"><h3>Hollow Knight</h3></div>
+      <img src="https://m.media-amazon.com/images/M/MV5BYWY5ZDA4MWItNmZlYi00MDFkLWI2MjctMjkxOGQ0ZTVkN2YyXkEyXkFqcGc@._V1_.jpg" alt="Alice: Madness Returns">
+      <div class="game-info"><h3>Alice: Madness Returns</h3></div>
     </div>
 
   </div>
