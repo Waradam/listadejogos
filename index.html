@@ -207,7 +207,9 @@
       <div class="game-info"><h3>Dark Souls: Remastered</h3></div>
     </div>
 
-    <div class="game-card" data-status="zerado" data-title="Alan Wake" data-nota="8.0/10" data-review="?" data-screens="">
+    <div class="game-card" data-status="zerado" data-title="Alan Wake" data-nota="8.0/10" data-review="Observação: Eu já tinha jogado o segundo jogo quando lançou, só por benchmark para ver se o PC rodava, e foi uma péssima ideia. Não entendi poha nenhuma do Alan Wake 2. Um ano depois, o Markinkof me passou uma das calls mais brabas: jogar o primeiro e depois o segundo. E foi a melhor decisão que eu podia ter tomado.
+O primeiro jogo é ok: a ambientação é mais ou menos, mas o combate é muito bom, atirar nesse jogo é realmente divertido. O que mais brilha nele é a história mirabolante do Sam Lake. Ter jogado o 1 antes do 2 foi essencial.
+Pode parecer óbvio dizer isso, mas tem jogo em que não é obrigatório jogar os anteriores. No caso de Alan Wake, é necessário." data-screens="https://i.imgur.com/fUP0mab.jpeg, https://i.imgur.com/l0da0oB.png">
       <span class="status-tag">Zerado</span>
       <img src="https://m.media-amazon.com/images/M/MV5BY2RhNzQ4NTItZmE5OC00ZjdlLTk3ZjItZDIxZDhiNTI1OWNiXkEyXkFqcGc@._V1_.jpg" alt="Alan Wake">
       <div class="game-info"><h3>Alan Wake</h3></div>
@@ -219,13 +221,15 @@
       <div class="game-info"><h3>Alan Wake 2</h3></div>
     </div>
 
-    <div class="game-card" data-status="dropado" data-title="SILENT HILL f" data-nota="4.0/10" data-review="Antes do lançamento do F, decidi jogar o Silent Hill 2 e foi maravilhoso, então fiquei animado pra esse aqui. Mas já começou o pcismo: jogo cheio de stutter, só melhorou depois de colocar a textura no baixo e aí ficou tudo borrado. A movimentação é horrível, parece jogo mobile; o boneco fica sambando no chão e rodando pra krlw. No fim, a experiência foi bem desagradável por causa do desempenho. O único ponto positivo foi o combate 👍" data-screens="">
+    <div class="game-card" data-status="dropado" data-title="SILENT HILL f" data-nota="4.0/10" data-review="Antes do lançamento do F, decidi jogar o Silent Hill 2 e foi maravilhoso, então fiquei animado pra esse aqui. Mas já começou o pcismo: jogo cheio de stutter, só melhorou depois de colocar a textura no baixo e aí ficou tudo borrado.
+A movimentação é horrível, parece jogo mobile; o boneco fica sambando no chão e rodando pra krl, nada a ver com o SH2. No fim, a experiência foi bem desagradável por causa do desempenho. O único ponto positivo foi o combate 👍" data-screens="">
       <span class="status-tag">Dropado</span>
       <img src="https://m.media-amazon.com/images/M/MV5BMGRhYmM4OGEtODMwOS00MDAxLTkzMjUtMDgxNTQ1NGI3ODkwXkEyXkFqcGc@._V1_.jpg" alt="SILENT HILL f">
       <div class="game-info"><h3>SILENT HILL f</h3></div>
     </div>
 
-    <div class="game-card" data-status="dropado" data-title="X-Men Origins: Wolverine PS2" data-nota="4.0/10" data-review="Primeira vez que joguei esse jogo foi na infância e não passei da primeira fase. Depois de muito tempo, decidi jogar novamente para ver se o game era bom mesmo e pqp, que jogo podre. Combate repetitivo pra krl, só existe uma execução nessa porra, e os inimigos são absurdamente roubados. Nenhum soulslike beira a dificuldade dessa bomba. Lixo." data-screens="">
+    <div class="game-card" data-status="dropado" data-title="X-Men Origins: Wolverine PS2" data-nota="4.0/10" data-review="Primeira vez que joguei esse jogo foi na infância e não passei da primeira fase. Depois de muito tempo, decidi jogar novamente para ver se o game era bom mesmo e pqp, que jogo podre.
+Combate repetitivo pra krl, só existe uma execução nessa poha, e os inimigos são absurdamente roubados. Nenhum soulslike beira a dificuldade dessa bomba. Lixo." data-screens="">
       <span class="status-tag">Dropado</span>
       <img src="https://m.media-amazon.com/images/M/MV5BM2FkNDk3NTYtMzg0My00OTVhLTkyZmEtNDI1YzExNWNmNTk4XkEyXkFqcGc@._V1_.jpg" alt="X-Men Origins: Wolverine PS2">
       <div class="game-info"><h3>X-Men Origins: Wolverine PS2</h3></div>
@@ -234,7 +238,7 @@
     <div class="game-card" data-status="nao-joguei" data-title="Jogos Pendentes" data-nota="Recomende um jogo comentando nas lives" data-review="Lista de Jogos Pendentes: Acessar o canal RGWaradam no Youtube " data-screens="">
       <span class="status-tag">Não comecei</span>
       <img src="https://i.imgur.com/ouQ2mfe.jpeg" alt="Jogos Pendentes">
-      <div class="game-info"><h3>Pendentes</h3></div>
+      <div class="game-info"><h3>Jogos Pendentes</h3></div>
     </div>
 
   </div>
@@ -273,7 +277,7 @@
         modal.style.display = "block";
         modalTitle.textContent = card.dataset.title;
         modalNota.textContent = card.dataset.nota;
-        modalReview.textContent = card.dataset.review;
+        modalReview.innerHTML = card.dataset.review.replace(/\n/g, "<br><br>");
         modalScreenshots.innerHTML = "";
 
         const urls = (card.dataset.screens || "").split(/[\s,]+/).filter(Boolean);
@@ -343,5 +347,4 @@
   </script>
 </body>
 </html>
-
 
