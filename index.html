@@ -1,349 +1,573 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RGWaradam</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Inter", sans-serif;
-      background-color: #0f0f0f;
-      color: #f0f0f0;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RGWaradam</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            background-color: #0f0f0f;
+            color: #f0f0f0;
+        }
 
-    h1 {
-      text-align: center;
-      margin-top: 30px;
-      font-weight: 600;
-    }
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-weight: 600;
+        }
 
-    .buttons {
-      text-align: center;
-      margin: 20px 0;
-    }
+        .buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
 
-    .buttons button {
-      background-color: #1a1a1a;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+        .buttons button {
+            background-color: #1a1a1a;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-    .buttons button:hover { background-color: #333; }
-    .buttons button.active { background-color: #555; }
+        .buttons button:hover { background-color: #333; }
+        .buttons button.active { background-color: #555; }
 
-    .gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 25px;
-      padding: 40px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-    .game-card {
-      background-color: #1a1a1a;
-      border-radius: 15px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-      display: none;
-      width: 500px;
-    }
+        .game-card {
+            background-color: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            display: none;
+            width: 500px;
+        }
 
-    .game-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
-    }
+        .game-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
 
-    .game-card img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      transition: filter 0.5s ease;
-      display: block;
-      background-color: #000;
-    }
+        .game-card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            /* REMOVIDO: transition: filter 0.5s ease; para evitar o desfoque gradual */
+            display: block;
+            background-color: #000;
+        }
 
-    /* Status específicos */
-    .game-card[data-status="nao-joguei"] img {
-      filter: grayscale(100%);
-      opacity: 0.6;
-    }
-    .game-card[data-status="jogando"] img { filter: grayscale(40%); }
-    .game-card[data-status="dropado"] img {
-      filter: grayscale(50%) sepia(30%) hue-rotate(250deg) saturate(80%);
-      opacity: 0.7;
-    }
+        /* Status específicos */
+        .game-card[data-status="nao-joguei"] img {
+            filter: grayscale(100%);
+            opacity: 0.6;
+        }
+        .game-card[data-status="jogando"] img { filter: grayscale(40%); }
+        .game-card[data-status="dropado"] img {
+            filter: grayscale(50%) sepia(30%) hue-rotate(250deg) saturate(80%);
+            opacity: 0.7;
+        }
 
-    .game-info {
-      padding: 15px;
-      text-align: center;
-      background-color: #1a1a1a;
-    }
+        .game-info {
+            padding: 15px;
+            text-align: center;
+            background-color: #1a1a1a;
+        }
 
-    .game-info h3 {
-      margin: 5px 0 0 0;
-      font-size: 18px;
-      color: #f0f0f0;
-      font-weight: 500;
-    }
+        .game-info h3 {
+            margin: 5px 0 0 0;
+            font-size: 18px;
+            color: #f0f0f0;
+            font-weight: 500;
+        }
 
-    .status-tag {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: rgba(0,0,0,0.7);
-      color: #fff;
-      padding: 6px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-      text-transform: uppercase;
-    }
+        .status-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 100;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow-y: auto;
-      background-color: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(4px);
-    }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+        }
 
-    .modal-content {
-      background-color: #1a1a1a;
-      margin: 5% auto;
-      padding: 30px;
-      border-radius: 15px;
-      max-width: 800px;
-      color: #ddd;
-    }
+        .modal-content {
+            background-color: #1a1a1a;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            color: #ddd;
+        }
 
-    .close-btn {
-      color: #aaa;
-      float: right;
-      font-size: 22px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .close-btn:hover { color: #fff; }
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-btn:hover { color: #fff; }
 
-    .screenshots {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      overflow-x: auto;
-    }
+        .screenshots {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
 
-    .screenshots img {
-      width: 180px;
-      border-radius: 10px;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
+        .screenshots img {
+            width: 180px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            cursor: pointer;
+            /* REPOSICIONADO: Adiciona a transição apenas para imagens NÃO-SPOILER */
+            transition: filter 0.5s ease;
+        }
+        
+        /* Estilo para miniaturas de spoiler */
+        .screenshots img.spoiler-thumbnail {
+            filter: blur(8px);
+            border: 2px solid #e50914; /* Borda para destaque */
+            opacity: 0.8;
+            transition: none; /* NOVO: Remove a transição para blur na miniatura spoiler */
+        }
+        
+        /* Container Fullscreen Spoiler */
+        #fullscreen-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+        
+        /* Overlay de senha na imagem fullscreen */
+        .fullscreen-spoiler-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 250;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Classes para esconder o overlay */
+        .fullscreen-spoiler-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
 
-    /* Setas fullscreen */
-    .gallery-arrow {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      color: white;
-      font-size: 40px;
-      cursor: pointer;
-      padding: 10px;
-      user-select: none;
-      background: rgba(0,0,0,0.4);
-      border-radius: 50%;
-      z-index: 300;
-    }
-    .gallery-arrow:hover { background: rgba(255,255,255,0.2); }
-    .arrow-left { left: 20px; }
-    .arrow-right { right: 20px; }
+        .fullscreen-spoiler-overlay p { margin: 5px 0; font-size: 16px; font-weight: bold; }
+        .fullscreen-spoiler-overlay input { 
+            padding: 8px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+        }
+        .fullscreen-spoiler-overlay button {
+            padding: 8px 15px;
+            background-color: #e50914;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .fullscreen-spoiler-overlay button:hover { background-color: #f4061a; }
 
-    @media (max-width: 700px) {
-      .game-card { width: 90%; }
-      .screenshots img { width: 140px; }
-    }
-  </style>
+        /* Estilo da imagem no fullscreen */
+        .fullscreen-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            /* REPOSICIONADO: Adiciona a transição aqui para as imagens que vão mudar de filtro (desfoque do jogo ou não-spoiler) */
+            transition: filter 0.5s ease;
+        }
+        
+        /* O overlay é o parente da imagem, então se ele estiver aberto, o clique deve ser na imagem */
+        .fullscreen-img.blurred {
+            filter: blur(40px);
+            transition: none; /* NOVO: Remove a transição para blur na imagem fullscreen spoiler */
+        }
+
+        /* Classes de navegação */
+        .gallery-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 10px;
+            user-select: none;
+            background: rgba(0,0,0,0.4);
+            border-radius: 50%;
+            z-index: 300;
+        }
+        .gallery-arrow:hover { background: rgba(255,255,255,0.2); }
+        .arrow-left { left: 20px; }
+        .arrow-right { right: 20px; }
+
+        @media (max-width: 700px) {
+            .game-card { width: 90%; }
+            .screenshots img { width: 140px; }
+        }
+    </style>
 </head>
 <body>
-  <h1>🎮 Reviews & Screenshots</h1>
+    <h1>🎮 Reviews & Screenshots</h1>
 
-  <div class="buttons">
-    <button class="active" onclick="filterGames('jogando', event)">Jogando</button>
-    <button onclick="filterGames('zerado', event)">Zerados</button>
-    <button onclick="filterGames('dropado', event)">Dropado</button>
-    <button onclick="filterGames('nao-joguei', event)">Não comecei</button>
-  </div>
-
-  <div class="gallery">
-
-    <div class="game-card" data-status="jogando" data-title="Baldur's Gate 3" data-nota="?" data-review="?" data-screens="https://i.imgur.com/hjuNebo.png,https://i.imgur.com/abv0cHT.png,https://i.imgur.com/fZ1n9II.png,https://i.imgur.com/9BPM9pL.png,https://i.imgur.com/vW1e29p.png,https://i.imgur.com/5I41ghI.png,https://i.imgur.com/QciEwol.png,https://i.imgur.com/pSzMWaO.png,https://i.imgur.com/SdaWspQ.png">
-      <span class="status-tag">Jogando</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BN2I0N2Y3MWUtNjJiNy00NjRjLWE4ZTctOTQ2YWVhM2VhMTM4XkEyXkFqcGc@._V1_.jpg" alt="Baldur's Gate 3">
-      <div class="game-info"><h3>Baldur's Gate 3</h3></div>
+    <div class="buttons">
+        <button class="active" onclick="filterGames('jogando', event)">Jogando</button>
+        <button onclick="filterGames('zerado', event)">Zerados</button>
+        <button onclick="filterGames('dropado', event)">Dropado</button>
+        <button onclick="filterGames('nao-joguei', event)">Não comecei</button>
     </div>
 
-    <div class="game-card" data-status="jogando" data-title="Crash Bandicoot N. Sane Trilogy" data-nota="?" data-review="?" data-screens="">
-      <span class="status-tag">Jogando</span>
-      <img src="https://i.imgur.com/j57M3nM.jpeg" alt="Crash Bandicoot N. Sane Trilogy">
-      <div class="game-info"><h3>Crash Bandicoot N. Sane Trilogy</h3></div>
-    </div>
+    <div class="gallery">
 
-    <div class="game-card" data-status="jogando" data-title="Dark Souls: Remastered" data-nota="?" data-review="?" data-screens="https://i.imgur.com/HTgCV63.png, https://i.imgur.com/9nk7eXV.png, https://i.imgur.com/ccUf7ke.png, https://i.imgur.com/YsvhiPj.png">
-      <span class="status-tag">Jogando</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BNDZhYWVjMTYtZmFjNi00ZjI3LTkzYzctOGM2NGZjMTc3NmNiXkEyXkFqcGc@._V1_.jpg" alt="Dark Souls: Remastered">
-      <div class="game-info"><h3>Dark Souls: Remastered</h3></div>
-    </div>
+        <div class="game-card" data-status="jogando" data-title="Baldur's Gate 3" data-nota="?" data-review="?" data-screens="https://i.imgur.com/hjuNebo.png, https://i.imgur.com/abv0cHT.png, https://i.imgur.com/fZ1n9II.png, https://i.imgur.com/9BPM9pL.png, https://i.imgur.com/vW1e29p.png, https://i.imgur.com/5I41ghI.png, https://i.imgur.com/QciEwol.png, https://i.imgur.com/pSzMWaO.png, https://i.imgur.com/SdaWspQ.png, https://i.imgur.com/RbaVi19.png, spoiler:https://i.imgur.com/AzuybzX.png, spoiler:https://i.imgur.com/Hw6Qn0q.png, spoiler:https://i.imgur.com/VWJ8scV.png, spoiler:https://i.imgur.com/JLQcl8j.png, https://i.imgur.com/SIV8dAl.png">
+            <span class="status-tag">Jogando</span>
+            <img src="https://m.media-amazon.com/images/M/MV5BN2I0N2Y3MWUtNjJiNy00NjRjLWE4ZTctOTQ2YWVhM2VhMTM4XkEyXkFqcGc@._V1_.jpg" alt="Baldur's Gate 3">
+            <div class="game-info"><h3>Baldur's Gate 3</h3></div>
+        </div>
 
-    <div class="game-card" data-status="zerado" data-title="Alan Wake" data-nota="8.0/10" data-review="Observação: Eu já tinha jogado o segundo jogo quando lançou, só por benchmark para ver se o PC rodava, e foi uma péssima ideia. Não entendi poha nenhuma do Alan Wake 2. Um ano depois, o Markinkof me passou uma das calls mais brabas: jogar o primeiro e depois o segundo. E foi a melhor decisão que eu podia ter tomado.
+        <div class="game-card" data-status="jogando" data-title="Crash Bandicoot N. Sane Trilogy" data-nota="?" data-review="?" data-screens="">
+            <span class="status-tag">Jogando</span>
+            <img src="https://i.imgur.com/j57M3nM.jpeg" alt="Crash Bandicoot N. Sane Trilogy">
+            <div class="game-info"><h3>Crash Bandicoot N. Sane Trilogy</h3></div>
+        </div>
+
+        <div class="game-card" data-status="jogando" data-title="Dark Souls: Remastered" data-nota="?" data-review="?" data-screens="https://i.imgur.com/HTgCV63.png, https://i.imgur.com/9nk7eXV.png, https://i.imgur.com/ccUf7ke.png, https://i.imgur.com/YsvhiPj.png">
+            <span class="status-tag">Jogando</span>
+            <img src="https://m.media-amazon.com/images/M/MV5BNDZhYWVjMTYtZmFjNi00ZjI3LTkzYzctOGM2NGZjMTc3NmNiXkEyXkFqcGc@._V1_.jpg" alt="Dark Souls: Remastered">
+            <div class="game-info"><h3>Dark Souls: Remastered</h3></div>
+        </div>
+
+        <div class="game-card" data-status="zerado" data-title="Alan Wake" data-nota="8.0/10" data-review="Observação: Eu já tinha jogado o segundo jogo quando lançou, só por benchmark para ver se o PC rodava, e foi uma péssima ideia. Não entendi poha nenhuma do Alan Wake 2. Um ano depois, o Markinkof me passou uma das calls mais brabas: jogar o primeiro e depois o segundo. E foi a melhor decisão que eu podia ter tomado.
 O primeiro jogo é ok: a ambientação é mais ou menos, mas o combate é muito bom, atirar nesse jogo é realmente divertido. O que mais brilha nele é a história mirabolante do Sam Lake. Ter jogado o 1 antes do 2 foi essencial.
 Pode parecer óbvio dizer isso, mas tem jogo em que não é obrigatório jogar os anteriores. No caso de Alan Wake, é necessário." data-screens="https://i.imgur.com/fUP0mab.jpeg, https://i.imgur.com/l0da0oB.png">
-      <span class="status-tag">Zerado</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BY2RhNzQ4NTItZmE5OC00ZjdlLTk3ZjItZDIxZDhiNTI1OWNiXkEyXkFqcGc@._V1_.jpg" alt="Alan Wake">
-      <div class="game-info"><h3>Alan Wake</h3></div>
-    </div>
+            <span class="status-tag">Zerado</span>
+            <img src="https://m.media-amazon.com/images/M/MV5BY2RhNzQ4NTItZmE5OC00ZjdlLTk3ZjItZDIxZDhiNTI1OWNiXkEyXkFqcGc@._V1_.jpg" alt="Alan Wake">
+            <div class="game-info"><h3>Alan Wake</h3></div>
+        </div>
 
-    <div class="game-card" data-status="zerado" data-title="Alan Wake 2" data-nota="10/10" data-review="?" data-screens="">
-      <span class="status-tag">Zerado</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BODRmZDg1NGQtZGU5NS00NzVkLThhZDItMDJkMjQwZGQ5MDg5XkEyXkFqcGc@._V1_.jpg" alt="Alan Wake 2">
-      <div class="game-info"><h3>Alan Wake 2</h3></div>
-    </div>
+        <div class="game-card" data-status="zerado" data-title="Alan Wake 2" data-nota="10/10" data-review="?" data-screens="">
+            <span class="status-tag">Zerado</span>
+            <img src="https://m.media-amazon.com/images/M/MV5BODRmZDg1NGQtZGU5NS00NzVkLThhZDItMDJkMjQwZGQ5MDg5XkEyXkFqcGc@._V1_.jpg" alt="Alan Wake 2">
+            <div class="game-info"><h3>Alan Wake 2</h3></div>
+        </div>
 
-    <div class="game-card" data-status="dropado" data-title="SILENT HILL f" data-nota="4.0/10" data-review="Antes do lançamento do F, decidi jogar o Silent Hill 2 e foi maravilhoso, então fiquei animado pra esse aqui. Mas já começou o pcismo: jogo cheio de stutter, só melhorou depois de colocar a textura no baixo e aí ficou tudo borrado.
+        <div class="game-card" data-status="dropado" data-title="SILENT HILL f" data-nota="4.0/10" data-review="Antes do lançamento do F, decidi jogar o Silent Hill 2 e foi maravilhoso, então fiquei animado pra esse aqui. Mas já começou o pcismo: jogo cheio de stutter, só melhorou depois de colocar a textura no baixo e aí ficou tudo borrado.
 A movimentação é horrível, parece jogo mobile; o boneco fica sambando no chão e rodando pra krl, nada a ver com o SH2. No fim, a experiência foi bem desagradável por causa do desempenho. O único ponto positivo foi o combate 👍" data-screens="">
-      <span class="status-tag">Dropado</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BMGRhYmM4OGEtODMwOS00MDAxLTkzMjUtMDgxNTQ1NGI3ODkwXkEyXkFqcGc@._V1_.jpg" alt="SILENT HILL f">
-      <div class="game-info"><h3>SILENT HILL f</h3></div>
-    </div>
+            <span class="status-tag">Dropado</span>
+            <img src="https://m.media-amazon.com/images/M/MV5BMGRhYmM4OGEtODMwOS00MDAxLTkzMjUtMDgxNTQ1NGI3ODkwXkEyXkFqcGc@._V1_.jpg" alt="SILENT HILL f">
+            <div class="game-info"><h3>SILENT HILL f</h3></div>
+        </div>
 
-    <div class="game-card" data-status="dropado" data-title="X-Men Origins: Wolverine PS2" data-nota="4.0/10" data-review="Primeira vez que joguei esse jogo foi na infância e não passei da primeira fase. Depois de muito tempo, decidi jogar novamente para ver se o game era bom mesmo e pqp, que jogo podre.
+        <div class="game-card" data-status="dropado" data-title="X-Men Origins: Wolverine PS2" data-nota="4.0/10" data-review="Primeira vez que joguei esse jogo foi na infância e não passei da primeira fase. Depois de muito tempo, decidi jogar novamente para ver se o game era bom mesmo e pqp, que jogo podre.
 Combate repetitivo pra krl, só existe uma execução nessa poha, e os inimigos são absurdamente roubados. Nenhum soulslike beira a dificuldade dessa bomba. Lixo." data-screens="">
-      <span class="status-tag">Dropado</span>
-      <img src="https://m.media-amazon.com/images/M/MV5BM2FkNDk3NTYtMzg0My00OTVhLTkyZmEtNDI1YzExNWNmNTk4XkEyXkFqcGc@._V1_.jpg" alt="X-Men Origins: Wolverine PS2">
-      <div class="game-info"><h3>X-Men Origins: Wolverine PS2</h3></div>
+            <span class="status-tag">Dropado</span>
+            <img src="https://m.media-amazon.com/images/M/MV5BM2FkNDk3NTYtMzg0My00OTVhLTkyZmEtNDI1YzExNWNmNTk4XkEyXkFqcGc@._V1_.jpg" alt="X-Men Origins: Wolverine PS2">
+            <div class="game-info"><h3>X-Men Origins: Wolverine PS2</h3></div>
+        </div>
+    
+        <div class="game-card" data-status="nao-joguei" data-title="Jogos Pendentes" data-nota="Recomende um jogo comentando nas lives" data-review="Lista de Jogos Pendentes: Acessar o canal RGWaradam no Youtube " data-screens="">
+            <span class="status-tag">Não comecei</span>
+            <img src="https://i.imgur.com/ouQ2mfe.jpeg" alt="Jogos Pendentes">
+            <div class="game-info"><h3>Jogos Pendentes</h3></div>
+        </div>
+
     </div>
- 
-    <div class="game-card" data-status="nao-joguei" data-title="Jogos Pendentes" data-nota="Recomende um jogo comentando nas lives" data-review="Lista de Jogos Pendentes: Acessar o canal RGWaradam no Youtube " data-screens="">
-      <span class="status-tag">Não comecei</span>
-      <img src="https://i.imgur.com/ouQ2mfe.jpeg" alt="Jogos Pendentes">
-      <div class="game-info"><h3>Jogos Pendentes</h3></div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p><strong>Nota:</strong> <span id="modal-nota"></span></p>
+            <p id="modal-review"></p>
+            <div class="screenshots" id="modal-screenshots"></div>
+        </div>
     </div>
 
-  </div>
+    <div id="fullscreen-overlay" style="display: none;"></div>
 
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <h2 id="modal-title"></h2>
-      <p><strong>Nota:</strong> <span id="modal-nota"></span></p>
-      <p id="modal-review"></p>
-      <div class="screenshots" id="modal-screenshots"></div>
-    </div>
-  </div>
+    <script>
+        const cards = document.querySelectorAll(".game-card");
+        const modal = document.getElementById("modal");
+        const closeBtn = document.querySelector(".close-btn");
+        const modalTitle = document.getElementById("modal-title");
+        const modalNota = document.getElementById("modal-nota");
+        const modalReview = document.getElementById("modal-review");
+        const modalScreenshots = document.getElementById("modal-screenshots");
+        const fullscreenOverlay = document.getElementById("fullscreen-overlay");
 
-  <script>
-    const cards = document.querySelectorAll(".game-card");
-    const modal = document.getElementById("modal");
-    const closeBtn = document.querySelector(".close-btn");
-    const modalTitle = document.getElementById("modal-title");
-    const modalNota = document.getElementById("modal-nota");
-    const modalReview = document.getElementById("modal-review");
-    const modalScreenshots = document.getElementById("modal-screenshots");
+        let activeUrls = []; // Armazena todas as URLs brutas (incluindo "spoiler:")
+        let currentImageIndex = -1;
+        // Objeto para rastrear o status de desbloqueio do JOGO atual no modal
+        let currentGameUnlocked = false; 
 
-    function filterGames(status, event) {
-      const buttons = document.querySelectorAll(".buttons button");
-      buttons.forEach(btn => btn.classList.remove("active"));
-      event.target.classList.add("active");
+        // --- UTILS: Verifica e Limpa URL ---
+        function isSpoiler(rawUrl) {
+            return rawUrl.startsWith("spoiler:");
+        }
+        function cleanUrl(rawUrl) {
+            return isSpoiler(rawUrl) ? rawUrl.substring(8).trim() : rawUrl.trim();
+        }
 
-      cards.forEach(card => {
-        card.style.display = (card.dataset.status === status) ? "block" : "none";
-      });
-    }
+        // --- FUNÇÃO PARA FILTRAR OS CARDS ---
+        function filterGames(status, event) {
+            const buttons = document.querySelectorAll(".buttons button");
+            buttons.forEach(btn => btn.classList.remove("active"));
+            event.target.classList.add("active");
 
-    cards.forEach(card => {
-      card.addEventListener("click", () => {
-        modal.style.display = "block";
-        modalTitle.textContent = card.dataset.title;
-        modalNota.textContent = card.dataset.nota;
-        modalReview.innerHTML = card.dataset.review.replace(/\n/g, "<br><br>");
-        modalScreenshots.innerHTML = "";
+            cards.forEach(card => {
+                card.style.display = (card.dataset.status === status) ? "block" : "none";
+            });
+        }
 
-        const urls = (card.dataset.screens || "").split(/[\s,]+/).filter(Boolean);
-        urls.forEach(url => {
-          const img = document.createElement("img");
-          img.src = url.trim();
-          img.addEventListener("click", () => openFullscreenGallery(urls, url));
-          modalScreenshots.appendChild(img);
+        // --- FUNÇÃO CENTRAL DE VERIFICAÇÃO DE SENHA (Global para o Jogo Atual) ---
+        function checkAndRevealAllSpoilers(passwordInput, overlayElement) {
+            const enteredPassword = passwordInput.value;
+            const correctPassword = '123'; 
+
+            if (enteredPassword === correctPassword) {
+                // Marca o JOGO atual como desbloqueado
+                currentGameUnlocked = true;
+                
+                // 1. Remove o blur da imagem principal (e a classe 'blurred')
+                const imgElement = overlayElement.closest('#fullscreen-overlay').querySelector('.fullscreen-img');
+                if (imgElement) {
+                    imgElement.classList.remove('blurred');
+                    imgElement.style.filter = 'none'; // Garante que o filtro seja removido
+                }
+
+                // 2. Esconde o overlay de senha
+                overlayElement.classList.add('hidden');
+
+                // 3. Remove o blur de TODAS as miniaturas de spoiler do jogo atual no modal
+                document.querySelectorAll('.screenshots img.spoiler-thumbnail').forEach(thumbnail => {
+                    thumbnail.classList.remove('spoiler-thumbnail');
+                    thumbnail.style.filter = 'none';
+                    thumbnail.style.opacity = '1';
+                    thumbnail.style.border = 'none';
+                });
+
+            } else {
+                alert('Senha incorreta. Tente novamente.'); 
+                passwordInput.value = '';
+            }
+        }
+
+
+        cards.forEach(card => {
+            card.addEventListener("click", () => {
+                // Reset/configura o estado de desbloqueio para o novo jogo
+                currentGameUnlocked = false; 
+                
+                modal.style.display = "block";
+                modalTitle.textContent = card.dataset.title;
+                modalNota.textContent = card.dataset.nota;
+                modalReview.innerHTML = card.dataset.review.replace(/\n/g, "<br><br>");
+                modalScreenshots.innerHTML = "";
+
+                // Salva a lista de URLs brutas para a navegação fullscreen
+                activeUrls = (card.dataset.screens || "").split(/[\s,]+/).filter(Boolean);
+
+                activeUrls.forEach(rawUrl => {
+                    const url = cleanUrl(rawUrl);
+                    const isImgSpoiler = isSpoiler(rawUrl);
+
+                    const img = document.createElement("img");
+                    img.src = url;
+                    img.setAttribute('data-full-url', rawUrl.trim());
+                    
+                    if (isImgSpoiler) {
+                        img.classList.add("spoiler-thumbnail");
+                    }
+                    
+                    // Se o jogo já estiver desbloqueado (para esta sessão), remove o spoiler das miniaturas
+                    if (currentGameUnlocked) {
+                        img.classList.remove("spoiler-thumbnail");
+                        img.style.filter = 'none';
+                        img.style.opacity = '1';
+                        img.style.border = 'none';
+                    }
+
+                    img.addEventListener("click", () => openFullscreenGallery(rawUrl.trim()));
+                    modalScreenshots.appendChild(img);
+                });
+            });
         });
-      });
-    });
 
-    closeBtn.addEventListener("click", () => modal.style.display = "none");
-    window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
+        closeBtn.addEventListener("click", () => modal.style.display = "none");
+        window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
 
-    filterGames('jogando', { target: document.querySelector(".buttons button.active") });
+        filterGames('jogando', { target: document.querySelector(".buttons button.active") });
 
-    function openFullscreenGallery(urls, currentUrl) {
-      let index = urls.indexOf(currentUrl);
-      const overlay = document.createElement("div");
-      overlay.style.cssText = `
-        position: fixed; top:0; left:0; width:100%; height:100%;
-        background: rgba(0,0,0,0.9); display:flex;
-        align-items:center; justify-content:center;
-        z-index:200; backdrop-filter: blur(4px);
-      `;
-      const img = document.createElement("img");
-      img.src = currentUrl;
-      img.style.maxWidth = "90%";
-      img.style.maxHeight = "90%";
-      img.style.borderRadius = "10px";
-      overlay.appendChild(img);
+        // --- FUNÇÃO PARA ATUALIZAR A IMAGEM E O ESTADO DO SPOILER NA GALERIA ---
+        function updateFullscreenImage(rawUrl) {
+            const isImgSpoiler = isSpoiler(rawUrl);
+            const url = cleanUrl(rawUrl);
+            
+            // Pega a imagem principal
+            const img = fullscreenOverlay.querySelector('.fullscreen-img');
+            img.src = url;
 
-      const left = document.createElement("div");
-      left.textContent = "❮";
-      left.classList.add("gallery-arrow", "arrow-left");
-      const right = document.createElement("div");
-      right.textContent = "❯";
-      right.classList.add("gallery-arrow", "arrow-right");
+            // Pega ou cria o overlay de senha
+            let spoilerOverlay = fullscreenOverlay.querySelector('.fullscreen-spoiler-overlay');
+            if (!spoilerOverlay) {
+                spoilerOverlay = document.createElement("div");
+                spoilerOverlay.classList.add("fullscreen-spoiler-overlay");
+                fullscreenOverlay.appendChild(spoilerOverlay);
+            }
+            
+            // Remove o conteúdo e listeners antigos para recriar
+            spoilerOverlay.innerHTML = '';
+            
+            // --- Lógica de Spoiler no Fullscreen ---
+            if (isImgSpoiler && !currentGameUnlocked) {
+                // Se for spoiler e NÃO tiver sido desbloqueado
 
-      const nav = dir => {
-        index = (index + dir + urls.length) % urls.length;
-        img.src = urls[index];
-      };
+                // 1. Aplica o desfoque na imagem imediatamente
+                img.classList.add('blurred');
 
-      left.onclick = e => { e.stopPropagation(); nav(-1); };
-      right.onclick = e => { e.stopPropagation(); nav(1); };
-      overlay.appendChild(left);
-      overlay.appendChild(right);
+                // 2. Exibe o overlay de senha
+                spoilerOverlay.classList.remove('hidden');
+                spoilerOverlay.innerHTML = `
+                    <p>⚠️ SPOILER: ${modalTitle.textContent} ⚠️</p>
+                    <p>Digite 123 para desbloquear TODAS as imagens de spoiler deste jogo.</p>
+                    <input type="password" id="fullscreen-spoiler-password" placeholder="Senha" />
+                    <button id="unlock-spoiler-btn">Desbloquear</button>
+                `;
 
-      overlay.onclick = e => { if (e.target === overlay) cleanup(); };
+                // 3. Adiciona o listener para o botão de desbloqueio
+                spoilerOverlay.querySelector('#unlock-spoiler-btn').onclick = e => {
+                    e.stopPropagation();
+                    const passwordInput = spoilerOverlay.querySelector('#fullscreen-spoiler-password');
+                    checkAndRevealAllSpoilers(passwordInput, spoilerOverlay);
+                };
+            } else {
+                 // Se não for spoiler OU já foi desbloqueado globalmente
 
-      const handleKey = e => {
-        if (e.key === "Escape") cleanup();
-        if (e.key === "ArrowRight") nav(1);
-        if (e.key === "ArrowLeft") nav(-1);
-      };
-      window.addEventListener("keydown", handleKey);
+                 // 1. Remove o desfoque
+                 img.classList.remove('blurred');
 
-      function cleanup() {
-        window.removeEventListener("keydown", handleKey);
-        overlay.remove();
-      }
+                 // 2. Esconde o overlay
+                 spoilerOverlay.classList.add('hidden');
+            }
+        }
+        
+        // --- FUNÇÃO PARA ABRIR A GALERIA FULLSCREEN ---
+        function openFullscreenGallery(currentRawUrl) {
+            
+            currentImageIndex = activeUrls.indexOf(currentRawUrl);
+            
+            // 1. Limpa o overlay e mostra
+            fullscreenOverlay.innerHTML = '';
+            fullscreenOverlay.style.display = 'flex';
 
-      document.body.appendChild(overlay);
-    }
-  </script>
+            const img = document.createElement("img");
+            img.classList.add("fullscreen-img");
+            fullscreenOverlay.appendChild(img);
+
+            // 2. Adiciona as setas de navegação
+            const left = document.createElement("div");
+            left.textContent = "❮";
+            left.classList.add("gallery-arrow", "arrow-left");
+            left.onclick = e => { e.stopPropagation(); navigate(-1); };
+            
+            const right = document.createElement("div");
+            right.textContent = "❯";
+            right.classList.add("gallery-arrow", "arrow-right");
+            right.onclick = e => { e.stopPropagation(); navigate(1); };
+            
+            fullscreenOverlay.appendChild(left);
+            fullscreenOverlay.appendChild(right);
+            
+            // 3. Renderiza a primeira imagem
+            updateFullscreenImage(currentRawUrl);
+
+
+            // --- Lógica de Navegação (Simples e Contínua) ---
+            const navigate = dir => {
+                currentImageIndex = (currentImageIndex + dir + activeUrls.length) % activeUrls.length;
+                const nextRawUrl = activeUrls[currentImageIndex];
+                
+                // Renderiza a nova imagem (borrada ou não)
+                updateFullscreenImage(nextRawUrl);
+            };
+            
+            
+            // --- Fechamento e Teclado ---
+            fullscreenOverlay.onclick = e => { 
+                // Se o clique for no overlay (fora da imagem ou do overlay de senha)
+                // ou diretamente na imagem (quando não houver overlay de senha visível)
+                const targetIsOverlay = e.target === fullscreenOverlay;
+                const targetIsImage = e.target === img;
+                const spoilerOverlayVisible = fullscreenOverlay.querySelector('.fullscreen-spoiler-overlay:not(.hidden)');
+
+                if (targetIsOverlay || (targetIsImage && !spoilerOverlayVisible)) {
+                    cleanup(); 
+                }
+            };
+
+            const handleKey = e => {
+                if (e.key === "Escape") cleanup();
+                if (e.key === "ArrowRight" || e.key === "D" || e.key === "d") navigate(1);
+                if (e.key === "ArrowLeft" || e.key === "A" || e.key === "a") navigate(-1);
+            };
+            window.addEventListener("keydown", handleKey);
+
+            function cleanup() {
+                window.removeEventListener("keydown", handleKey);
+                fullscreenOverlay.style.display = 'none';
+                fullscreenOverlay.innerHTML = '';
+            }
+        }
+    </script>
 </body>
 </html>
