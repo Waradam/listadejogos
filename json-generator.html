@@ -1,245 +1,569 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Dados JSON - RGWaradam</title>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        .container {
-            background-color: #1e1e1e;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            max-width: 800px;
-            width: 100%;
-        }
-        h2 {
-            text-align: center;
-            color: #e50914;
-            margin-bottom: 25px;
-        }
-        label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"], textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #333;
-            border-radius: 5px;
-            background-color: #2a2a2a;
-            color: #e0e0e0;
-            box-sizing: border-box;
-        }
-        textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
-        .input-group { margin-bottom: 20px; }
-        .button-group { text-align: center; margin-top: 30px; }
-        
-        #generate-btn {
-            background-color: #e50914;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        #generate-btn:hover { background-color: #f4061a; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RGWaradam</title>
+    <style>
+        /* Estilos ORIGINAIS */
+        body {
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            background-color: #0f0f0f;
+            color: #f0f0f0;
+        }
 
-        #output-area {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #000;
-            border: 1px solid #e50914;
-            border-radius: 5px;
-        }
-        #json-output {
-            width: 100%;
-            min-height: 250px;
-            background: transparent;
-            border: none;
-            color: #0f0; 
-            font-family: monospace;
-            resize: none;
-        }
-        #copy-btn {
-            margin-top: 10px;
-            background-color: #007bff;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        #copy-btn:hover { background-color: #0056b3; }
-        
-        .screenshot-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .screenshot-item input[type="text"] {
-            flex-grow: 1;
-        }
-    </style>
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-weight: 600;
+        }
+
+        .buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .buttons button {
+            background-color: #1a1a1a;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .buttons button:hover { background-color: #333; }
+        .buttons button.active { background-color: #555; }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .game-card {
+            background-color: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            display: none;
+            width: 500px;
+        }
+
+        .game-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            background-color: #000;
+        }
+
+        /* Status específicos */
+        .game-card[data-status="nao-joguei"] img {
+            filter: grayscale(100%);
+            opacity: 0.6;
+        }
+        .game-card[data-status="jogando"] img { filter: grayscale(40%); }
+        .game-card[data-status="dropado"] img {
+            filter: grayscale(50%) sepia(30%) hue-rotate(250deg) saturate(80%);
+            opacity: 0.7;
+        }
+
+        .game-info {
+            padding: 15px;
+            text-align: center;
+            background-color: #1a1a1a;
+        }
+
+        .game-info h3 {
+            margin: 5px 0 0 0;
+            font-size: 18px;
+            color: #f0f0f0;
+            font-weight: 500;
+        }
+
+        .status-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: #1a1a1a;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            color: #ddd;
+        }
+        
+        /* 🚀 AJUSTES FINOS PARA O TEXTO DA REVIEW (RESOLVE O ESPAÇAMENTO CABULOSO) 🚀 */
+        #modal-review {
+            /* Mantido o espaçamento entre linhas para melhor leitura */
+            line-height: 1.6; 
+            /* Reduzida a margem superior e inferior para harmonizar o bloco */
+            margin-top: 10px;
+            margin-bottom: 20px;
+            /* Alinhamento à esquerda para um visual mais limpo */
+            text-align: left;
+            /* Tamanho da fonte ajustado */
+            font-size: 16px; 
+            /* Padding lateral para telas menores */
+            padding: 0 10px; 
+            color: #f0f0f0; 
+        }
+        /* -------------------------------------------------------------------------- */
+
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-btn:hover { color: #fff; }
+
+        .screenshots {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        .screenshots img {
+            width: 180px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: filter 0.5s ease;
+        }
+        
+        /* Estilo para miniaturas de spoiler */
+        .screenshots img.spoiler-thumbnail {
+            filter: blur(8px);
+            border: 2px solid #e50914; /* Borda para destaque */
+            opacity: 0.8;
+            transition: none;
+        }
+        
+        /* Container Fullscreen Spoiler */
+        #fullscreen-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+        
+        /* Overlay de senha na imagem fullscreen */
+        .fullscreen-spoiler-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 250;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Classes para esconder o overlay */
+        .fullscreen-spoiler-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .fullscreen-spoiler-overlay p { margin: 5px 0; font-size: 16px; font-weight: bold; }
+        .fullscreen-spoiler-overlay input { 
+            padding: 8px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+        }
+        .fullscreen-spoiler-overlay button {
+            padding: 8px 15px;
+            background-color: #e50914;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .fullscreen-spoiler-overlay button:hover { background-color: #f4061a; }
+
+        /* Estilo da imagem no fullscreen */
+        .fullscreen-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            transition: filter 0.5s ease;
+        }
+        
+        /* O overlay é o parente da imagem, então se ele estiver aberto, o clique deve ser na imagem */
+        .fullscreen-img.blurred {
+            filter: blur(40px);
+            transition: none;
+        }
+
+        /* Classes de navegação */
+        .gallery-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 10px;
+            user-select: none;
+            background: rgba(0,0,0,0.4);
+            border-radius: 50%;
+            z-index: 300;
+        }
+        .gallery-arrow:hover { background: rgba(255,255,255,0.2); }
+        .arrow-left { left: 20px; }
+        .arrow-right { right: 20px; }
+
+        @media (max-width: 700px) {
+            .game-card { width: 90%; }
+            .screenshots img { width: 140px; }
+        }
+    </style>
 </head>
 <body>
+    <h1>🎮 Reviews & Screenshots</h1>
 
-<div class="container">
-    <h2>🎮 Gerador de Jogo para Reviews.json</h2>
+    <div class="buttons">
+        <button class="active" onclick="filterGames('jogando', event)">Jogando</button>
+        <button onclick="filterGames('zerado', event)">Zerados</button>
+        <button onclick="filterGames('dropado', event)">Dropado</button>
+        <button onclick="filterGames('nao-joguei', event)">Não comecei</button>
+    </div>
 
-    <div class="input-group">
-        <label for="title">Título do Jogo:</label>
-        <input type="text" id="title" required>
-    </div>
+    <div class="gallery" id="game-gallery">
+        </div>
 
-    <div class="input-group">
-        <label for="status">Status:</label>
-        <select id="status">
-            <option value="jogando">Jogando</option>
-            <option value="zerado">Zerado</option>
-            <option value="dropado">Dropado</option>
-            <option value="nao-joguei">Não comecei</option>
-        </select>
-    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p><strong>Nota:</strong> <span id="modal-nota"></span></p>
+            <p id="modal-review"></p>
+            <div class="screenshots" id="modal-screenshots"></div>
+        </div>
+    </div>
 
-    <div class="input-group">
-        <label for="cover_url">URL da Capa (Cover):</label>
-        <input type="text" id="cover_url" required>
-    </div>
+    <div id="fullscreen-overlay" style="display: none;"></div>
 
-    <div class="input-group">
-        <label for="nota">Nota (ex: 10/10 ou ?):</label>
-        <input type="text" id="nota" required value="?">
-    </div>
+    <script>
+        const gallery = document.getElementById("game-gallery");
+        const cards = []; // Array para armazenar os elementos de card criados
 
-    <div class="input-group">
-        <label for="review">Review / Observações:</label>
-        <textarea id="review" required></textarea>
-        <small style="color: #aaa;">Use quebras de linha (Enter) para separar parágrafos. O gerador irá formatar para JSON (adicionando \n).</small>
-    </div>
+        // Referências do Modal
+        const modal = document.getElementById("modal");
+        const closeBtn = document.querySelector(".close-btn");
+        const modalTitle = document.getElementById("modal-title");
+        const modalNota = document.getElementById("modal-nota");
+        const modalReview = document.getElementById("modal-review");
+        const modalScreenshots = document.getElementById("modal-screenshots");
+        const fullscreenOverlay = document.getElementById("fullscreen-overlay");
 
-    <div class="input-group" id="screens-input">
-        <label>URLs dos Screenshots:</label>
-        <div class="screenshot-item">
-            <input type="checkbox" class="spoiler-check" id="spoiler-1">
-            <label for="spoiler-1" style="display: inline; font-weight: normal;">Spoiler</label>
-            <input type="text" class="screen-url" placeholder="URL da imagem (Imgur, etc.)" data-id="1">
-        </div>
-        <div class="screenshot-item">
-            <input type="checkbox" class="spoiler-check" id="spoiler-2">
-            <label for="spoiler-2" style="display: inline; font-weight: normal;">Spoiler</label>
-            <input type="text" class="screen-url" placeholder="URL da imagem (Opcional)" data-id="2">
-        </div>
-        <div class="screenshot-item">
-            <input type="checkbox" class="spoiler-check" id="spoiler-3">
-            <label for="spoiler-3" style="display: inline; font-weight: normal;">Spoiler</label>
-            <input type="text" class="screen-url" placeholder="URL da imagem (Opcional)" data-id="3">
-        </div>
-        <button id="add-screen-btn" style="margin-top: 10px; background-color: #333; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">+ Adicionar Mais Screenshot</button>
-    </div>
-    
-    <div class="button-group">
-        <button id="generate-btn">GERAR BLOCO JSON</button>
-    </div>
+        let activeUrls = [];
+        let currentImageIndex = -1;
+        let currentGameUnlocked = false; 
+        
+        // --- UTILS: Verifica e Limpa URL ---
+        function isSpoiler(rawUrl) {
+            return rawUrl.startsWith("spoiler:");
+        }
+        function cleanUrl(rawUrl) {
+            return isSpoiler(rawUrl) ? rawUrl.substring(8).trim() : rawUrl.trim();
+        }
 
-    <div id="output-area" style="display: none;">
-        <label>Bloco JSON Gerado (Copie e Cole no `reviews.json`):</label>
-        <textarea id="json-output" readonly></textarea>
-        <button id="copy-btn">Copiar para Área de Transferência</button>
-    </div>
+        // --- FUNÇÃO CENTRAL: CRIAÇÃO DO CARD HTML ---
+        function createGameCard(game) {
+            const card = document.createElement('div');
+            card.classList.add('game-card');
+            card.setAttribute('data-status', game.status);
 
-</div>
+            // Armazenar os dados do JSON no próprio elemento DOM para fácil acesso.
+            card.gameData = game; 
 
-<script>
-    document.getElementById('add-screen-btn').addEventListener('click', function() {
-        const screensInput = document.getElementById('screens-input');
-        const count = screensInput.querySelectorAll('.screenshot-item').length + 1;
-        
-        const newItem = document.createElement('div');
-        newItem.classList.add('screenshot-item');
-        newItem.innerHTML = `
-            <input type="checkbox" class="spoiler-check" id="spoiler-${count}">
-            <label for="spoiler-${count}" style="display: inline; font-weight: normal;">Spoiler</label>
-            <input type="text" class="screen-url" placeholder="URL da imagem (Opcional)" data-id="${count}">
-        `;
-        // Insere antes do botão de adicionar
-        screensInput.insertBefore(newItem, document.getElementById('add-screen-btn'));
-    });
+            // Estrutura do card
+            card.innerHTML = `
+                <span class="status-tag">${game.status.charAt(0).toUpperCase() + game.status.slice(1)}</span>
+                <img src="${game.cover_url}" alt="${game.title}">
+                <div class="game-info"><h3>${game.title}</h3></div>
+            `;
 
-    document.getElementById('generate-btn').addEventListener('click', function() {
-        // 1. Coleta os dados básicos
-        const title = document.getElementById('title').value.trim();
-        const status = document.getElementById('status').value;
-        const cover_url = document.getElementById('cover_url').value.trim();
-        const nota = document.getElementById('nota').value.trim();
-        const review = document.getElementById('review').value;
+            // Adicionar evento de clique que abre o modal
+            card.addEventListener("click", () => {
+                currentGameUnlocked = false; 
+                modal.style.display = "block";
+                
+                // Preencher o modal com os dados do gameData
+                modalTitle.textContent = game.title;
+                modalNota.textContent = game.nota;
+                
+                // --- CORREÇÃO DA QUEBRA DE LINHA PARA SUPORTAR HTML E PARÁGRAFOS ---
+                // Trata quebras de linha duplas (\n\n) como novos parágrafos <br><br>
+                // e quebras de linha simples (\n) como quebras de linha <br>
+                const reviewContent = game.review.trim().replace(/\n\n/g, "<br><br>").replace(/\n/g, "<br>");
+                modalReview.innerHTML = reviewContent;
+                // ------------------------------------------------------------------
+                
+                modalScreenshots.innerHTML = "";
 
-        if (!title || !cover_url) {
-            alert("Título e URL da Capa são obrigatórios!");
-            return;
-        }
+                activeUrls = game.screens.filter(Boolean); // Pega a lista de URLs de screens
+                
+                activeUrls.forEach(rawUrl => {
+                    const url = cleanUrl(rawUrl);
+                    const isImgSpoiler = isSpoiler(rawUrl);
 
-        // 2. Coleta os screenshots
-        const screens = [];
-        document.querySelectorAll('.screenshot-item').forEach(item => {
-            const urlInput = item.querySelector('.screen-url');
-            const spoilerCheck = item.querySelector('.spoiler-check');
-            const url = urlInput.value.trim();
-            
-            if (url) {
-                // Adiciona o prefixo 'spoiler:' se a caixa estiver marcada
-                const rawUrl = spoilerCheck.checked ? `spoiler:${url}` : url;
-                screens.push(rawUrl);
-            }
-        });
-        
-        // 3. Formata a Review (Substitui quebras de linha por \n no JSON)
-        const formattedReview = review.replace(/\n/g, '\\n');
+                    const img = document.createElement("img");
+                    img.src = url;
+                    img.setAttribute('data-full-url', rawUrl.trim());
+                    
+                    if (isImgSpoiler) {
+                        img.classList.add("spoiler-thumbnail");
+                    }
+                    
+                    if (currentGameUnlocked) {
+                        img.classList.remove("spoiler-thumbnail");
+                        img.style.filter = 'none';
+                        img.style.opacity = '1';
+                        img.style.border = 'none';
+                    }
 
-        // 4. Constrói o Objeto JSON
-        const gameData = {
-            "status": status,
-            "title": title,
-            "nota": nota,
-            "review": formattedReview,
-            "cover_url": cover_url,
-            "screens": screens
-        };
-        
-        // 5. Gera a string JSON formatada para exibição
-        // JSON.stringify(null, 2) adiciona quebras de linha e indentação para facilitar a leitura.
-        const prettyJson = JSON.stringify(gameData, null, 2);
-        
-        // Exibe o JSON
-        document.getElementById('json-output').value = prettyJson;
-        
-        // 6. Mostra a área de saída
-        document.getElementById('output-area').style.display = 'block';
-    });
+                    img.addEventListener("click", () => openFullscreenGallery(rawUrl.trim()));
+                    modalScreenshots.appendChild(img);
+                });
+            });
 
-    document.getElementById('copy-btn').addEventListener('click', function() {
-        const output = document.getElementById('json-output');
-        output.select();
-        document.execCommand('copy');
-        alert("Bloco JSON copiado para a área de transferência! Cole no seu reviews.json.");
-    });
-</script>
+            return card;
+        }
+
+        // --- FUNÇÃO PARA FILTRAR OS CARDS ---
+        function filterGames(status, event) {
+            const buttons = document.querySelectorAll(".buttons button");
+            buttons.forEach(btn => btn.classList.remove("active"));
+            event.target.classList.add("active");
+
+            cards.forEach(card => {
+                card.style.display = (card.dataset.status === status) ? "block" : "none";
+            });
+        }
+        
+        // --- FUNÇÃO CENTRAL DE VERIFICAÇÃO DE SENHA (Global para o Jogo Atual) ---
+        function checkAndRevealAllSpoilers(passwordInput, overlayElement) {
+            const enteredPassword = passwordInput.value;
+            const correctPassword = '123'; 
+
+            if (enteredPassword === correctPassword) {
+                currentGameUnlocked = true;
+                
+                const imgElement = overlayElement.closest('#fullscreen-overlay').querySelector('.fullscreen-img');
+                if (imgElement) {
+                    imgElement.classList.remove('blurred');
+                    imgElement.style.filter = 'none';
+                }
+
+                overlayElement.classList.add('hidden');
+
+                document.querySelectorAll('.screenshots img.spoiler-thumbnail').forEach(thumbnail => {
+                    thumbnail.classList.remove('spoiler-thumbnail');
+                    thumbnail.style.filter = 'none';
+                    thumbnail.style.opacity = '1';
+                    thumbnail.style.border = 'none';
+                });
+
+            } else {
+                alert('Senha incorreta. Tente novamente.'); 
+                passwordInput.value = '';
+            }
+        }
+        
+        // --- FUNÇÃO PARA ATUALIZAR A IMAGEM E O ESTADO DO SPOILER NA GALERIA ---
+        function updateFullscreenImage(rawUrl) {
+            const isImgSpoiler = isSpoiler(rawUrl);
+            const url = cleanUrl(rawUrl);
+            
+            const img = fullscreenOverlay.querySelector('.fullscreen-img');
+            img.src = url;
+
+            let spoilerOverlay = fullscreenOverlay.querySelector('.fullscreen-spoiler-overlay');
+            if (!spoilerOverlay) {
+                spoilerOverlay = document.createElement("div");
+                spoilerOverlay.classList.add("fullscreen-spoiler-overlay");
+                fullscreenOverlay.appendChild(spoilerOverlay);
+            }
+            
+            spoilerOverlay.innerHTML = '';
+            
+            if (isImgSpoiler && !currentGameUnlocked) {
+                img.classList.add('blurred');
+
+                spoilerOverlay.classList.remove('hidden');
+                spoilerOverlay.innerHTML = `
+                    <p>⚠️ SPOILER: ${modalTitle.textContent} ⚠️</p>
+                    <p>Digite 123 para desbloquear TODAS as imagens de spoiler deste jogo.</p>
+                    <input type="password" id="fullscreen-spoiler-password" placeholder="Senha" />
+                    <button id="unlock-spoiler-btn">Desbloquear</button>
+                `;
+
+                spoilerOverlay.querySelector('#unlock-spoiler-btn').onclick = e => {
+                    e.stopPropagation();
+                    const passwordInput = spoilerOverlay.querySelector('#fullscreen-spoiler-password');
+                    checkAndRevealAllSpoilers(passwordInput, spoilerOverlay);
+                };
+            } else {
+                img.classList.remove('blurred');
+                spoilerOverlay.classList.add('hidden');
+            }
+        }
+        
+        // --- FUNÇÃO PARA ABRIR A GALERIA FULLSCREEN ---
+        function openFullscreenGallery(currentRawUrl) {
+            
+            currentImageIndex = activeUrls.indexOf(currentRawUrl);
+            
+            fullscreenOverlay.innerHTML = '';
+            fullscreenOverlay.style.display = 'flex';
+
+            const img = document.createElement("img");
+            img.classList.add("fullscreen-img");
+            fullscreenOverlay.appendChild(img);
+
+            const left = document.createElement("div");
+            left.textContent = "❮";
+            left.classList.add("gallery-arrow", "arrow-left");
+            left.onclick = e => { e.stopPropagation(); navigate(-1); };
+            
+            const right = document.createElement("div");
+            right.textContent = "❯";
+            right.classList.add("gallery-arrow", "arrow-right");
+            right.onclick = e => { e.stopPropagation(); navigate(1); };
+            
+            fullscreenOverlay.appendChild(left);
+            fullscreenOverlay.appendChild(right);
+            
+            updateFullscreenImage(currentRawUrl);
+
+
+            const navigate = dir => {
+                currentImageIndex = (currentImageIndex + dir + activeUrls.length) % activeUrls.length;
+                const nextRawUrl = activeUrls[currentImageIndex];
+                
+                updateFullscreenImage(nextRawUrl);
+            };
+            
+            
+            const handleKey = e => {
+                if (e.key === "Escape") cleanup();
+                if (e.key === "ArrowRight" || e.key === "D" || e.key === "d") navigate(1);
+                if (e.key === "ArrowLeft" || e.key === "A" || e.key === "a") navigate(-1);
+            };
+            window.addEventListener("keydown", handleKey);
+
+            function cleanup() {
+                window.removeEventListener("keydown", handleKey);
+                fullscreenOverlay.style.display = 'none';
+                fullscreenOverlay.innerHTML = '';
+            }
+            
+            fullscreenOverlay.onclick = e => { 
+                const targetIsOverlay = e.target === fullscreenOverlay;
+                const targetIsImage = e.target === img;
+                const spoilerOverlayVisible = fullscreenOverlay.querySelector('.fullscreen-spoiler-overlay:not(.hidden)');
+
+                if (targetIsOverlay || (targetIsImage && !spoilerOverlayVisible)) {
+                    cleanup(); 
+                }
+            };
+        }
+        
+        // --- FUNÇÃO PRINCIPAL: CARREGAR DADOS, ORDENAR E INICIALIZAR ---
+        async function loadAndRenderGames() {
+            try {
+                // 1. Carregar o JSON
+                const response = await fetch('reviews.json');
+                const games = await response.json();
+
+                // 2. Ordenar Alfabeticamente (aqui está a mágica da organização)
+                games.sort((a, b) => a.title.localeCompare(b.title));
+
+                // 3. Criar os Cards e Adicionar à Galeria
+                games.forEach(game => {
+                    const card = createGameCard(game);
+                    cards.push(card); // Adiciona ao array para que o filtro funcione
+                    gallery.appendChild(card);
+                });
+
+                // 4. Inicializar o Filtro (mostra a categoria 'jogando' por padrão)
+                const activeButton = document.querySelector(".buttons button.active");
+                if (activeButton) {
+                    filterGames('jogando', { target: activeButton });
+                }
+
+            } catch (error) {
+                console.error("Erro ao carregar ou renderizar os jogos:", error);
+                // Opcional: Mostrar uma mensagem de erro na tela para o usuário
+                gallery.innerHTML = '<p style="text-align: center; color: #e50914;">Erro ao carregar os dados dos jogos. Verifique o arquivo reviews.json.</p>';
+            }
+        }
+        
+        // Inicializa o processo
+        closeBtn.addEventListener("click", () => modal.style.display = "none");
+        window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
+
+        loadAndRenderGames(); // NOVA LINHA DE INICIALIZAÇÃO
+        
+        // Disponibilizar a função de filtro globalmente, pois ela é chamada no HTML
+        window.filterGames = filterGames;
+        
+    </script>
 </body>
 </html>
