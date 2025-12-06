@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RGWaradam</title>
     <style>
+        /* [ ... MANTENHA TODO O SEU BLOCO <style> ORIGINAL AQUI ... ] */
         body {
             margin: 0;
-            font-family: sans-serif;
+            font-family: "Inter", sans-serif;
             background-color: #0f0f0f;
             color: #f0f0f0;
         }
@@ -37,9 +38,8 @@
         .buttons button:hover { background-color: #333; }
         .buttons button.active { background-color: #555; }
 
-        /* CSS da Galeria (CRÍTICO) */
         .gallery {
-            display: flex; /* ESSENCIAL PARA O LAYOUT */
+            display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 25px;
@@ -56,7 +56,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             display: none;
-            width: 250px; /* ESSENCIAL PARA O TAMANHO */
+            width: 500px;
         }
 
         .game-card:hover {
@@ -151,8 +151,104 @@
             border-radius: 10px;
             flex-shrink: 0;
             cursor: pointer;
+            transition: filter 0.5s ease;
         }
         
+        /* Estilo para miniaturas de spoiler */
+        .screenshots img.spoiler-thumbnail {
+            filter: blur(8px);
+            border: 2px solid #e50914; /* Borda para destaque */
+            opacity: 0.8;
+            transition: none; /* NOVO: Remove a transição para blur na miniatura spoiler */
+        }
+        
+        /* Container Fullscreen Spoiler */
+        #fullscreen-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+        
+        /* Overlay de senha na imagem fullscreen */
+        .fullscreen-spoiler-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 250;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Classes para esconder o overlay */
+        .fullscreen-spoiler-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .fullscreen-spoiler-overlay p { margin: 5px 0; font-size: 16px; font-weight: bold; }
+        .fullscreen-spoiler-overlay input { 
+            padding: 8px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+        }
+        .fullscreen-spoiler-overlay button {
+            padding: 8px 15px;
+            background-color: #e50914;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .fullscreen-spoiler-overlay button:hover { background-color: #f4061a; }
+
+        /* Estilo da imagem no fullscreen */
+        .fullscreen-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            transition: filter 0.5s ease;
+        }
+        
+        /* O overlay é o parente da imagem, então se ele estiver aberto, o clique deve ser na imagem */
+        .fullscreen-img.blurred {
+            filter: blur(40px);
+            transition: none; /* NOVO: Remove a transição para blur na imagem fullscreen spoiler */
+        }
+
+        /* Classes de navegação */
+        .gallery-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 10px;
+            user-select: none;
+            background: rgba(0,0,0,0.4);
+            border-radius: 50%;
+            z-index: 300;
+        }
+        .gallery-arrow:hover { background: rgba(255,255,255,0.2); }
+        .arrow-left { left: 20px; }
+        .arrow-right { right: 20px; }
+
         @media (max-width: 700px) {
             .game-card { width: 90%; }
             .screenshots img { width: 140px; }
@@ -177,7 +273,7 @@
             <span class="close-btn">&times;</span>
             <h2 id="modal-title"></h2>
             <p><strong>Nota:</strong> <span id="modal-nota"></span></p>
-            <p id="modal-review"></p> 
+            <p id="modal-review"></p>
             <div class="screenshots" id="modal-screenshots"></div>
         </div>
     </div>
@@ -186,8 +282,9 @@
 
     <script>
         const gallery = document.getElementById("game-gallery");
-        const cards = []; 
+        const cards = []; // Array para armazenar os elementos de card criados
 
+        // Referências do Modal
         const modal = document.getElementById("modal");
         const closeBtn = document.querySelector(".close-btn");
         const modalTitle = document.getElementById("modal-title");
@@ -196,31 +293,69 @@
         const modalScreenshots = document.getElementById("modal-screenshots");
         const fullscreenOverlay = document.getElementById("fullscreen-overlay");
 
+        let activeUrls = [];
+        let currentImageIndex = -1;
+        let currentGameUnlocked = false; 
+        
+        // --- UTILS: Verifica e Limpa URL ---
+        function isSpoiler(rawUrl) {
+            return rawUrl.startsWith("spoiler:");
+        }
+        function cleanUrl(rawUrl) {
+            return isSpoiler(rawUrl) ? rawUrl.substring(8).trim() : rawUrl.trim();
+        }
+
+        // --- FUNÇÃO CENTRAL: CRIAÇÃO DO CARD HTML ---
         function createGameCard(game) {
             const card = document.createElement('div');
             card.classList.add('game-card');
             card.setAttribute('data-status', game.status);
 
+            // Armazenar os dados do JSON no próprio elemento DOM para fácil acesso.
+            // Isso substitui os antigos data-attributes, exceto data-status.
+            card.gameData = game; 
+
+            // Estrutura do card
             card.innerHTML = `
                 <span class="status-tag">${game.status.charAt(0).toUpperCase() + game.status.slice(1)}</span>
                 <img src="${game.cover_url}" alt="${game.title}">
                 <div class="game-info"><h3>${game.title}</h3></div>
             `;
 
+            // Adicionar evento de clique que abre o modal
             card.addEventListener("click", () => {
+                currentGameUnlocked = false; 
                 modal.style.display = "block";
-
+                
+                // Preencher o modal com os dados do gameData
                 modalTitle.textContent = game.title;
                 modalNota.textContent = game.nota;
-                modalReview.textContent = game.review; // Review sem formatação de parágrafo
-
+                // Substituir \n do JSON por quebras de linha no HTML
+                modalReview.innerHTML = game.review.replace(/\n/g, "<br><br>"); 
                 modalScreenshots.innerHTML = "";
-                const screens = game.screens ? game.screens.filter(Boolean) : [];
 
-                screens.forEach(url => {
+                activeUrls = game.screens.filter(Boolean); // Pega a lista de URLs de screens
+                
+                activeUrls.forEach(rawUrl => {
+                    const url = cleanUrl(rawUrl);
+                    const isImgSpoiler = isSpoiler(rawUrl);
+
                     const img = document.createElement("img");
-                    img.src = url.trim().replace(/^spoiler:/, ''); 
-                    img.addEventListener("click", () => openFullscreenGallery(url.trim()));
+                    img.src = url;
+                    img.setAttribute('data-full-url', rawUrl.trim());
+                    
+                    if (isImgSpoiler) {
+                        img.classList.add("spoiler-thumbnail");
+                    }
+                    
+                    if (currentGameUnlocked) {
+                        img.classList.remove("spoiler-thumbnail");
+                        img.style.filter = 'none';
+                        img.style.opacity = '1';
+                        img.style.border = 'none';
+                    }
+
+                    img.addEventListener("click", () => openFullscreenGallery(rawUrl.trim()));
                     modalScreenshots.appendChild(img);
                 });
             });
@@ -228,51 +363,163 @@
             return card;
         }
 
+        // --- FUNÇÃO PARA FILTRAR OS CARDS ---
         function filterGames(status, event) {
             const buttons = document.querySelectorAll(".buttons button");
             buttons.forEach(btn => btn.classList.remove("active"));
-            if (event && event.target) {
-                event.target.classList.add("active");
-            }
+            event.target.classList.add("active");
 
             cards.forEach(card => {
                 card.style.display = (card.dataset.status === status) ? "block" : "none";
             });
         }
         
-        function openFullscreenGallery(url) {
+        // --- FUNÇÃO CENTRAL DE VERIFICAÇÃO DE SENHA (Global para o Jogo Atual) ---
+        function checkAndRevealAllSpoilers(passwordInput, overlayElement) {
+            const enteredPassword = passwordInput.value;
+            const correctPassword = '123'; 
+
+            if (enteredPassword === correctPassword) {
+                currentGameUnlocked = true;
+                
+                const imgElement = overlayElement.closest('#fullscreen-overlay').querySelector('.fullscreen-img');
+                if (imgElement) {
+                    imgElement.classList.remove('blurred');
+                    imgElement.style.filter = 'none';
+                }
+
+                overlayElement.classList.add('hidden');
+
+                document.querySelectorAll('.screenshots img.spoiler-thumbnail').forEach(thumbnail => {
+                    thumbnail.classList.remove('spoiler-thumbnail');
+                    thumbnail.style.filter = 'none';
+                    thumbnail.style.opacity = '1';
+                    thumbnail.style.border = 'none';
+                });
+
+            } else {
+                alert('Senha incorreta. Tente novamente.'); 
+                passwordInput.value = '';
+            }
+        }
+        
+        // --- FUNÇÃO PARA ATUALIZAR A IMAGEM E O ESTADO DO SPOILER NA GALERIA ---
+        function updateFullscreenImage(rawUrl) {
+            const isImgSpoiler = isSpoiler(rawUrl);
+            const url = cleanUrl(rawUrl);
+            
+            const img = fullscreenOverlay.querySelector('.fullscreen-img');
+            img.src = url;
+
+            let spoilerOverlay = fullscreenOverlay.querySelector('.fullscreen-spoiler-overlay');
+            if (!spoilerOverlay) {
+                spoilerOverlay = document.createElement("div");
+                spoilerOverlay.classList.add("fullscreen-spoiler-overlay");
+                fullscreenOverlay.appendChild(spoilerOverlay);
+            }
+            
+            spoilerOverlay.innerHTML = '';
+            
+            if (isImgSpoiler && !currentGameUnlocked) {
+                img.classList.add('blurred');
+
+                spoilerOverlay.classList.remove('hidden');
+                spoilerOverlay.innerHTML = `
+                    <p>⚠️ SPOILER: ${modalTitle.textContent} ⚠️</p>
+                    <p>Digite 123 para desbloquear TODAS as imagens de spoiler deste jogo.</p>
+                    <input type="password" id="fullscreen-spoiler-password" placeholder="Senha" />
+                    <button id="unlock-spoiler-btn">Desbloquear</button>
+                `;
+
+                spoilerOverlay.querySelector('#unlock-spoiler-btn').onclick = e => {
+                    e.stopPropagation();
+                    const passwordInput = spoilerOverlay.querySelector('#fullscreen-spoiler-password');
+                    checkAndRevealAllSpoilers(passwordInput, spoilerOverlay);
+                };
+            } else {
+                img.classList.remove('blurred');
+                spoilerOverlay.classList.add('hidden');
+            }
+        }
+        
+        // --- FUNÇÃO PARA ABRIR A GALERIA FULLSCREEN ---
+        function openFullscreenGallery(currentRawUrl) {
+            
+            currentImageIndex = activeUrls.indexOf(currentRawUrl);
+            
             fullscreenOverlay.innerHTML = '';
             fullscreenOverlay.style.display = 'flex';
-            
+
             const img = document.createElement("img");
-            img.src = url.replace(/^spoiler:/, '');
-            img.style.maxWidth = '90%';
-            img.style.maxHeight = '90%';
-            img.style.borderRadius = '10px';
-            
+            img.classList.add("fullscreen-img");
             fullscreenOverlay.appendChild(img);
 
+            const left = document.createElement("div");
+            left.textContent = "❮";
+            left.classList.add("gallery-arrow", "arrow-left");
+            left.onclick = e => { e.stopPropagation(); navigate(-1); };
+            
+            const right = document.createElement("div");
+            right.textContent = "❯";
+            right.classList.add("gallery-arrow", "arrow-right");
+            right.onclick = e => { e.stopPropagation(); navigate(1); };
+            
+            fullscreenOverlay.appendChild(left);
+            fullscreenOverlay.appendChild(right);
+            
+            updateFullscreenImage(currentRawUrl);
+
+
+            const navigate = dir => {
+                currentImageIndex = (currentImageIndex + dir + activeUrls.length) % activeUrls.length;
+                const nextRawUrl = activeUrls[currentImageIndex];
+                
+                updateFullscreenImage(nextRawUrl);
+            };
+            
+            
+            const handleKey = e => {
+                if (e.key === "Escape") cleanup();
+                if (e.key === "ArrowRight" || e.key === "D" || e.key === "d") navigate(1);
+                if (e.key === "ArrowLeft" || e.key === "A" || e.key === "a") navigate(-1);
+            };
+            window.addEventListener("keydown", handleKey);
+
+            function cleanup() {
+                window.removeEventListener("keydown", handleKey);
+                fullscreenOverlay.style.display = 'none';
+                fullscreenOverlay.innerHTML = '';
+            }
+            
             fullscreenOverlay.onclick = e => { 
-                if (e.target === fullscreenOverlay || e.target === img) {
-                    fullscreenOverlay.style.display = 'none';
-                    fullscreenOverlay.innerHTML = '';
+                const targetIsOverlay = e.target === fullscreenOverlay;
+                const targetIsImage = e.target === img;
+                const spoilerOverlayVisible = fullscreenOverlay.querySelector('.fullscreen-spoiler-overlay:not(.hidden)');
+
+                if (targetIsOverlay || (targetIsImage && !spoilerOverlayVisible)) {
+                    cleanup(); 
                 }
             };
         }
         
+        // --- FUNÇÃO PRINCIPAL: CARREGAR DADOS, ORDENAR E INICIALIZAR ---
         async function loadAndRenderGames() {
             try {
+                // 1. Carregar o JSON
                 const response = await fetch('reviews.json');
                 const games = await response.json();
 
+                // 2. Ordenar Alfabeticamente (aqui está a mágica da organização)
                 games.sort((a, b) => a.title.localeCompare(b.title));
 
+                // 3. Criar os Cards e Adicionar à Galeria
                 games.forEach(game => {
                     const card = createGameCard(game);
-                    cards.push(card); 
+                    cards.push(card); // Adiciona ao array para que o filtro funcione
                     gallery.appendChild(card);
                 });
 
+                // 4. Inicializar o Filtro (mostra a categoria 'jogando' por padrão)
                 const activeButton = document.querySelector(".buttons button.active");
                 if (activeButton) {
                     filterGames('jogando', { target: activeButton });
@@ -280,15 +527,20 @@
 
             } catch (error) {
                 console.error("Erro ao carregar ou renderizar os jogos:", error);
-                gallery.innerHTML = '<p style="text-align: center; color: #e50914;">❌ Erro ao carregar os dados. Verifique reviews.json.</p>';
+                // Opcional: Mostrar uma mensagem de erro na tela para o usuário
+                gallery.innerHTML = '<p style="text-align: center; color: #e50914;">Erro ao carregar os dados dos jogos. Verifique o arquivo reviews.json.</p>';
             }
         }
         
+        // Inicializa o processo
         closeBtn.addEventListener("click", () => modal.style.display = "none");
         window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
 
-        loadAndRenderGames(); 
+        loadAndRenderGames(); // NOVA LINHA DE INICIALIZAÇÃO
+        
+        // Disponibilizar a função de filtro globalmente, pois ela é chamada no HTML
         window.filterGames = filterGames;
+        
     </script>
 </body>
 </html>
