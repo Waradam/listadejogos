@@ -25,7 +25,7 @@
     "title": "Alan Wake",
     "nota": "8.0/10",
     "review": "Observação: Eu já tinha jogado o segundo jogo quando lançou, só por benchmark para ver se o PC rodava, e foi uma péssima ideia. Não entendi poha nenhuma do Alan Wake 2. Um ano depois, o Markinkof me passou uma das calls mais brabas: jogar o primeiro e depois o segundo. E foi a melhor decisão que eu podia ter tomado.\nO primeiro jogo é ok: a ambientação é mais ou menos, mas o combate é muito bom, atirar nesse jogo é realmente divertido. O que mais brilha nele é a história mirabolante do Sam Lake.\nPode parecer óbvio dizer isso, mas tem jogo em que não é obrigatório jogar os anteriores. No caso de Alan Wake, é necessário.",
-    "cover_url": "https://m.media-amazon.com/images/M/MV5BY2RhNzQ4NTItZmE5OC00ZjdlLTk3ZjItDDIxZDhiNTI1OWNiXkEyXkFqcGc@._V1_.jpg",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BY2RhNzQ4NTItZmE5OC00ZjdlLTk3ZjItZDIxZDhiNTI1OWNiXkEyXkFqcGc@._V1_.jpg",
     "screens": [
       "https://i.imgur.com/gQHfvyM.jpeg",
       "https://i.imgur.com/fUP0mab.jpeg",
@@ -127,4 +127,5 @@
     "cover_url": "https://i.imgur.com/ouQ2mfe.jpeg",
     "screens": []
   }
+
 ]
