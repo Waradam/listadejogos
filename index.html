@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RGWaradam</title>
     <style>
-        /* [ ... MANTENHA TODO O SEU BLOCO <style> ORIGINAL AQUI ... ] */
+        /* Estilos ORIGINAIS */
         body {
             margin: 0;
             font-family: "Inter", sans-serif;
@@ -129,6 +129,24 @@
             max-width: 800px;
             color: #ddd;
         }
+        
+        /* 🚀 AJUSTES FINOS PARA O TEXTO DA REVIEW (RESOLVE O ESPAÇAMENTO CABULOSO) 🚀 */
+        #modal-review {
+            /* Mantido o espaçamento entre linhas para melhor leitura */
+            line-height: 1.6; 
+            /* Reduzida a margem superior e inferior para harmonizar o bloco */
+            margin-top: 10px;
+            margin-bottom: 20px;
+            /* Alinhamento à esquerda para um visual mais limpo */
+            text-align: left;
+            /* Tamanho da fonte ajustado */
+            font-size: 16px; 
+            /* Padding lateral para telas menores */
+            padding: 0 10px; 
+            color: #f0f0f0; 
+        }
+        /* -------------------------------------------------------------------------- */
+
 
         .close-btn {
             color: #aaa;
@@ -159,7 +177,7 @@
             filter: blur(8px);
             border: 2px solid #e50914; /* Borda para destaque */
             opacity: 0.8;
-            transition: none; /* NOVO: Remove a transição para blur na miniatura spoiler */
+            transition: none;
         }
         
         /* Container Fullscreen Spoiler */
@@ -228,7 +246,7 @@
         /* O overlay é o parente da imagem, então se ele estiver aberto, o clique deve ser na imagem */
         .fullscreen-img.blurred {
             filter: blur(40px);
-            transition: none; /* NOVO: Remove a transição para blur na imagem fullscreen spoiler */
+            transition: none;
         }
 
         /* Classes de navegação */
@@ -312,7 +330,6 @@
             card.setAttribute('data-status', game.status);
 
             // Armazenar os dados do JSON no próprio elemento DOM para fácil acesso.
-            // Isso substitui os antigos data-attributes, exceto data-status.
             card.gameData = game; 
 
             // Estrutura do card
@@ -330,8 +347,10 @@
                 // Preencher o modal com os dados do gameData
                 modalTitle.textContent = game.title;
                 modalNota.textContent = game.nota;
-                // Substituir \n do JSON por quebras de linha no HTML
-                modalReview.innerHTML = game.review.replace(/\n/g, "<br><br>"); 
+                
+                // 🚀 MODIFICAÇÃO CHAVE AQUI: Trocando <br><br> por <br> para reduzir o espaçamento duplo.
+                modalReview.innerHTML = game.review.replace(/\n/g, "<br>"); 
+                
                 modalScreenshots.innerHTML = "";
 
                 activeUrls = game.screens.filter(Boolean); // Pega a lista de URLs de screens
