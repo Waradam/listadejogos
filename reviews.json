@@ -126,6 +126,16 @@
     "review": "Lista de Jogos Pendentes: Acessar o canal RGWaradam no Youtube ",
     "cover_url": "https://i.imgur.com/ouQ2mfe.jpeg",
     "screens": []
+  },
+  {
+    "status": "jogando",
+    "title": "Baldur's Gate 2",
+    "nota": "apenas teste",
+    "review": "apenas teste mas deve ser legal",
+    "cover_url": "https://cat.edgimages.com/sale/saleevent/salesEvent/EDG_BaldursGateIIEnhancedEdition_Gaming_50_1280x500~5e787d1dfc9a5b6c1ac8aabc1",
+    "screens": [
+      "https://tth-blog.com/th/g/2/R_jYp7d6O-g6C-F6r7G5F5f5d5F6r7G5H6f3N-P6O5R5h9Q.jpg",
+      "spoiler:https://www.oficialsoin.com.br/wp-content/uploads/2017/03/isis20702.jpg"
+    ]
   }
-
 ]
