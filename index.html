@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RGWaradam</title>
     <style>
-        /* [ ... MANTENHA TODO O SEU BLOCO <style> ORIGINAL AQUI ... ] */
+        /* Estilos ORIGINAIS e NOVOS para o texto */
         body {
             margin: 0;
             font-family: "Inter", sans-serif;
@@ -129,6 +129,25 @@
             max-width: 800px;
             color: #ddd;
         }
+        
+        /* 🎮 MELHORIA DE LEITURA DAS REVIEWS 🎮 */
+        #modal-review {
+            /* Adiciona espaçamento vertical para separar visualmente o texto da nota e das screenshots */
+            margin-top: 15px;
+            margin-bottom: 25px;
+            /* Aumenta o espaçamento entre as linhas para maior conforto visual */
+            line-height: 1.6;
+            /* Define o alinhamento justificado para um bloco de texto mais formal (opcional, pode ser 'left') */
+            text-align: left;
+            /* Aumenta a fonte ligeiramente para melhor leitura em dispositivos maiores */
+            font-size: 16px;
+            /* Adiciona um pequeno padding lateral para não 'colar' nas bordas em telas menores */
+            padding: 0 10px; 
+            /* Mantém o texto em uma cor que contraste bem com o fundo */
+            color: #f0f0f0; 
+        }
+        /* -------------------------------------- */
+
 
         .close-btn {
             color: #aaa;
@@ -331,6 +350,7 @@
                 modalTitle.textContent = game.title;
                 modalNota.textContent = game.nota;
                 // Substituir \n do JSON por quebras de linha no HTML
+                // Se a review no JSON usar apenas uma quebra de linha (\n), duas <br> farão uma linha em branco.
                 modalReview.innerHTML = game.review.replace(/\n/g, "<br><br>"); 
                 modalScreenshots.innerHTML = "";
 
