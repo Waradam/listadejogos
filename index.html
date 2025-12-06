@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RGWaradam</title>
     <style>
-        /* Estilos ORIGINAIS e NOVOS para o texto */
+        /* Estilos ORIGINAIS */
         body {
             margin: 0;
             font-family: "Inter", sans-serif;
@@ -130,23 +130,22 @@
             color: #ddd;
         }
         
-        /* 🎮 MELHORIA DE LEITURA DAS REVIEWS 🎮 */
+        /* 🚀 AJUSTES FINOS PARA O TEXTO DA REVIEW (RESOLVE O ESPAÇAMENTO CABULOSO) 🚀 */
         #modal-review {
-            /* Adiciona espaçamento vertical para separar visualmente o texto da nota e das screenshots */
-            margin-top: 15px;
-            margin-bottom: 25px;
-            /* Aumenta o espaçamento entre as linhas para maior conforto visual */
-            line-height: 1.6;
-            /* Define o alinhamento justificado para um bloco de texto mais formal (opcional, pode ser 'left') */
+            /* Mantido o espaçamento entre linhas para melhor leitura */
+            line-height: 1.6; 
+            /* Reduzida a margem superior e inferior para harmonizar o bloco */
+            margin-top: 10px;
+            margin-bottom: 20px;
+            /* Alinhamento à esquerda para um visual mais limpo */
             text-align: left;
-            /* Aumenta a fonte ligeiramente para melhor leitura em dispositivos maiores */
-            font-size: 16px;
-            /* Adiciona um pequeno padding lateral para não 'colar' nas bordas em telas menores */
+            /* Tamanho da fonte ajustado */
+            font-size: 16px; 
+            /* Padding lateral para telas menores */
             padding: 0 10px; 
-            /* Mantém o texto em uma cor que contraste bem com o fundo */
             color: #f0f0f0; 
         }
-        /* -------------------------------------- */
+        /* -------------------------------------------------------------------------- */
 
 
         .close-btn {
@@ -178,7 +177,7 @@
             filter: blur(8px);
             border: 2px solid #e50914; /* Borda para destaque */
             opacity: 0.8;
-            transition: none; /* NOVO: Remove a transição para blur na miniatura spoiler */
+            transition: none;
         }
         
         /* Container Fullscreen Spoiler */
@@ -247,7 +246,7 @@
         /* O overlay é o parente da imagem, então se ele estiver aberto, o clique deve ser na imagem */
         .fullscreen-img.blurred {
             filter: blur(40px);
-            transition: none; /* NOVO: Remove a transição para blur na imagem fullscreen spoiler */
+            transition: none;
         }
 
         /* Classes de navegação */
@@ -331,7 +330,6 @@
             card.setAttribute('data-status', game.status);
 
             // Armazenar os dados do JSON no próprio elemento DOM para fácil acesso.
-            // Isso substitui os antigos data-attributes, exceto data-status.
             card.gameData = game; 
 
             // Estrutura do card
@@ -349,9 +347,10 @@
                 // Preencher o modal com os dados do gameData
                 modalTitle.textContent = game.title;
                 modalNota.textContent = game.nota;
-                // Substituir \n do JSON por quebras de linha no HTML
-                // Se a review no JSON usar apenas uma quebra de linha (\n), duas <br> farão uma linha em branco.
-                modalReview.innerHTML = game.review.replace(/\n/g, "<br><br>"); 
+                
+                // 🚀 MODIFICAÇÃO CHAVE AQUI: Trocando <br><br> por <br> para reduzir o espaçamento duplo.
+                modalReview.innerHTML = game.review.replace(/\n/g, "<br>"); 
+                
                 modalScreenshots.innerHTML = "";
 
                 activeUrls = game.screens.filter(Boolean); // Pega a lista de URLs de screens
