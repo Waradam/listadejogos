@@ -118,7 +118,15 @@
     "review": "Lista de Jogos Pendentes: Acessar o canal RGWaradam no Youtube ",
     "cover_url": "https://i.imgur.com/ouQ2mfe.jpeg",
     "screens": []
+  },
+  {
+    "status": "zerado",
+    "title": "Franquia God of War",
+    "nota": "10",
+    "review": "God of War eu não preciso falar muito sobre. Sou o fã mais fraco dessa franquia, gosto de todos os jogos. Tenho algumas ressalvas sobre o Ragnarok, mas, no fim, é um jogaço da poha! Não tem jeito, God of War é minha franquia de jogos favorita; só tem jogão.",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BMTQ5YTA1ZmUtYzVlNC00YjI2LWJhYjgtNWE4MjY2OWEzMGQwXkEyXkFqcGc@._V1_.jpg",
+    "screens": [
+      "https://i.imgur.com/MK7Fsbf.png"
+    ]
   }
 ]
-
-
