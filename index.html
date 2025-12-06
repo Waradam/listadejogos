@@ -25,7 +25,7 @@
             margin: 20px 0;
         }
         
-        /* 🚀 NOVO CÓDIGO AQUI: Estilo para botões e seletor (unificado) */
+        /* 🚀 Estilo para botões e seletor (unificado) */
         .buttons button, .buttons select {
             background-color: #1a1a1a;
             color: #fff;
@@ -41,7 +41,6 @@
             min-width: 150px;
             text-align: center;
         }
-        /* FIM NOVO CÓDIGO */
 
         .buttons button:hover, .buttons select:hover { background-color: #333; }
         .buttons button.active { background-color: #555; }
@@ -136,10 +135,10 @@
             border-radius: 15px;
             max-width: 800px;
             color: #ddd;
-            transition: background-color 0.3s, color 0.3s; /* Adicionado para transição suave */
+            transition: background-color 0.3s, color 0.3s;
         }
         
-        /* 🚀 AJUSTES FINOS PARA O TEXTO DA REVIEW */
+        /* Ajustes FINOS para o texto da review */
         #modal-review {
             line-height: 1.6; 
             margin-top: 10px;
@@ -148,10 +147,8 @@
             font-size: 16px; 
             padding: 0 10px; 
             color: #f0f0f0; 
-            transition: color 0.3s; /* Adicionado para transição suave */
+            transition: color 0.3s;
         }
-        /* -------------------------------------------------------------------------- */
-
 
         .close-btn {
             color: #aaa;
@@ -277,7 +274,7 @@
             .screenshots img { width: 140px; }
         }
         
-        /* 🚀 NOVO CÓDIGO AQUI: ESTILOS DE ACESSIBILIDADE 🚀 */
+        /* 🚀 ESTILOS DE ACESSIBILIDADE 🚀 */
 
         /* 1. MODO ALTO CONTRASTE (Fundo Escuro Suave / Texto Verde-Água) */
         .high-contrast {
@@ -322,7 +319,7 @@
         .sepia #modal-review {
             color: inherit !important; /* Herda a cor do texto do body/modal */
         }
-        /* FIM NOVO CÓDIGO */
+        /* FIM ESTILOS DE ACESSIBILIDADE */
 
     </style>
 </head>
@@ -340,7 +337,7 @@
             <option value="high-contrast">Alto Contraste</option>
             <option value="sepia">Modo Papel (Sepia)</option>
         </select>
-            </div>
+    </div>
 
     <div class="gallery" id="game-gallery">
         </div>
@@ -406,7 +403,7 @@
                 modalTitle.textContent = game.title;
                 modalNota.textContent = game.nota;
                 
-                // Trocando <br><br> por <br> para reduzir o espaçamento duplo.
+                // Trocando \n por <br> para reduzir o espaçamento duplo.
                 modalReview.innerHTML = game.review.replace(/\n/g, "<br>"); 
                 
                 modalScreenshots.innerHTML = "";
@@ -579,9 +576,8 @@
             };
         }
         
-        /* 🚀 NOVO CÓDIGO AQUI: FUNÇÕES DE ACESSIBILIDADE VISUAL 🚀 */
+        // --- FUNÇÕES DE ACESSIBILIDADE VISUAL ---
         
-        // --- FUNÇÃO PARA ATUALIZAR O MODO VISUAL ---
         function setVisualMode(mode) {
             const body = document.body;
             
@@ -597,7 +593,6 @@
             localStorage.setItem('visualMode', mode);
         }
 
-        // --- FUNÇÃO PARA CARREGAR A PREFERÊNCIA E SINCRONIZAR O SELECT ---
         function loadVisualModePreference() {
             const savedMode = localStorage.getItem('visualMode') || 'default';
             
@@ -610,7 +605,6 @@
                 select.value = savedMode;
             }
         }
-        /* FIM NOVO CÓDIGO */
 
         // --- FUNÇÃO PRINCIPAL: CARREGAR DADOS, ORDENAR E INICIALIZAR ---
         async function loadAndRenderGames() {
@@ -619,13 +613,13 @@
                 const response = await fetch('reviews.json');
                 const games = await response.json();
 
-                // 2. Ordenar Alfabeticamente (aqui está a mágica da organização)
+                // 2. Ordenar Alfabeticamente
                 games.sort((a, b) => a.title.localeCompare(b.title));
 
                 // 3. Criar os Cards e Adicionar à Galeria
                 games.forEach(game => {
                     const card = createGameCard(game);
-                    cards.push(card); // Adiciona ao array para que o filtro funcione
+                    cards.push(card); 
                     gallery.appendChild(card);
                 });
 
@@ -637,7 +631,6 @@
 
             } catch (error) {
                 console.error("Erro ao carregar ou renderizar os jogos:", error);
-                // Opcional: Mostrar uma mensagem de erro na tela para o usuário
                 gallery.innerHTML = '<p style="text-align: center; color: #e50914;">Erro ao carregar os dados dos jogos. Verifique o arquivo reviews.json.</p>';
             }
         }
@@ -646,7 +639,7 @@
         closeBtn.addEventListener("click", () => modal.style.display = "none");
         window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
 
-        loadVisualModePreference(); // 🚀 NOVO: Carrega a preferência de cor ANTES de renderizar
+        loadVisualModePreference(); 
         loadAndRenderGames(); 
         
         // Disponibilizar as funções globalmente
