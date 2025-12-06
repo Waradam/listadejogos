@@ -13,20 +13,7 @@
             color: #f0f0f0;
         }
 
-        /* ... (Estilos originais OMITIDOS para brevidade, mas mantidos no código completo) ... */
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(4px);
-        }
+        /* ... (Mantenha o restante dos estilos ORIGINAIS aqui) ... */
 
         .modal-content {
             background-color: #1a1a1a;
@@ -36,7 +23,7 @@
             max-width: 800px;
             color: #ddd;
         }
-        
+
         /* Estilo da cor PADRÃO para o texto da review */
         #modal-review {
             line-height: 1.6;
@@ -47,19 +34,18 @@
             padding: 0 10px;
             color: #f0f0f0; /* Branco ligeiramente suave */
         }
-        /* FIM Estilo da cor PADRÃO */
-
-
-        /* 🟢 ADIÇÃO 1: CSS para o MODO DE LEITURA SUAVE */
+        
+        
+        /* ✅ NOVO CSS PARA MODO DE LEITURA SUAVE */
+        .leitura-suave {
+            /* O modal-content tem que estar com o ID 'modal-container' para isso funcionar! */
+            background-color: #131313 !important;
+            transition: background-color 0.3s;
+        }
         .leitura-suave #modal-review {
             /* Cor Suave (cinza claro em vez de branco puro) - Menos agressivo para a visão */
             color: #F0F0F0;
-            /* Opcional: Aumentar o espaçamento entre linhas para blocos de texto maiores */
             line-height: 1.7;
-            /* Opcional: Alterar o fundo do modal para um cinza muito escuro (dark gray) para reduzir o contraste do fundo preto */
-            background-color: #131313;
-            padding: 20px;
-            border-radius: 10px;
         }
 
         /* Estilo para o botão de acessibilidade */
@@ -72,15 +58,16 @@
             cursor: pointer;
             margin-bottom: 10px;
             float: right; /* Para ficar no canto superior */
+            transition: background-color 0.3s;
         }
         #toggleAcessibilidade:hover { background-color: #555; }
         
         .leitura-suave-btn {
             background-color: #4CAF50 !important; /* Cor de destaque quando ativado */
         }
-        /* FIM ADIÇÃO 1 */
+        /* FIM ADIÇÃO CSS */
 
-        /* ... (Restante dos estilos originais OMITIDOS) ... */
+        /* ... (Mantenha o restante dos estilos ORIGINAIS aqui) ... */
 
     </style>
 </head>
@@ -98,8 +85,9 @@
         </div>
 
     <div id="modal" class="modal">
-        <div class="modal-content" id="modal-container"> 
-                        <button id="toggleAcessibilidade">👁️ Leitura Suave</button>
+        <div class="modal-content"> 
+            
+                        <button id="toggleAcessibilidade" style="display: none;">👁️ Leitura Suave</button> 
                         
             <span class="close-btn">&times;</span>
             <h2 id="modal-title"></h2>
@@ -113,7 +101,7 @@
 
     <script>
         const gallery = document.getElementById("game-gallery");
-        const cards = []; // Array para armazenar os elementos de card criados
+        const cards = []; 
 
         // Referências do Modal
         const modal = document.getElementById("modal");
@@ -123,16 +111,120 @@
         const modalReview = document.getElementById("modal-review");
         const modalScreenshots = document.getElementById("modal-screenshots");
         const fullscreenOverlay = document.getElementById("fullscreen-overlay");
-        
-        // NOVO: Referências do Modo de Acessibilidade
+        
+        // ✅ NOVAS REFERÊNCIAS DE ACESSIBILIDADE
         const btnAcessibilidade = document.getElementById('toggleAcessibilidade');
-        const modalContainer = document.getElementById('modal-container'); // Referência ao .modal-content
+        const modalContainer = document.querySelector('.modal-content'); // Usamos o seletor de classe para não alterar o HTML
 
         let activeUrls = [];
-        // ... (Restante das variáveis de estado OMITIDAS) ...
+        let currentImageIndex = -1;
+        let currentGameUnlocked = false; 
+        
+        // --- UTILS: Verifica e Limpa URL ---
+        function isSpoiler(rawUrl) {
+            return rawUrl.startsWith("spoiler:");
+        }
+        function cleanUrl(rawUrl) {
+            return isSpoiler(rawUrl) ? rawUrl.substring(8).trim() : rawUrl.trim();
+        }
 
-        // ... (Funções utilitárias, createGameCard, filterGames, checkAndRevealAllSpoilers, updateFullscreenImage, openFullscreenGallery OMITIDAS) ...
+        // ✅ NOVO: LÓGICA DE ACESSIBILIDADE (Função para aplicar o estado salvo)
+        function applyAcessibilidadeState() {
+            // Garante que a lógica só é executada se os elementos existirem
+            if (modalContainer && btnAcessibilidade) {
+                btnAcessibilidade.style.display = 'inline-block'; // Mostra o botão
+                
+                // Verifica o estado salvo
+                if (localStorage.getItem('modoLeitura') === 'suave') {
+                    modalContainer.classList.add('leitura-suave');
+                    btnAcessibilidade.classList.add('leitura-suave-btn');
+                } else {
+                    modalContainer.classList.remove('leitura-suave');
+                    btnAcessibilidade.classList.remove('leitura-suave-btn');
+                }
 
+                // Adiciona o evento de clique uma única vez
+                if (!btnAcessibilidade.hasEventListener) {
+                    btnAcessibilidade.addEventListener('click', () => {
+                        modalContainer.classList.toggle('leitura-suave');
+                        btnAcessibilidade.classList.toggle('leitura-suave-btn');
+                        
+                        // Salva a preferência no navegador
+                        if (modalContainer.classList.contains('leitura-suave')) {
+                            localStorage.setItem('modoLeitura', 'suave');
+                        } else {
+                            localStorage.removeItem('modoLeitura');
+                        }
+                    });
+                    btnAcessibilidade.hasEventListener = true; // Marca que o evento já foi adicionado
+                }
+            }
+        }
+
+
+        // --- FUNÇÃO CENTRAL: CRIAÇÃO DO CARD HTML ---
+        function createGameCard(game) {
+            const card = document.createElement('div');
+            card.classList.add('game-card');
+            card.setAttribute('data-status', game.status);
+
+            // Armazenar os dados do JSON no próprio elemento DOM para fácil acesso.
+            card.gameData = game; 
+
+            // Estrutura do card
+            card.innerHTML = `
+                <span class="status-tag">${game.status.charAt(0).toUpperCase() + game.status.slice(1)}</span>
+                <img src="${game.cover_url}" alt="${game.title}">
+                <div class="game-info"><h3>${game.title}</h3></div>
+            `;
+
+            // Adicionar evento de clique que abre o modal
+            card.addEventListener("click", () => {
+                currentGameUnlocked = false; 
+                modal.style.display = "block";
+                
+                // ✅ NOVO: APLICA A LÓGICA DE ACESSIBILIDADE AQUI
+                applyAcessibilidadeState();
+                
+                // Preencher o modal com os dados do gameData
+                modalTitle.textContent = game.title;
+                modalNota.textContent = game.nota;
+                
+                // 🚀 MODIFICAÇÃO CHAVE AQUI: Trocando <br><br> por <br> para reduzir o espaçamento duplo.
+                modalReview.innerHTML = game.review.replace(/\n/g, "<br>"); 
+                
+                modalScreenshots.innerHTML = "";
+
+                activeUrls = game.screens.filter(Boolean); // Pega a lista de URLs de screens
+                
+                activeUrls.forEach(rawUrl => {
+                    const url = cleanUrl(rawUrl);
+                    const isImgSpoiler = isSpoiler(rawUrl);
+
+                    const img = document.createElement("img");
+                    img.src = url;
+                    img.setAttribute('data-full-url', rawUrl.trim());
+                    
+                    if (isImgSpoiler) {
+                        img.classList.add("spoiler-thumbnail");
+                    }
+                    
+                    if (currentGameUnlocked) {
+                        img.classList.remove("spoiler-thumbnail");
+                        img.style.filter = 'none';
+                        img.style.opacity = '1';
+                        img.style.border = 'none';
+                    }
+
+                    img.addEventListener("click", () => openFullscreenGallery(rawUrl.trim()));
+                    modalScreenshots.appendChild(img);
+                });
+            });
+
+            return card;
+        }
+
+        // ... (Mantenha o restante das funções JS ORIGINAIS aqui) ...
 
         // --- FUNÇÃO PRINCIPAL: CARREGAR DADOS, ORDENAR E INICIALIZAR ---
         async function loadAndRenderGames() {
@@ -142,30 +234,6 @@
         // Inicializa o processo
         closeBtn.addEventListener("click", () => modal.style.display = "none");
         window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
-
-        
-        // 🟢 ADIÇÃO 3: LÓGICA DE ACESSIBILIDADE (JS)
-        // 1. Função para Alternar o Modo
-        btnAcessibilidade.addEventListener('click', () => {
-            modalContainer.classList.toggle('leitura-suave');
-            btnAcessibilidade.classList.toggle('leitura-suave-btn');
-            
-            // Salva a preferência no navegador
-            if (modalContainer.classList.contains('leitura-suave')) {
-                localStorage.setItem('modoLeitura', 'suave');
-            } else {
-                localStorage.removeItem('modoLeitura');
-            }
-        });
-
-        // 2. Aplica a preferência ao carregar o MODAL (Quando o DOM estiver pronto)
-        document.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('modoLeitura') === 'suave') {
-                modalContainer.classList.add('leitura-suave');
-                btnAcessibilidade.classList.add('leitura-suave-btn');
-            }
-        });
-        // FIM ADIÇÃO 3
 
         loadAndRenderGames(); // NOVA LINHA DE INICIALIZAÇÃO
         
