@@ -1,131 +1,130 @@
 [
-  {
-    "status": "jogando",
-    "title": "Crash Bandicoot N. Sane Trilogy",
-    "nota": "?",
-    "review": "?",
-    "cover_url": "https://i.imgur.com/j57M3nM.jpeg",
-    "screens": []
-  },
-  {
-    "status": "jogando",
-    "title": "Dark Souls: Remastered",
-    "nota": "?",
-    "review": "?",
-    "cover_url": "https://m.media-amazon.com/images/M/MV5BNDZhYWVjMTYtZmFjNi00ZjI3LTkzYzctOGM2NGZjMTc3NmNiXkEyXkFqcGc@._V1_.jpg",
-    "screens": [
-      "https://i.imgur.com/HTgCV63.png",
-      "https://i.imgur.com/9nk7eXV.png",
-      "https://i.imgur.com/ccUf7ke.png",
-      "https://i.imgur.com/YsvhiPj.png"
-    ]
-  },
-  {
-    "status": "zerado",
-    "title": "Alan Wake",
-    "nota": "8.0/10",
-    "review": "Observação: Eu já tinha jogado o segundo jogo quando lançou, só por benchmark para ver se o PC rodava, e foi uma péssima ideia. Não entendi poha nenhuma do Alan Wake 2. Um ano depois, o Markinkof me passou uma das calls mais brabas: jogar o primeiro e depois o segundo. E foi a melhor decisão que eu podia ter tomado.\nO primeiro jogo é ok: a ambientação é mais ou menos, mas o combate é muito bom, atirar nesse jogo é realmente divertido. O que mais brilha nele é a história mirabolante do Sam Lake.\nPode parecer óbvio dizer isso, mas tem jogo em que não é obrigatório jogar os anteriores. No caso de Alan Wake, é necessário.",
-    "cover_url": "https://m.media-amazon.com/images/M/MV5BY2RhNzQ4NTItZmE5OC00ZjdlLTk3ZjItZDIxZDhiNTI1OWNiXkEyXkFqcGc@._V1_.jpg",
-    "screens": [
-      "https://i.imgur.com/gQHfvyM.jpeg",
-      "https://i.imgur.com/fUP0mab.jpeg",
-      "https://i.imgur.com/l0da0oB.png"
-    ]
-  },
-  {
-    "status": "zerado",
-    "title": "Alan Wake 2",
-    "nota": "10/10",
-    "review": "Após uma experiência inicial decepcionante com Alan Wake 2, decidi dar uma segunda chance depois de finalizar o primeiro jogo. E agora sim, tudo fazia sentido! Desde o começo, fui entendendo a história e captando as referências do primeiro jogo. Foi uma evolução muito grande em comparação com o primeiro em todos os aspectos.\n✨ História, Ambientação e Gameplay\nFoi muito divertido ver como eles adaptaram o Lugar Obscuro, que se tornou uma das partes mais bonitas deste jogo.\nA jogabilidade é no estilo Resident Evil, o que é muito foda e funciona bem demais. Ponto muito positivo para as cutscenes, a ambientação e a trilha sonora, em específico uma parte (Musical), que foi absolute cinema 2!\n⚙️ Desempenho e Gráficos\nO único ponto negativo foi o desempenho. É um jogo extremamente pesado. Tive uma experiência muito boa na questão da fluidez (FPS), mas o que me incomodou foi o gráfico. Percebi que o uso do Ray Tracing (RT) parece ser essencial para garantir uma qualidade de imagem sem artefatos ou falhas visuais.\nSem o RT ativado, notei quebras e imperfeições em algumas texturas e estruturas do cenário. Inicialmente, pensei que o problema fosse o DLSS, mas a ausência do Ray Tracing estava, de fato, prejudicando a fidelidade da imagem. É um detalhe que pode parecer bobo, mas me incomodou bastante, especialmente nas seções do Alan Wake, onde há uma intensa aplicação de efeitos visuais no mapa.\n✅ Conclusão\nMesmo com esse problema do RT, eu dou nota 10. Jogão demais! Vale muito a pena jogar os dois títulos da saga Alan Wake.",
-    "cover_url": "https://m.media-amazon.com/images/M/MV5BODRmZDg1NGQtZGU5NS00NzVkLThhZDItMDJkMjQwZGQ5MDg5XkEyXkFqcGc@._V1_.jpg",
-    "screens": []
-  },
-  {
-    "status": "zerado",
-    "title": "Alan Wake's American Nightmare",
-    "nota": "8.0/10",
-    "review": "Não há muito o que falar sobre esse jogo.\nA gameplay é a mesma do primeiro e conta uma história de Alan Wake preso no Lugar Obscuro, que se passa num cenário de série de TV, a famosa Night Springs.\nA princípio, eu não pensei que fosse canônico, mas é sim, pois Alan Wake tenta de várias maneiras sair do Lugar Obscuro, e essa é uma delas.",
-    "cover_url": "https://m.media-amazon.com/images/M/MV5BMTQyZmEwMzQtNDViMy00MDMyLWJhMzUtNDZkMGYyZjliMjIwXkEyXkFqcGc@._V1_.jpg",
-    "screens": [
-      "https://i.imgur.com/8iHVhBq.jpeg"
-    ]
-  },
-  {
-    "status": "zerado",
-    "title": "Baldur's Gate 3",
-    "nota": "?",
-    "review": "?",
-    "cover_url": "https://m.media-amazon.com/images/M/MV5BN2I0N2Y3MWUtNjJiNy00NjRjLWE4ZTctOTQ2YWVhM2VhMTM4XkEyXkFqcGc@._V1_.jpg",
-    "screens": [
-      "https://i.imgur.com/hjuNebo.png",
-      "https://i.imgur.com/abv0cHT.png",
-      "https://i.imgur.com/fZ1n9II.png",
-      "https://i.imgur.com/9BPM9pL.png",
-      "https://i.imgur.com/vW1e29p.png",
-      "https://i.imgur.com/5I41ghI.png",
-      "https://i.imgur.com/QciEwol.png",
-      "https://i.imgur.com/pSzMWaO.png",
-      "https://i.imgur.com/SdaWspQ.png",
-      "https://i.imgur.com/RbaVi19.png",
-      "spoiler:https://i.imgur.com/AzuybzX.png",
-      "spoiler:https://i.imgur.com/Hw6Qn0q.png",
-      "spoiler:https://i.imgur.com/VWJ8scV.png",
-      "spoiler:https://i.imgur.com/JLQcl8j.png",
-      "https://i.imgur.com/SIV8dAl.png",
-      "https://i.imgur.com/2QLSfNj.png",
-      "https://i.imgur.com/8LEm3Ud.png",
-      "https://i.imgur.com/qP0AgCK.png",
-      "https://i.imgur.com/V914hzS.png",
-      "https://i.imgur.com/jgYACz3.png",
-      "https://i.imgur.com/7kKnzQx.png",
-      "https://i.imgur.com/RnnGe3Q.png",
-      "https://i.imgur.com/Aysslss.png",
-      "https://i.imgur.com/2YG7Qac.png",
-      "https://i.imgur.com/xfuW4XK.png",
-      "https://i.imgur.com/s4Wfy6b.png",
-      "https://i.imgur.com/NvTtIOr.png",
-      "https://i.imgur.com/tONjL7l.png",
-      "spoiler:https://i.imgur.com/y9agoBI.png",
-      "spoiler:https://i.imgur.com/Y1ZjX9M.png",
-      "spoiler:https://i.imgur.com/uBxX6co.png",
-      "https://i.imgur.com/ezzl60Z.png",
-      "https://i.imgur.com/Ac4ZUrY.png",
-      "https://i.imgur.com/HKG3pCH.png"
-    ]
-  },
-  {
-    "status": "zerado",
-    "title": "Bendy and the Ink Machine",
-    "nota": "lixo/10",
-    "review": "lixo. O Sparking me pediu para jogar essa bomba e, no começo, pensei que poderia ser legal. No entanto, é um jogo indie lixo sem graça.\nVocê fica andando a poha do jogo todo com um machado merda. Se houvesse pelo menos uma arma para pipocar essas tinta do krlw, seria menos paia de jogar.\nDepois eu descobri que as sequencias desse jogo é a mesma merda de gameplay com o machado. Cadê a arma krlw.",
-    "cover_url": "https://m.media-amazon.com/images/M/MV5BNDJhMTZmMTQtYjdkYy00NjNlLTkxOTMtNzg0YWFjNmJmYjBhXkEyXkFqcGc@._V1_.jpg",
-    "screens": [
-      "https://i.imgur.com/TZYaoqe.jpeg"
-    ]
-  },
-  {
-    "status": "dropado",
-    "title": "SILENT HILL f",
-    "nota": "4.0/10",
-    "review": "Antes do lançamento do F, decidi jogar o Silent Hill 2 e foi maravilhoso, então fiquei animado pra esse aqui. Mas já começou o pcismo: jogo cheio de stutter, só melhorou depois de colocar a textura no baixo e aí ficou tudo borrado.\nA movimentação é horrível, parece jogo mobile; o boneco fica sambando no chão e rodando pra krl, nada a ver com o SH2. No fim, a experiência foi bem desagradável por causa do desempenho. O único ponto positivo foi o combate 👍",
-    "cover_url": "https://m.media-amazon.com/images/M/MV5BMGRhYmM4OGEtODMwOS00MDAxLTkzMjUtMDgxNTQ1NGI3ODkwXkEyXkFqcGc@._V1_.jpg",
-    "screens": []
-  },
-  {
-    "status": "dropado",
-    "title": "X-Men Origins: Wolverine PS2",
-    "nota": "4.0/10",
-    "review": "Primeira vez que joguei esse jogo foi na infância e não passei da primeira fase. Depois de muito tempo, decidi jogar novamente para ver se o game era bom mesmo e pqp, que jogo podre.\nCombate repetitivo pra krl, só existe uma execução nessa poha, e os inimigos são absurdamente roubados. Nenhum soulslike beira a dificuldade dessa bomba. Lixo.",
-    "cover_url": "https://m.media-amazon.com/images/M/MV5BM2FkNDk3NTYtMzg0My00OTVhLTkyZmEtNDI1YzExNWNmNTk4XkEyXkFqcGc@._V1_.jpg",
-    "screens": []
-  },
-  {
-    "status": "nao-joguei",
-    "title": "Jogos Pendentes",
-    "nota": "Recomende um jogo comentando nas lives",
-    "review": "Lista de Jogos Pendentes: Acessar o canal RGWaradam no Youtube ",
-    "cover_url": "https://i.imgur.com/ouQ2mfe.jpeg",
-    "screens": []
-  }
-
+  {
+    "status": "jogando",
+    "title": "Crash Bandicoot N. Sane Trilogy",
+    "nota": "?",
+    "review": "?",
+    "cover_url": "https://i.imgur.com/j57M3nM.jpeg",
+    "screens": []
+  },
+  {
+    "status": "jogando",
+    "title": "Dark Souls: Remastered",
+    "nota": "?",
+    "review": "?",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BNDZhYWVjMTYtZmFjNi00ZjI3LTkzYzctOGM2NGZjMTc3NmNiXkEyXkFqcGc@._V1_.jpg",
+    "screens": [
+      "https://i.imgur.com/HTgCV63.png",
+      "https://i.imgur.com/9nk7eXV.png",
+      "https://i.imgur.com/ccUf7ke.png",
+      "https://i.imgur.com/YsvhiPj.png"
+    ]
+  },
+  {
+    "status": "zerado",
+    "title": "Alan Wake",
+    "nota": "8.0/10",
+    "review": "Observação: Eu já tinha jogado o segundo jogo quando lançou, só por benchmark para ver se o PC rodava, e foi uma péssima ideia. Não entendi poha nenhuma do Alan Wake 2. Um ano depois, o Markinkof me passou uma das calls mais brabas: jogar o primeiro e depois o segundo. E foi a melhor decisão que eu podia ter tomado.\nO primeiro jogo é ok: a ambientação é mais ou menos, mas o combate é muito bom, atirar nesse jogo é realmente divertido. O que mais brilha nele é a história mirabolante do Sam Lake.\nPode parecer óbvio dizer isso, mas tem jogo em que não é obrigatório jogar os anteriores. No caso de Alan Wake, é necessário.",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BY2RhNzQ4NTItZmE5OC00ZjdlLTk3ZjItZDIxZDhiNTI1OWNiXkEyXkFqcGc@._V1_.jpg",
+    "screens": [
+      "https://i.imgur.com/gQHfvyM.jpeg",
+      "https://i.imgur.com/fUP0mab.jpeg",
+      "https://i.imgur.com/l0da0oB.png"
+    ]
+  },
+  {
+    "status": "zerado",
+    "title": "Alan Wake 2",
+    "nota": "10/10",
+    "review": "Após uma experiência inicial decepcionante com Alan Wake 2, decidi dar uma segunda chance depois de finalizar o primeiro jogo. E agora sim, tudo fazia sentido! Desde o começo, fui entendendo a história e captando as referências do primeiro jogo. Foi uma evolução muito grande em comparação com o primeiro em todos os aspectos.\n✨ História, Ambientação e Gameplay\nFoi muito divertido ver como eles adaptaram o Lugar Obscuro, que se tornou uma das partes mais bonitas deste jogo.\nA jogabilidade é no estilo Resident Evil, o que é muito foda e funciona bem demais. Ponto muito positivo para as cutscenes, a ambientação e a trilha sonora, em específico uma parte (Musical), que foi absolute cinema 2!\n⚙️ Desempenho e Gráficos\nO único ponto negativo foi o desempenho. É um jogo extremamente pesado. Tive uma experiência muito boa na questão da fluidez (FPS), mas o que me incomodou foi o gráfico. Percebi que o uso do Ray Tracing (RT) parece ser essencial para garantir uma qualidade de imagem sem artefatos ou falhas visuais.\nSem o RT ativado, notei quebras e imperfeições em algumas texturas e estruturas do cenário. Inicialmente, pensei que o problema fosse o DLSS, mas a ausência do Ray Tracing estava, de fato, prejudicando a fidelidade da imagem. É um detalhe que pode parecer bobo, mas me incomodou bastante, especialmente nas seções do Alan Wake, onde há uma intensa aplicação de efeitos visuais no mapa.\n✅ Conclusão\nMesmo com esse problema do RT, eu dou nota 10. Jogão demais! Vale muito a pena jogar os dois títulos da saga Alan Wake.",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BODRmZDg1NGQtZGU5NS00NzVkLThhZDItMDJkMjQwZGQ5MDg5XkEyXkFqcGc@._V1_.jpg",
+    "screens": []
+  },
+  {
+    "status": "zerado",
+    "title": "Alan Wake's American Nightmare",
+    "nota": "8.0/10",
+    "review": "Não há muito o que falar sobre esse jogo.\nA gameplay é a mesma do primeiro e conta uma história de Alan Wake preso no Lugar Obscuro, que se passa num cenário de série de TV, a famosa Night Springs.\nA princípio, eu não pensei que fosse canônico, mas é sim, pois Alan Wake tenta de várias maneiras sair do Lugar Obscuro, e essa é uma delas.",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BMTQyZmEwMzQtNDViMy00MDMyLWJhMzUtNDZkMGYyZjliMjIwXkEyXkFqcGc@._V1_.jpg",
+    "screens": [
+      "https://i.imgur.com/8iHVhBq.jpeg"
+    ]
+  },
+  {
+    "status": "zerado",
+    "title": "Baldur's Gate 3",
+    "nota": "?",
+    "review": "?",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BN2I0N2Y3MWUtNjJiNy00NjRjLWE4ZTctOTQ2YWVhM2VhMTM4XkEyXkFqcGc@._V1_.jpg",
+    "screens": [
+      "https://i.imgur.com/hjuNebo.png",
+      "https://i.imgur.com/abv0cHT.png",
+      "https://i.imgur.com/fZ1n9II.png",
+      "https://i.imgur.com/9BPM9pL.png",
+      "https://i.imgur.com/vW1e29p.png",
+      "https://i.imgur.com/5I41ghI.png",
+      "https://i.imgur.com/QciEwol.png",
+      "https://i.imgur.com/pSzMWaO.png",
+      "https://i.imgur.com/SdaWspQ.png",
+      "https://i.imgur.com/RbaVi19.png",
+      "spoiler:https://i.imgur.com/AzuybzX.png",
+      "spoiler:https://i.imgur.com/Hw6Qn0q.png",
+      "spoiler:https://i.imgur.com/VWJ8scV.png",
+      "spoiler:https://i.imgur.com/JLQcl8j.png",
+      "https://i.imgur.com/SIV8dAl.png",
+      "https://i.imgur.com/2QLSfNj.png",
+      "https://i.imgur.com/8LEm3Ud.png",
+      "https://i.imgur.com/qP0AgCK.png",
+      "https://i.imgur.com/V914hzS.png",
+      "https://i.imgur.com/jgYACz3.png",
+      "https://i.imgur.com/7kKnzQx.png",
+      "https://i.imgur.com/RnnGe3Q.png",
+      "https://i.imgur.com/Aysslss.png",
+      "https://i.imgur.com/2YG7Qac.png",
+      "https://i.imgur.com/xfuW4XK.png",
+      "https://i.imgur.com/s4Wfy6b.png",
+      "https://i.imgur.com/NvTtIOr.png",
+      "https://i.imgur.com/tONjL7l.png",
+      "spoiler:https://i.imgur.com/y9agoBI.png",
+      "spoiler:https://i.imgur.com/Y1ZjX9M.png",
+      "spoiler:https://i.imgur.com/uBxX6co.png",
+      "https://i.imgur.com/ezzl60Z.png",
+      "https://i.imgur.com/Ac4ZUrY.png",
+      "https://i.imgur.com/HKG3pCH.png"
+    ]
+  },
+  {
+    "status": "zerado",
+    "title": "Bendy and the Ink Machine",
+    "nota": "lixo/10",
+    "review": "lixo. O Sparking me pediu para jogar essa bomba e, no começo, pensei que poderia ser legal. No entanto, é um jogo indie lixo sem graça.\nVocê fica andando a poha do jogo todo com um machado merda. Se houvesse pelo menos uma arma para pipocar essas tinta do krlw, seria menos paia de jogar.\nDepois eu descobri que as sequencias desse jogo é a mesma merda de gameplay com o machado. Cadê a arma krlw.",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BNDJhMTZmMTQtYjdkYy00NjNlLTkxOTMtNzg0YWFjNmJmYjBhXkEyXkFqcGc@._V1_.jpg",
+    "screens": [
+      "https://i.imgur.com/TZYaoqe.jpeg"
+    ]
+  },
+  {
+    "status": "dropado",
+    "title": "SILENT HILL f",
+    "nota": "4.0/10",
+    "review": "Antes do lançamento do F, decidi jogar o Silent Hill 2 e foi maravilhoso, então fiquei animado pra esse aqui. Mas já começou o pcismo: jogo cheio de stutter, só melhorou depois de colocar a textura no baixo e aí ficou tudo borrado.\nA movimentação é horrível, parece jogo mobile; o boneco fica sambando no chão e rodando pra krl, nada a ver com o SH2. No fim, a experiência foi bem desagradável por causa do desempenho. O único ponto positivo foi o combate 👍",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BMGRhYmM4OGEtODMwOS00MDAxLTkzMjUtMDgxNTQ1NGI3ODkwXkEyXkFqcGc@._V1_.jpg",
+    "screens": []
+  },
+  {
+    "status": "dropado",
+    "title": "X-Men Origins: Wolverine PS2",
+    "nota": "4.0/10",
+    "review": "Primeira vez que joguei esse jogo foi na infância e não passei da primeira fase. Depois de muito tempo, decidi jogar novamente para ver se o game era bom mesmo e pqp, que jogo podre.\nCombate repetitivo pra krl, só existe uma execução nessa poha, e os inimigos são absurdamente roubados. Nenhum soulslike beira a dificuldade dessa bomba. Lixo.",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BM2FkNDk3NTYtMzg0My00OTVhLTkyZmEtNDI1YzExNWNmNTk4XkEyXkFqcGc@._V1_.jpg",
+    "screens": []
+  },
+  {
+    "status": "nao-joguei",
+    "title": "Jogos Pendentes",
+    "nota": "Recomende um jogo comentando nas lives",
+    "review": "Lista de Jogos Pendentes: Acessar o canal RGWaradam no Youtube ",
+    "cover_url": "https://i.imgur.com/ouQ2mfe.jpeg",
+    "screens": []
+  }
 ]
