@@ -126,5 +126,16 @@
     "review": "Lista de Jogos Pendentes: Acessar o canal RGWaradam no Youtube ",
     "cover_url": "https://i.imgur.com/ouQ2mfe.jpeg",
     "screens": []
+  },
+  {
+    "status": "zerado",
+    "title": "Baldur's Gate 2",
+    "nota": "apenas teste",
+    "review": "apenas teste mas deve ser jogão",
+    "cover_url": "https://i.imgur.com/Rfbxzwh.png",
+    "screens": [
+      "https://i.imgur.com/YfVUSJm.jpeg",
+      "spoiler:https://i.imgur.com/XQ5P5ox.jpeg"
+    ]
   }
 ]
