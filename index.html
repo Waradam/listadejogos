@@ -167,7 +167,7 @@
             filter: blur(8px);
             border: 2px solid #e50914; /* Borda para destaque */
             opacity: 0.8;
-            transition: none; /* NOVO: Remove a transição para blur na miniatura spoiler */
+            transition: none;
         }
         
         /* Container Fullscreen Spoiler */
@@ -236,7 +236,7 @@
         /* O overlay é o parente da imagem, então se ele estiver aberto, o clique deve ser na imagem */
         .fullscreen-img.blurred {
             filter: blur(40px);
-            transition: none; /* NOVO: Remove a transição para blur na imagem fullscreen spoiler */
+            transition: none;
         }
 
         /* Classes de navegação */
@@ -289,14 +289,14 @@
 
     <script>
         const gallery = document.getElementById("game-gallery");
-        const cards = []; // Array para armazenar os elementos de card criados
+        const cards = []; 
 
         // Referências do Modal
         const modal = document.getElementById("modal");
         const closeBtn = document.querySelector(".close-btn");
         const modalTitle = document.getElementById("modal-title");
         const modalNota = document.getElementById("modal-nota");
-        const modalReview = document.getElementById("modal-review"); // Este agora é uma DIV
+        const modalReview = document.getElementById("modal-review"); // Este AGORA É uma DIV
         const modalScreenshots = document.getElementById("modal-screenshots");
         const fullscreenOverlay = document.getElementById("fullscreen-overlay");
 
@@ -318,8 +318,6 @@
             card.classList.add('game-card');
             card.setAttribute('data-status', game.status);
 
-            // Armazenar os dados do JSON no próprio elemento DOM para fácil acesso.
-            // Isso substitui os antigos data-attributes, exceto data-status.
             card.gameData = game; 
 
             // Estrutura do card
@@ -339,6 +337,7 @@
                 modalNota.textContent = game.nota;
                 
                 // CORREÇÃO JS: Divide o texto em parágrafos e os envolve em <p>
+                // O método .split('\n\n') trata as quebras de linha duplas do seu JSON.
                 const paragraphs = game.review.split('\n\n').map(p => `<p>${p.trim()}</p>`).join('');
                 modalReview.innerHTML = paragraphs;
                 // FIM DA CORREÇÃO JS
@@ -526,7 +525,7 @@
                 // 3. Criar os Cards e Adicionar à Galeria
                 games.forEach(game => {
                     const card = createGameCard(game);
-                    cards.push(card); // Adiciona ao array para que o filtro funcione
+                    cards.push(card); 
                     gallery.appendChild(card);
                 });
 
@@ -538,8 +537,8 @@
 
             } catch (error) {
                 console.error("Erro ao carregar ou renderizar os jogos:", error);
-                // Opcional: Mostrar uma mensagem de erro na tela para o usuário
-                gallery.innerHTML = '<p style="text-align: center; color: #e50914;">Erro ao carregar os dados dos jogos. Verifique o arquivo reviews.json.</p>';
+                // Mostrar mensagem de erro na tela
+                gallery.innerHTML = '<p style="text-align: center; color: #e50914;">Erro ao carregar os dados dos jogos. Verifique o arquivo reviews.json (Formato JSON Array: [ {jogo}, {jogo} ]).</p>';
             }
         }
         
@@ -547,9 +546,9 @@
         closeBtn.addEventListener("click", () => modal.style.display = "none");
         window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
 
-        loadAndRenderGames(); // NOVA LINHA DE INICIALIZAÇÃO
+        loadAndRenderGames(); 
         
-        // Disponibilizar a função de filtro globalmente, pois ela é chamada no HTML
+        // Disponibilizar a função de filtro globalmente
         window.filterGames = filterGames;
         
     </script>
