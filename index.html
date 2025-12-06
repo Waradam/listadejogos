@@ -130,14 +130,13 @@
             color: #ddd;
         }
 
-        /* NOVO CSS AQUI: Espaçamento para parágrafos da review */
+        /* CORREÇÃO CSS: Garante o espaçamento entre os novos parágrafos <p> injetados na <div> */
         #modal-review p {
             margin-top: 0;
             margin-bottom: 1em; /* 1em de espaço após cada parágrafo */
             line-height: 1.5; /* Melhora a altura da linha para leitura */
-            /* white-space: pre-wrap; é redundante, mas mantenho se você precisar */
         }
-        /* FIM DO NOVO CSS */
+        /* FIM DA CORREÇÃO CSS */
 
         .close-btn {
             color: #aaa;
@@ -277,17 +276,16 @@
     <div class="gallery" id="game-gallery">
         </div>
 
-    <div id="modal" class="modal">
+        <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
             <h2 id="modal-title"></h2>
             <p><strong>Nota:</strong> <span id="modal-nota"></span></p>
-            <p id="modal-review"></p>
+            <div id="modal-review"></div> 
             <div class="screenshots" id="modal-screenshots"></div>
         </div>
     </div>
-
-    <div id="fullscreen-overlay" style="display: none;"></div>
+        <div id="fullscreen-overlay" style="display: none;"></div>
 
     <script>
         const gallery = document.getElementById("game-gallery");
@@ -298,7 +296,7 @@
         const closeBtn = document.querySelector(".close-btn");
         const modalTitle = document.getElementById("modal-title");
         const modalNota = document.getElementById("modal-nota");
-        const modalReview = document.getElementById("modal-review");
+        const modalReview = document.getElementById("modal-review"); // Este agora é uma DIV
         const modalScreenshots = document.getElementById("modal-screenshots");
         const fullscreenOverlay = document.getElementById("fullscreen-overlay");
 
@@ -340,10 +338,10 @@
                 modalTitle.textContent = game.title;
                 modalNota.textContent = game.nota;
                 
-                // CORREÇÃO AQUI: Troca de <br><br> por tags <p> para melhor espaçamento via CSS
+                // CORREÇÃO JS: Divide o texto em parágrafos e os envolve em <p>
                 const paragraphs = game.review.split('\n\n').map(p => `<p>${p.trim()}</p>`).join('');
                 modalReview.innerHTML = paragraphs;
-                // FIM DA CORREÇÃO
+                // FIM DA CORREÇÃO JS
 
                 modalScreenshots.innerHTML = "";
 
