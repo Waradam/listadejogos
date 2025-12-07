@@ -344,13 +344,16 @@
             // Armazenar os dados do JSON no próprio elemento DOM para fácil acesso.
             card.gameData = game; 
 
+            // Verifica se é um card de jogo com spoiler na review para adicionar o aviso
+            const spoilerTag = (game.spoiler_review && game.spoiler_text) 
+                ? '<span style="color: #e50914; font-size: 0.8em; margin-left: 5px;">(SPOILER)</span>' 
+                : '';
+
             // Estrutura do card
             card.innerHTML = `
                 <span class="status-tag">${game.status.charAt(0).toUpperCase() + game.status.slice(1)}</span>
                 <img src="${game.cover_url}" alt="${game.title}">
-                <div class="game-info"><h3>${game.title} 
-                    ${game.spoiler_review ? '<span style="color: #e50914; font-size: 0.8em; margin-left: 5px;">(SPOILER)</span>' : ''}
-                </h3></div>
+                <div class="game-info"><h3>${game.title}${spoilerTag}</h3></div>
             `;
 
             // Adicionar evento de clique que abre o modal
@@ -414,8 +417,10 @@
 
                 } else {
                     // Comportamento Padrão: Sem spoiler OU já desbloqueado
-                    // Se houver spoiler_text (e estiver desbloqueado), usa ele. Senão, usa o review normal.
-                    const reviewContent = (game.spoiler_review && currentGameUnlocked) ? game.spoiler_text : game.review;
+                    // Usa spoiler_text se estiver presente e desbloqueado, senão usa review normal.
+                    const reviewContent = (game.spoiler_review && game.spoiler_text && currentGameUnlocked) 
+                        ? game.spoiler_text 
+                        : game.review || 'Sem review disponível.'; // Adicionado fallback para evitar undefined
                     modalReview.innerHTML = reviewContent.replace(/\n/g, "<br>"); 
                 }
                 // ----------------------------------------------------
@@ -424,7 +429,7 @@
                 
                 modalScreenshots.innerHTML = "";
 
-                activeUrls = game.screens.filter(Boolean); // Pega a lista de URLs de screens
+                activeUrls = game.screens && Array.isArray(game.screens) ? game.screens.filter(Boolean) : []; // Verifica se screens existe
                 
                 activeUrls.forEach(rawUrl => {
                     const url = cleanUrl(rawUrl);
