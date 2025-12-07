@@ -95,6 +95,13 @@
             color: #f0f0f0;
             font-weight: 500;
         }
+        
+        /* NOVO: Estilo para a tag de spoiler no título */
+        .spoiler-tag {
+            color: #e50914; 
+            font-size: 0.8em; 
+            margin-left: 5px;
+        }
 
         .status-tag {
             position: absolute;
@@ -291,7 +298,16 @@
             <span class="close-btn">&times;</span>
             <h2 id="modal-title"></h2>
             <p><strong>Nota:</strong> <span id="modal-nota"></span></p>
-            <p id="modal-review"></p>
+            
+            <div id="review-container">
+                <p id="modal-review"></p>
+                <div id="review-spoiler-overlay" style="display: none; padding: 20px; text-align: center; background-color: #222; border-radius: 10px; margin-top: 10px;">
+                    <p style="color: #e50914; font-weight: bold; margin: 5px 0;">⚠️ A Review contém Spoilers! ⚠️</p>
+                    <p style="margin: 5px 0;">Digite 123 para desbloquear.</p>
+                    <input type="password" id="review-spoiler-password" placeholder="Senha" style="padding: 8px; margin: 10px 0; border-radius: 5px; border: 1px solid #555; background-color: #1a1a1a; color: #fff; text-align: center;" />
+                    <button id="unlock-review-btn" style="padding: 8px 15px; background-color: #e50914; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Desbloquear Review</button>
+                </div>
+            </div>
             <div class="screenshots" id="modal-screenshots"></div>
         </div>
     </div>
@@ -310,6 +326,12 @@
         const modalReview = document.getElementById("modal-review");
         const modalScreenshots = document.getElementById("modal-screenshots");
         const fullscreenOverlay = document.getElementById("fullscreen-overlay");
+        
+        // NOVO: Referências do Spoiler na Review
+        const reviewSpoilerOverlay = document.getElementById("review-spoiler-overlay");
+        const unlockReviewBtn = document.getElementById("unlock-review-btn");
+        const reviewSpoilerPassword = document.getElementById("review-spoiler-password");
+
 
         let activeUrls = [];
         let currentImageIndex = -1;
@@ -331,12 +353,17 @@
 
             // Armazenar os dados do JSON no próprio elemento DOM para fácil acesso.
             card.gameData = game; 
+            
+            // NOVO: Adiciona a tag de spoiler no título, se houver o campo `spoiler_review`
+            const spoilerTag = (game.spoiler_review === true)
+                ? '<span class="spoiler-tag">(SPOILER)</span>'
+                : '';
 
             // Estrutura do card
             card.innerHTML = `
                 <span class="status-tag">${game.status.charAt(0).toUpperCase() + game.status.slice(1)}</span>
                 <img src="${game.cover_url}" alt="${game.title}">
-                <div class="game-info"><h3>${game.title}</h3></div>
+                <div class="game-info"><h3>${game.title}${spoilerTag}</h3></div>
             `;
 
             // Adicionar evento de clique que abre o modal
@@ -348,11 +375,34 @@
                 modalTitle.textContent = game.title;
                 modalNota.textContent = game.nota;
                 
-                // 🚀 MODIFICAÇÃO CHAVE AQUI: Trocando <br><br> por <br> para reduzir o espaçamento duplo.
-                modalReview.innerHTML = game.review.replace(/\n/g, "<br>"); 
+                // NOVO: Lógica de Spoiler de Review
+                const hasSpoilerReview = game.spoiler_review === true;
                 
-                modalScreenshots.innerHTML = "";
+                if (hasSpoilerReview) {
+                    // Se tem spoiler, carrega o texto curto (non-spoiler) em review
+                    modalReview.innerHTML = game.review.replace(/\n/g, "<br>");
+                    
+                    // Esconde o texto da review (pois ele só tem o intro) e mostra o overlay
+                    modalReview.style.display = 'block'; 
+                    reviewSpoilerOverlay.style.display = 'block';
 
+                    // Configura o botão de desbloqueio da review
+                    unlockReviewBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        // Pega o texto de spoiler, se existir. Caso contrário, usa o review normal.
+                        const fullSpoilerText = game.spoiler_text || game.review;
+                        checkAndRevealAllSpoilers(reviewSpoilerPassword, null, fullSpoilerText);
+                    };
+                    
+                } else {
+                    // Sem spoiler, mostra a review normal e esconde o overlay
+                    reviewSpoilerOverlay.style.display = 'none';
+                    modalReview.style.display = 'block';
+                    modalReview.innerHTML = game.review.replace(/\n/g, "<br>"); 
+                }
+                
+                // O resto da lógica de screenshots permanece igual
+                modalScreenshots.innerHTML = "";
                 activeUrls = game.screens.filter(Boolean); // Pega a lista de URLs de screens
                 
                 activeUrls.forEach(rawUrl => {
@@ -363,10 +413,11 @@
                     img.src = url;
                     img.setAttribute('data-full-url', rawUrl.trim());
                     
-                    if (isImgSpoiler) {
+                    if (isImgSpoiler && !currentGameUnlocked) {
                         img.classList.add("spoiler-thumbnail");
                     }
                     
+                    // Se o jogo já estiver desbloqueado, remove o blur inicial (caso o usuário volte)
                     if (currentGameUnlocked) {
                         img.classList.remove("spoiler-thumbnail");
                         img.style.filter = 'none';
@@ -394,21 +445,34 @@
         }
         
         // --- FUNÇÃO CENTRAL DE VERIFICAÇÃO DE SENHA (Global para o Jogo Atual) ---
-        function checkAndRevealAllSpoilers(passwordInput, overlayElement) {
+        // NOVO: Adicionado reviewData (texto de spoiler da review) como terceiro parâmetro
+        function checkAndRevealAllSpoilers(passwordInput, overlayToHide, reviewData) {
             const enteredPassword = passwordInput.value;
             const correctPassword = '123'; 
 
             if (enteredPassword === correctPassword) {
                 currentGameUnlocked = true;
                 
-                const imgElement = overlayElement.closest('#fullscreen-overlay').querySelector('.fullscreen-img');
+                // 1. Revelar a review (se reviewData foi fornecido)
+                if (reviewData) {
+                    modalReview.innerHTML = reviewData.replace(/\n/g, "<br>");
+                    // Esconde o overlay de senha da review
+                    reviewSpoilerOverlay.style.display = 'none';
+                }
+                
+                // 2. Esconder overlay de imagem fullscreen (se overlayToHide foi fornecido)
+                if (overlayToHide) {
+                     overlayToHide.classList.add('hidden');
+                }
+                
+                // 3. Desborrar a imagem fullscreen atual
+                const imgElement = fullscreenOverlay.querySelector('.fullscreen-img');
                 if (imgElement) {
                     imgElement.classList.remove('blurred');
                     imgElement.style.filter = 'none';
                 }
 
-                overlayElement.classList.add('hidden');
-
+                // 4. Desbloquear todas as miniaturas de screenshot
                 document.querySelectorAll('.screenshots img.spoiler-thumbnail').forEach(thumbnail => {
                     thumbnail.classList.remove('spoiler-thumbnail');
                     thumbnail.style.filter = 'none';
@@ -453,7 +517,8 @@
                 spoilerOverlay.querySelector('#unlock-spoiler-btn').onclick = e => {
                     e.stopPropagation();
                     const passwordInput = spoilerOverlay.querySelector('#fullscreen-spoiler-password');
-                    checkAndRevealAllSpoilers(passwordInput, spoilerOverlay);
+                    // Passa 'null' para reviewData, pois aqui só queremos desbloquear as imagens
+                    checkAndRevealAllSpoilers(passwordInput, spoilerOverlay, null); 
                 };
             } else {
                 img.classList.remove('blurred');
