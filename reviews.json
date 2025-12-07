@@ -147,5 +147,15 @@
     "review": "Consegui resolver os problemas de desempenho do jogo e decidi dar uma segunda chance para ele.",
     "cover_url": "https://m.media-amazon.com/images/M/MV5BMGRhYmM4OGEtODMwOS00MDAxLTkzMjUtMDgxNTQ1NGI3ODkwXkEyXkFqcGc@._V1_.jpg",
     "screens": []
+  },
+  {
+    "status": "zerado",
+    "title": "TESTE",
+    "nota": "teste",
+    "review": "",
+    "spoiler_review": true,
+    "spoiler_text": "testando essa opção de spoiler kkkkkkkkkk",
+    "cover_url": "https://m.media-amazon.com/images/M/MV5BZGViZWQ4MGMtZTQwZS00NDEwLWE2MmQtNWZiM2VlMzRlNmJkXkEyXkFqcGc@._V1_.jpg",
+    "screens": []
   }
 ]
