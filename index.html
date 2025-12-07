@@ -11,8 +11,6 @@
             font-family: "Inter", sans-serif;
             background-color: #0f0f0f;
             color: #f0f0f0;
-            transition: background-color 0.3s, color 0.3s, font-size 0.3s, line-height 0.3s; /* Adicionado transição suave para os modos */
-            line-height: 1.5; /* Padrão */
         }
 
         h1 {
@@ -55,7 +53,7 @@
             border-radius: 15px;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             display: none;
             width: 500px;
@@ -89,7 +87,6 @@
             padding: 15px;
             text-align: center;
             background-color: #1a1a1a;
-            transition: background-color 0.3s;
         }
 
         .game-info h3 {
@@ -99,7 +96,7 @@
             font-weight: 500;
         }
         
-        /* Estilo para a tag de spoiler no título */
+        /* NOVO: Estilo para a tag de spoiler no título */
         .spoiler-tag {
             color: #e50914; 
             font-size: 0.8em; 
@@ -138,19 +135,25 @@
             border-radius: 15px;
             max-width: 800px;
             color: #ddd;
-            transition: background-color 0.3s, color 0.3s;
         }
         
-        /* AJUSTES FINOS PARA O TEXTO DA REVIEW */
+        /* 🚀 AJUSTES FINOS PARA O TEXTO DA REVIEW (RESOLVE O ESPAÇAMENTO CABULOSO) 🚀 */
         #modal-review {
+            /* Mantido o espaçamento entre linhas para melhor leitura */
             line-height: 1.6; 
+            /* Reduzida a margem superior e inferior para harmonizar o bloco */
             margin-top: 10px;
             margin-bottom: 20px;
+            /* Alinhamento à esquerda para um visual mais limpo */
             text-align: left;
+            /* Tamanho da fonte ajustado */
             font-size: 16px; 
+            /* Padding lateral para telas menores */
             padding: 0 10px; 
             color: #f0f0f0; 
         }
+        /* -------------------------------------------------------------------------- */
+
 
         .close-btn {
             color: #aaa;
@@ -179,7 +182,7 @@
         /* Estilo para miniaturas de spoiler */
         .screenshots img.spoiler-thumbnail {
             filter: blur(8px);
-            border: 2px solid #e50914; 
+            border: 2px solid #e50914; /* Borda para destaque */
             opacity: 0.8;
             transition: none;
         }
@@ -247,6 +250,7 @@
             transition: filter 0.5s ease;
         }
         
+        /* O overlay é o parente da imagem, então se ele estiver aberto, o clique deve ser na imagem */
         .fullscreen-img.blurred {
             filter: blur(40px);
             transition: none;
@@ -269,117 +273,11 @@
         .gallery-arrow:hover { background: rgba(255,255,255,0.2); }
         .arrow-left { left: 20px; }
         .arrow-right { right: 20px; }
-        
+
         @media (max-width: 700px) {
             .game-card { width: 90%; }
             .screenshots img { width: 140px; }
         }
-
-        /* -------------------------------------------------------------------------- */
-        /* --- 🆕 NOVO: ESTILOS DE ACESSIBILIDADE MULTIMODAL (3 OPÇÕES) 🆕 --- */
-
-        /* Estilo para Botões de Acessibilidade (diferente dos de filtro) */
-        .accessibility-btn {
-            background-color: #383838; 
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            margin: 5px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .accessibility-btn:hover { background-color: #555; }
-        /* Destaque para o modo ativo (usa a cor principal do site) */
-        .accessibility-btn.mode-active { 
-            background-color: #e50914; 
-            color: #fff;
-        }
-        .accessibility-btn.mode-active:hover { background-color: #f4061a; }
-
-
-        /* --- 1. MODO ALTO CONTRASTE (Dark Mode Extremo) --- */
-        .mode-contrast {
-            background-color: #000 !important;
-            color: #fff !important;
-        }
-
-        .mode-contrast h1, .mode-contrast h3 { color: #fff !important; }
-
-        .mode-contrast .game-card {
-            background-color: #111 !important;
-            border: 1px solid #ff0; /* Borda amarela forte */
-        }
-        .mode-contrast .game-info { background-color: #111 !important; }
-        .mode-contrast .modal-content {
-            background-color: #111 !important;
-            border: 3px solid #ff0;
-            color: #fff !important;
-        }
-        .mode-contrast #modal-review { line-height: 1.7; color: #fff !important; }
-        .mode-contrast .status-tag { background-color: #ff0 !important; color: #000 !important; }
-
-
-        /* --- 2. MODO VISTA CANSADA (Soft Light/Sepia) --- */
-        .mode-vista {
-            background-color: #f5f5dc !important; /* Cream/Beige suave */
-            color: #333 !important;
-            line-height: 1.8 !important; /* Maior espaçamento entre linhas */
-            font-size: 17px !important; /* Fonte levemente maior */
-        }
-
-        .mode-vista h1, .mode-vista h3 { color: #333 !important; }
-
-        .mode-vista .game-card {
-            background-color: #fff !important;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .mode-vista .game-info { background-color: #fff !important; }
-        .mode-vista .modal-content {
-            background-color: #fff !important;
-            color: #333 !important;
-            border: 1px solid #ccc;
-        }
-        .mode-vista #modal-review { line-height: 1.8 !important; color: #333 !important; }
-        .mode-vista .status-tag { background-color: rgba(255, 255, 255, 0.8); color: #000; }
-        .mode-vista .buttons button { background-color: #ccc; color: #000; }
-        .mode-vista .buttons button:hover { background-color: #b0b0b0; }
-        .mode-vista .buttons button.active { background-color: #a0a0a0; color: #000; }
-        .mode-vista .accessibility-btn.mode-active { 
-             background-color: #e50914; 
-             color: #fff;
-        }
-
-
-        /* --- 3. MODO LEITURA NOTURNA (Warm Dark) --- */
-        .mode-night {
-            background-color: #1e1e2f !important; /* Azul escuro quente */
-            color: #ffd7a8 !important; /* Laranja/Amarelo suave para texto */
-            line-height: 1.7 !important;
-        }
-
-        .mode-night h1, .mode-night h3 { color: #ffd7a8 !important; }
-
-        .mode-night .game-card {
-            background-color: #2a2a3e !important;
-            border: 1px solid #4a4a6e;
-        }
-        .mode-night .game-info { background-color: #2a2a3e !important; }
-        .mode-night .modal-content {
-            background-color: #2a2a3e !important;
-            color: #ffd7a8 !important;
-            border: 1px solid #4a4a6e;
-        }
-        .mode-night #modal-review { line-height: 1.7 !important; color: #ffd7a8 !important; }
-        .mode-night .status-tag { background-color: rgba(0, 0, 0, 0.6); color: #ffd7a8; }
-        .mode-night .buttons button { background-color: #3a3a5e; color: #ffd7a8; }
-        .mode-night .buttons button:hover { background-color: #4a4a6e; }
-        .mode-night .buttons button.active { background-color: #5a5a7e; color: #fff; }
-        .mode-night .accessibility-btn.mode-active { 
-            background-color: #ffd7a8;
-            color: #1e1e2f;
-        }
-        /* -------------------------------------------------------------------------- */
     </style>
 </head>
 <body>
@@ -390,10 +288,6 @@
         <button onclick="filterGames('zerado', event)">Zerados</button>
         <button onclick="filterGames('dropado', event)">Dropado</button>
         <button onclick="filterGames('nao-joguei', event)">Não comecei</button>
-        
-        <button class="accessibility-btn" id="btn-contrast" onclick="toggleAccessibilityMode('contrast', event)">Alto Contraste</button>
-        <button class="accessibility-btn" id="btn-vista" onclick="toggleAccessibilityMode('vista', event)">Vista Cansada</button>
-        <button class="accessibility-btn" id="btn-night" onclick="toggleAccessibilityMode('night', event)">Leitura Noturna</button>
     </div>
 
     <div class="gallery" id="game-gallery">
@@ -422,7 +316,7 @@
 
     <script>
         const gallery = document.getElementById("game-gallery");
-        const cards = []; 
+        const cards = []; // Array para armazenar os elementos de card criados
 
         // Referências do Modal
         const modal = document.getElementById("modal");
@@ -433,7 +327,7 @@
         const modalScreenshots = document.getElementById("modal-screenshots");
         const fullscreenOverlay = document.getElementById("fullscreen-overlay");
         
-        // Referências do Spoiler na Review
+        // NOVO: Referências do Spoiler na Review
         const reviewSpoilerOverlay = document.getElementById("review-spoiler-overlay");
         const unlockReviewBtn = document.getElementById("unlock-review-btn");
         const reviewSpoilerPassword = document.getElementById("review-spoiler-password");
@@ -442,13 +336,6 @@
         let activeUrls = [];
         let currentImageIndex = -1;
         let currentGameUnlocked = false; 
-        
-        // Mapeamento dos modos de acessibilidade para classes CSS
-        const MODE_CLASSES = {
-            'contrast': 'mode-contrast',
-            'vista': 'mode-vista',
-            'night': 'mode-night'
-        };
         
         // --- UTILS: Verifica e Limpa URL ---
         function isSpoiler(rawUrl) {
@@ -464,46 +351,59 @@
             card.classList.add('game-card');
             card.setAttribute('data-status', game.status);
 
+            // Armazenar os dados do JSON no próprio elemento DOM para fácil acesso.
             card.gameData = game; 
             
+            // NOVO: Adiciona a tag de spoiler no título, se houver o campo `spoiler_review`
             const spoilerTag = (game.spoiler_review === true)
                 ? '<span class="spoiler-tag">(SPOILER)</span>'
                 : '';
 
+            // Estrutura do card
             card.innerHTML = `
                 <span class="status-tag">${game.status.charAt(0).toUpperCase() + game.status.slice(1)}</span>
                 <img src="${game.cover_url}" alt="${game.title}">
                 <div class="game-info"><h3>${game.title}${spoilerTag}</h3></div>
             `;
 
+            // Adicionar evento de clique que abre o modal
             card.addEventListener("click", () => {
                 currentGameUnlocked = false; 
                 modal.style.display = "block";
                 
+                // Preencher o modal com os dados do gameData
                 modalTitle.textContent = game.title;
                 modalNota.textContent = game.nota;
                 
+                // NOVO: Lógica de Spoiler de Review
                 const hasSpoilerReview = game.spoiler_review === true;
                 
                 if (hasSpoilerReview) {
+                    // Se tem spoiler, carrega o texto curto (non-spoiler) em review
                     modalReview.innerHTML = game.review.replace(/\n/g, "<br>");
+                    
+                    // Esconde o texto da review (pois ele só tem o intro) e mostra o overlay
                     modalReview.style.display = 'block'; 
                     reviewSpoilerOverlay.style.display = 'block';
 
+                    // Configura o botão de desbloqueio da review
                     unlockReviewBtn.onclick = (e) => {
                         e.stopPropagation();
+                        // Pega o texto de spoiler, se existir. Caso contrário, usa o review normal.
                         const fullSpoilerText = game.spoiler_text || game.review;
                         checkAndRevealAllSpoilers(reviewSpoilerPassword, null, fullSpoilerText);
                     };
                     
                 } else {
+                    // Sem spoiler, mostra a review normal e esconde o overlay
                     reviewSpoilerOverlay.style.display = 'none';
                     modalReview.style.display = 'block';
                     modalReview.innerHTML = game.review.replace(/\n/g, "<br>"); 
                 }
                 
+                // O resto da lógica de screenshots permanece igual
                 modalScreenshots.innerHTML = "";
-                activeUrls = game.screens.filter(Boolean);
+                activeUrls = game.screens.filter(Boolean); // Pega a lista de URLs de screens
                 
                 activeUrls.forEach(rawUrl => {
                     const url = cleanUrl(rawUrl);
@@ -517,6 +417,7 @@
                         img.classList.add("spoiler-thumbnail");
                     }
                     
+                    // Se o jogo já estiver desbloqueado, remove o blur inicial (caso o usuário volte)
                     if (currentGameUnlocked) {
                         img.classList.remove("spoiler-thumbnail");
                         img.style.filter = 'none';
@@ -534,20 +435,17 @@
 
         // --- FUNÇÃO PARA FILTRAR OS CARDS ---
         function filterGames(status, event) {
-            // Remove 'active' de TODOS os botões, exceto os de Acessibilidade ativos
-            document.querySelectorAll(".buttons button:not(.accessibility-btn.mode-active)").forEach(btn => btn.classList.remove("active"));
-            
-            // Só adiciona a classe active se o botão clicado não for de acessibilidade
-            if (!event.target.classList.contains('accessibility-btn')) {
-                 event.target.classList.add("active");
-            }
-            
+            const buttons = document.querySelectorAll(".buttons button");
+            buttons.forEach(btn => btn.classList.remove("active"));
+            event.target.classList.add("active");
+
             cards.forEach(card => {
                 card.style.display = (card.dataset.status === status) ? "block" : "none";
             });
         }
         
-        // --- FUNÇÃO CENTRAL DE VERIFICAÇÃO DE SENHA ---
+        // --- FUNÇÃO CENTRAL DE VERIFICAÇÃO DE SENHA (Global para o Jogo Atual) ---
+        // NOVO: Adicionado reviewData (texto de spoiler da review) como terceiro parâmetro
         function checkAndRevealAllSpoilers(passwordInput, overlayToHide, reviewData) {
             const enteredPassword = passwordInput.value;
             const correctPassword = '123'; 
@@ -555,21 +453,26 @@
             if (enteredPassword === correctPassword) {
                 currentGameUnlocked = true;
                 
+                // 1. Revelar a review (se reviewData foi fornecido)
                 if (reviewData) {
                     modalReview.innerHTML = reviewData.replace(/\n/g, "<br>");
+                    // Esconde o overlay de senha da review
                     reviewSpoilerOverlay.style.display = 'none';
                 }
                 
+                // 2. Esconder overlay de imagem fullscreen (se overlayToHide foi fornecido)
                 if (overlayToHide) {
                      overlayToHide.classList.add('hidden');
                 }
                 
+                // 3. Desborrar a imagem fullscreen atual
                 const imgElement = fullscreenOverlay.querySelector('.fullscreen-img');
                 if (imgElement) {
                     imgElement.classList.remove('blurred');
                     imgElement.style.filter = 'none';
                 }
 
+                // 4. Desbloquear todas as miniaturas de screenshot
                 document.querySelectorAll('.screenshots img.spoiler-thumbnail').forEach(thumbnail => {
                     thumbnail.classList.remove('spoiler-thumbnail');
                     thumbnail.style.filter = 'none';
@@ -614,6 +517,7 @@
                 spoilerOverlay.querySelector('#unlock-spoiler-btn').onclick = e => {
                     e.stopPropagation();
                     const passwordInput = spoilerOverlay.querySelector('#fullscreen-spoiler-password');
+                    // Passa 'null' para reviewData, pois aqui só queremos desbloquear as imagens
                     checkAndRevealAllSpoilers(passwordInput, spoilerOverlay, null); 
                 };
             } else {
@@ -681,37 +585,6 @@
                 }
             };
         }
-
-        // 🆕 NOVO: FUNÇÃO DE TOGGLE DE MODO DE ACESSIBILIDADE 🆕
-        function toggleAccessibilityMode(modeName, event) {
-            const body = document.body;
-            const newClass = MODE_CLASSES[modeName];
-            const currentMode = localStorage.getItem('accessibilityMode');
-            
-            // 1. Remove classes de todos os modos
-            Object.values(MODE_CLASSES).forEach(cls => body.classList.remove(cls));
-            
-            // 2. Limpa o estado ativo dos botões de acessibilidade
-            document.querySelectorAll('.accessibility-btn').forEach(btn => btn.classList.remove('mode-active'));
-
-            // 3. Aplica o novo modo, se não for o mesmo modo sendo desativado
-            if (currentMode !== modeName) {
-                body.classList.add(newClass);
-                localStorage.setItem('accessibilityMode', modeName);
-                
-                // Ativa o botão correspondente
-                if (event) {
-                    event.target.classList.add('mode-active');
-                } else {
-                     // Caso seja chamado pelo loadAndRenderGames
-                     const btn = document.getElementById(`btn-${modeName}`);
-                     if (btn) btn.classList.add('mode-active');
-                }
-            } else {
-                // Se for o mesmo modo, desativa tudo (retorna ao modo padrão)
-                localStorage.removeItem('accessibilityMode');
-            }
-        }
         
         // --- FUNÇÃO PRINCIPAL: CARREGAR DADOS, ORDENAR E INICIALIZAR ---
         async function loadAndRenderGames() {
@@ -720,46 +593,39 @@
                 const response = await fetch('reviews.json');
                 const games = await response.json();
 
-                // 2. Ordenar Alfabeticamente
+                // 2. Ordenar Alfabeticamente (aqui está a mágica da organização)
                 games.sort((a, b) => a.title.localeCompare(b.title));
 
                 // 3. Criar os Cards e Adicionar à Galeria
                 games.forEach(game => {
                     const card = createGameCard(game);
-                    cards.push(card); 
+                    cards.push(card); // Adiciona ao array para que o filtro funcione
                     gallery.appendChild(card);
                 });
 
                 // 4. Inicializar o Filtro (mostra a categoria 'jogando' por padrão)
-                const activeFilterButton = document.querySelector(".buttons button.active");
-                if (activeFilterButton) {
-                    filterGames('jogando', { target: activeFilterButton });
-                }
-                
-                // 5. Verifica o estado da acessibilidade salvo e aplica
-                const savedMode = localStorage.getItem('accessibilityMode');
-                if (savedMode) {
-                    // Chama o toggle para aplicar as classes e o estado do botão
-                    toggleAccessibilityMode(savedMode, null); 
+                const activeButton = document.querySelector(".buttons button.active");
+                if (activeButton) {
+                    filterGames('jogando', { target: activeButton });
                 }
 
             } catch (error) {
                 console.error("Erro ao carregar ou renderizar os jogos:", error);
+                // Opcional: Mostrar uma mensagem de erro na tela para o usuário
                 gallery.innerHTML = '<p style="text-align: center; color: #e50914;">Erro ao carregar os dados dos jogos. Verifique o arquivo reviews.json.</p>';
             }
         }
         
-
         // Inicializa o processo
         closeBtn.addEventListener("click", () => modal.style.display = "none");
         window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
 
-        loadAndRenderGames(); 
+        loadAndRenderGames(); // NOVA LINHA DE INICIALIZAÇÃO
         
-        // Disponibilizar a função de filtro e acessibilidade globalmente
+        // Disponibilizar a função de filtro globalmente, pois ela é chamada no HTML
         window.filterGames = filterGames;
-        window.toggleAccessibilityMode = toggleAccessibilityMode; // 🆕 NOVO: Função Global
         
     </script>
 </body>
 </html>
+
