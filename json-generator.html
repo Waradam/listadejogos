@@ -1,245 +1,305 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Dados JSON - RGWaradam</title>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        .container {
-            background-color: #1e1e1e;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            max-width: 800px;
-            width: 100%;
-        }
-        h2 {
-            text-align: center;
-            color: #e50914;
-            margin-bottom: 25px;
-        }
-        label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"], textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #333;
-            border-radius: 5px;
-            background-color: #2a2a2a;
-            color: #e0e0e0;
-            box-sizing: border-box;
-        }
-        textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
-        .input-group { margin-bottom: 20px; }
-        .button-group { text-align: center; margin-top: 30px; }
-        
-        #generate-btn {
-            background-color: #e50914;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        #generate-btn:hover { background-color: #f4061a; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Dados JSON - RGWaradam</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            max-width: 800px;
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+            color: #e50914;
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        .input-group { margin-bottom: 20px; }
+        .button-group { text-align: center; margin-top: 30px; }
+        
+        #generate-btn {
+            background-color: #e50914;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        #generate-btn:hover { background-color: #f4061a; }
 
-        #output-area {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #000;
-            border: 1px solid #e50914;
-            border-radius: 5px;
-        }
-        #json-output {
-            width: 100%;
-            min-height: 250px;
-            background: transparent;
-            border: none;
-            color: #0f0; 
-            font-family: monospace;
-            resize: none;
-        }
-        #copy-btn {
-            margin-top: 10px;
-            background-color: #007bff;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        #copy-btn:hover { background-color: #0056b3; }
-        
-        .screenshot-item {
+        #output-area {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #000;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+        }
+        #json-output {
+            width: 100%;
+            min-height: 250px;
+            background: transparent;
+            border: none;
+            color: #0f0; 
+            font-family: monospace;
+            resize: none;
+        }
+        #copy-btn {
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #copy-btn:hover { background-color: #0056b3; }
+        
+        .screenshot-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .screenshot-item input[type="text"] {
+            flex-grow: 1;
+        }
+
+        /* Estilo para a caixa de seleção de spoiler de review */
+        .spoiler-toggle {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
         }
-        .screenshot-item input[type="text"] {
-            flex-grow: 1;
+        .spoiler-toggle label {
+            margin: 0;
+            font-weight: normal;
         }
-    </style>
+    </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>🎮 Gerador de Jogo para Reviews.json</h2>
+    <h2>🎮 Gerador de Jogo para Reviews.json</h2>
+
+    <div class="input-group">
+        <label for="title">Título do Jogo:</label>
+        <input type="text" id="title" required>
+    </div>
+
+    <div class="input-group">
+        <label for="status">Status:</label>
+        <select id="status">
+            <option value="jogando">Jogando</option>
+            <option value="zerado">Zerado</option>
+            <option value="dropado">Dropado</option>
+            <option value="nao-joguei">Não comecei</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="cover_url">URL da Capa (Cover):</label>
+        <input type="text" id="cover_url" required>
+      </div>
+
+    <div class="input-group">
+        <label for="nota">Nota (ex: 10/10 ou ?):</label>
+        <input type="text" id="nota" required value="?">
+    </div>
+
+        <div class="input-group">
+        <label for="review">Review (Introdução SEM Spoiler):</label>
+        <textarea id="review" required></textarea>
+        <small style="color: #aaa;">Este texto ficará visível. Use quebras de linha (Enter) para separar parágrafos.</small>
+    </div>
 
     <div class="input-group">
-        <label for="title">Título do Jogo:</label>
-        <input type="text" id="title" required>
-    </div>
-
-    <div class="input-group">
-        <label for="status">Status:</label>
-        <select id="status">
-            <option value="jogando">Jogando</option>
-            <option value="zerado">Zerado</option>
-            <option value="dropado">Dropado</option>
-            <option value="nao-joguei">Não comecei</option>
-        </select>
-    </div>
-
-    <div class="input-group">
-        <label for="cover_url">URL da Capa (Cover):</label>
-        <input type="text" id="cover_url" required>
-    </div>
-
-    <div class="input-group">
-        <label for="nota">Nota (ex: 10/10 ou ?):</label>
-        <input type="text" id="nota" required value="?">
-    </div>
-
-    <div class="input-group">
-        <label for="review">Review / Observações:</label>
-        <textarea id="review" required></textarea>
-        <small style="color: #aaa;">Use quebras de linha (Enter) para separar parágrafos. O gerador irá formatar para JSON (adicionando \n).</small>
-    </div>
-
-    <div class="input-group" id="screens-input">
-        <label>URLs dos Screenshots:</label>
-        <div class="screenshot-item">
-            <input type="checkbox" class="spoiler-check" id="spoiler-1">
-            <label for="spoiler-1" style="display: inline; font-weight: normal;">Spoiler</label>
-            <input type="text" class="screen-url" placeholder="URL da imagem (Imgur, etc.)" data-id="1">
+        <div class="spoiler-toggle">
+            <input type="checkbox" id="spoiler-review-check">
+            <label for="spoiler-review-check" style="font-weight: bold;">
+                Ativar Spoiler na Review Completa? (O texto abaixo será bloqueado)
+            </label>
         </div>
-        <div class="screenshot-item">
-            <input type="checkbox" class="spoiler-check" id="spoiler-2">
-            <label for="spoiler-2" style="display: inline; font-weight: normal;">Spoiler</label>
-            <input type="text" class="screen-url" placeholder="URL da imagem (Opcional)" data-id="2">
+        
+        <div id="spoiler-text-group" style="display: none;">
+            <label for="spoiler_text">Review Completa (Com SPOILER):</label>
+            <textarea id="spoiler_text"></textarea>
+            <small style="color: #e50914;">AVISO: O conteúdo acima só será visível no site após a senha ser digitada (123).</small>
         </div>
-        <div class="screenshot-item">
-            <input type="checkbox" class="spoiler-check" id="spoiler-3">
-            <label for="spoiler-3" style="display: inline; font-weight: normal;">Spoiler</label>
-            <input type="text" class="screen-url" placeholder="URL da imagem (Opcional)" data-id="3">
-        </div>
-        <button id="add-screen-btn" style="margin-top: 10px; background-color: #333; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">+ Adicionar Mais Screenshot</button>
     </div>
-    
-    <div class="button-group">
-        <button id="generate-btn">GERAR BLOCO JSON</button>
-    </div>
+        <div class="input-group" id="screens-input">
+        <label>URLs dos Screenshots:</label>
+        <div class="screenshot-item">
+            <input type="checkbox" class="spoiler-check" id="spoiler-1">
+            <label for="spoiler-1" style="display: inline; font-weight: normal;">Spoiler</label>
+            <input type="text" class="screen-url" placeholder="URL da imagem (Imgur, etc.)" data-id="1">
+        </div>
+        <div class="screenshot-item">
+            <input type="checkbox" class="spoiler-check" id="spoiler-2">
+            <label for="spoiler-2" style="display: inline; font-weight: normal;">Spoiler</label>
+            <input type="text" class="screen-url" placeholder="URL da imagem (Opcional)" data-id="2">
+        </div>
+        <div class="screenshot-item">
+            <input type="checkbox" class="spoiler-check" id="spoiler-3">
+            <label for="spoiler-3" style="display: inline; font-weight: normal;">Spoiler</label>
+            <input type="text" class="screen-url" placeholder="URL da imagem (Opcional)" data-id="3">
+        </div>
+        <button id="add-screen-btn" style="margin-top: 10px; background-color: #333; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">+ Adicionar Mais Screenshot</button>
+    </div>
+    
+    <div class="button-group">
+        <button id="generate-btn">GERAR BLOCO JSON</button>
+    </div>
 
-    <div id="output-area" style="display: none;">
-        <label>Bloco JSON Gerado (Copie e Cole no `reviews.json`):</label>
-        <textarea id="json-output" readonly></textarea>
-        <button id="copy-btn">Copiar para Área de Transferência</button>
-    </div>
+    <div id="output-area" style="display: none;">
+        <label>Bloco JSON Gerado (Copie e Cole no `reviews.json`):</label>
+        <textarea id="json-output" readonly></textarea>
+        <button id="copy-btn">Copiar para Área de Transferência</button>
+    </div>
 
 </div>
 
 <script>
-    document.getElementById('add-screen-btn').addEventListener('click', function() {
-        const screensInput = document.getElementById('screens-input');
-        const count = screensInput.querySelectorAll('.screenshot-item').length + 1;
-        
-        const newItem = document.createElement('div');
-        newItem.classList.add('screenshot-item');
-        newItem.innerHTML = `
-            <input type="checkbox" class="spoiler-check" id="spoiler-${count}">
-            <label for="spoiler-${count}" style="display: inline; font-weight: normal;">Spoiler</label>
-            <input type="text" class="screen-url" placeholder="URL da imagem (Opcional)" data-id="${count}">
-        `;
-        // Insere antes do botão de adicionar
-        screensInput.insertBefore(newItem, document.getElementById('add-screen-btn'));
+    // NOVO: Adiciona a lógica para exibir o campo de spoiler de texto
+    document.getElementById('spoiler-review-check').addEventListener('change', function() {
+        const spoilerTextGroup = document.getElementById('spoiler-text-group');
+        if (this.checked) {
+            spoilerTextGroup.style.display = 'block';
+            document.getElementById('spoiler_text').setAttribute('required', 'required');
+        } else {
+            spoilerTextGroup.style.display = 'none';
+            document.getElementById('spoiler_text').removeAttribute('required');
+        }
     });
 
-    document.getElementById('generate-btn').addEventListener('click', function() {
-        // 1. Coleta os dados básicos
-        const title = document.getElementById('title').value.trim();
-        const status = document.getElementById('status').value;
-        const cover_url = document.getElementById('cover_url').value.trim();
-        const nota = document.getElementById('nota').value.trim();
-        const review = document.getElementById('review').value;
+    document.getElementById('add-screen-btn').addEventListener('click', function() {
+        const screensInput = document.getElementById('screens-input');
+        const count = screensInput.querySelectorAll('.screenshot-item').length + 1;
+        
+        const newItem = document.createElement('div');
+        newItem.classList.add('screenshot-item');
+        newItem.innerHTML = `
+            <input type="checkbox" class="spoiler-check" id="spoiler-${count}">
+            <label for="spoiler-${count}" style="display: inline; font-weight: normal;">Spoiler</label>
+            <input type="text" class="screen-url" placeholder="URL da imagem (Opcional)" data-id="${count}">
+        `;
+        // Insere antes do botão de adicionar
+        screensInput.insertBefore(newItem, document.getElementById('add-screen-btn'));
+    });
 
-        if (!title || !cover_url) {
-            alert("Título e URL da Capa são obrigatórios!");
+    document.getElementById('generate-btn').addEventListener('click', function() {
+        // 1. Coleta os dados básicos
+        const title = document.getElementById('title').value.trim();
+        const status = document.getElementById('status').value;
+        const cover_url = document.getElementById('cover_url').value.trim();
+        const nota = document.getElementById('nota').value.trim();
+        const review = document.getElementById('review').value;
+        // NOVO: Coleta os dados de spoiler de review
+        const isSpoilerReview = document.getElementById('spoiler-review-check').checked;
+        const spoilerText = document.getElementById('spoiler_text').value;
+
+
+        if (!title || !cover_url) {
+            alert("Título e URL da Capa são obrigatórios!");
+            return;
+        }
+        
+        // NOVO: Validação se o spoiler de review está ativado mas o texto está vazio
+        if (isSpoilerReview && spoilerText.trim() === '') {
+            alert("Você ativou o Spoiler de Review, mas o campo 'Review Completa (Com SPOILER)' está vazio.");
+            document.getElementById('spoiler_text').focus();
             return;
         }
 
-        // 2. Coleta os screenshots
-        const screens = [];
-        document.querySelectorAll('.screenshot-item').forEach(item => {
-            const urlInput = item.querySelector('.screen-url');
-            const spoilerCheck = item.querySelector('.spoiler-check');
-            const url = urlInput.value.trim();
-            
-            if (url) {
-                // Adiciona o prefixo 'spoiler:' se a caixa estiver marcada
-                const rawUrl = spoilerCheck.checked ? `spoiler:${url}` : url;
-                screens.push(rawUrl);
-            }
-        });
-        
-        // 3. Formata a Review (Substitui quebras de linha por \n no JSON)
-        const formattedReview = review.replace(/\n/g, '\\n');
 
-        // 4. Constrói o Objeto JSON
-        const gameData = {
-            "status": status,
-            "title": title,
-            "nota": nota,
-            "review": formattedReview,
-            "cover_url": cover_url,
-            "screens": screens
-        };
-        
-        // 5. Gera a string JSON formatada para exibição
-        // JSON.stringify(null, 2) adiciona quebras de linha e indentação para facilitar a leitura.
-        const prettyJson = JSON.stringify(gameData, null, 2);
-        
-        // Exibe o JSON
-        document.getElementById('json-output').value = prettyJson;
-        
-        // 6. Mostra a área de saída
-        document.getElementById('output-area').style.display = 'block';
-    });
+        // 2. Coleta os screenshots
+        const screens = [];
+        document.querySelectorAll('.screenshot-item').forEach(item => {
+            const urlInput = item.querySelector('.screen-url');
+            const spoilerCheck = item.querySelector('.spoiler-check');
+            const url = urlInput.value.trim();
+            
+            if (url) {
+                // Adiciona o prefixo 'spoiler:' se a caixa estiver marcada
+                const rawUrl = spoilerCheck.checked ? `spoiler:${url}` : url;
+                screens.push(rawUrl);
+            }
+        });
+        
+        // 3. Formata a Review (Substitui quebras de linha por \n no JSON)
+        const formattedReview = review.replace(/\n/g, '\\n');
+        // NOVO: Formata o texto de spoiler
+        const formattedSpoilerText = spoilerText.replace(/\n/g, '\\n');
 
-    document.getElementById('copy-btn').addEventListener('click', function() {
-        const output = document.getElementById('json-output');
-        output.select();
-        document.execCommand('copy');
-        alert("Bloco JSON copiado para a área de transferência! Cole no seu reviews.json.");
-    });
+
+        // 4. Constrói o Objeto JSON
+        const gameData = {
+            "status": status,
+            "title": title,
+            "nota": nota,
+            "review": formattedReview,
+            "cover_url": cover_url,
+            "screens": screens
+        };
+        
+        // NOVO: Adiciona campos de spoiler se a checkbox estiver marcada
+        if (isSpoilerReview) {
+            gameData.spoiler_review = true;
+            gameData.spoiler_text = formattedSpoilerText;
+        }
+        
+        // 5. Gera a string JSON formatada para exibição
+        // JSON.stringify(null, 2) adiciona quebras de linha e indentação para facilitar a leitura.
+        const prettyJson = JSON.stringify(gameData, null, 2);
+        
+        // Exibe o JSON
+        document.getElementById('json-output').value = prettyJson;
+        
+        // 6. Mostra a área de saída
+        document.getElementById('output-area').style.display = 'block';
+    });
+
+    document.getElementById('copy-btn').addEventListener('click', function() {
+        const output = document.getElementById('json-output');
+        output.select();
+        document.execCommand('copy');
+        alert("Bloco JSON copiado para a área de transferência! Cole no seu reviews.json.");
+    });
 </script>
 </body>
 </html>
