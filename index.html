@@ -3,187 +3,216 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RGWaradam - Reviews</title>
+    <title>RGWaradam - Coleção Black Edition</title>
     <style>
-        /* Estilos BASE (Mantidos) */
         body {
             margin: 0;
             font-family: "Inter", sans-serif;
-            background-color: #0f0f0f;
+            background-color: #0a0a0a;
             color: #f0f0f0;
         }
 
-        h1 { text-align: center; margin-top: 30px; font-weight: 600; }
+        h1 { text-align: center; margin-top: 30px; font-weight: 600; letter-spacing: 2px; }
 
         .buttons { text-align: center; margin: 20px 0; }
         .buttons button {
             background-color: #1a1a1a;
             color: #fff;
-            border: none;
+            border: 1px solid #333;
             padding: 10px 20px;
             margin: 5px;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
             transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 12px;
         }
         .buttons button:hover { background-color: #333; }
-        .buttons button.active { background-color: #555; }
+        .buttons button.active { background-color: #fff; color: #000; }
 
         .gallery {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 25px;
+            gap: 40px;
             padding: 40px;
             max-width: 1400px;
             margin: 0 auto;
+            perspective: 1000px;
         }
 
-        /* CARD DA VITRINE */
+        /* CAPA ESTILO CAIXA 3D NA GALERIA */
         .game-card {
-            background-color: #1a1a1a;
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            width: 220px;
+            height: 310px;
             position: relative;
-            width: 250px; /* Tamanho ajustado para parecer prateleira */
+            cursor: pointer;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
         }
 
-        .game-card:hover { transform: scale(1.05); }
+        .game-card:hover {
+            transform: rotateY(-20deg) scale(1.05);
+        }
+
+        /* A "Lombada" da caixa */
+        .game-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 100%;
+            background: #111;
+            transform: rotateY(-90deg);
+            transform-origin: left;
+            box-shadow: inset -5px 0 10px rgba(0,0,0,0.8);
+        }
 
         .game-card img {
             width: 100%;
-            height: 350px;
+            height: 100%;
             object-fit: cover;
-            display: block;
+            border-radius: 2px 5px 5px 2px;
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.5);
         }
 
-        .game-info { padding: 10px; text-align: center; background: #222; }
-        .game-info h3 { margin: 0; font-size: 16px; }
+        .game-info { 
+            position: absolute; 
+            bottom: 0; 
+            width: 100%; 
+            background: rgba(0,0,0,0.8); 
+            padding: 8px 0;
+            text-align: center;
+            font-size: 14px;
+        }
 
-        /* MODAL E DESIGN DA CAIXA FÍSICA */
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
             z-index: 100;
             left: 0; top: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(8px);
-            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(15px);
         }
 
         .modal-content {
             margin: 5vh auto;
             width: fit-content;
             position: relative;
-            animation: openModal 0.5s ease-out;
+            animation: openBox 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        @keyframes openModal {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes openBox {
+            from { opacity: 0; transform: translateY(50px) rotateX(-10deg); }
+            to { opacity: 1; transform: translateY(0) rotateX(0); }
         }
 
         .close-btn {
             position: absolute;
-            right: -40px; top: 0;
+            right: -50px; top: 0;
             color: #fff;
-            font-size: 30px;
+            font-size: 40px;
             cursor: pointer;
         }
 
-        /* A CAIXA ABERTA */
+        /* CONTAINER DA CAIXA ABERTA */
         .case-container {
             display: flex;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            border-radius: 10px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 5px;
             overflow: hidden;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
         }
 
-        /* Lado Esquerdo (O Encarte/Papel) */
+        /* LADO ESQUERDO: MANUAL */
         .case-left {
-            background: #f4f4f4;
-            color: #222;
+            background: #fff;
+            color: #1a1a1a;
             width: 400px;
-            padding: 40px;
+            padding: 45px;
             max-height: 80vh;
             overflow-y: auto;
-            border-right: 2px solid #ddd;
-            background-image: linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 5%);
+            position: relative;
+            box-shadow: inset 10px 0 20px rgba(0,0,0,0.1);
         }
 
-        .case-left h2 { margin-top: 0; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .case-left p { font-family: 'Georgia', serif; line-height: 1.6; font-size: 17px; }
+        .case-left h2 { border-bottom: 2px solid #000; padding-bottom: 10px; font-weight: 800; }
+        .case-left p { font-family: 'Times New Roman', serif; font-size: 18px; line-height: 1.6; }
 
-        /* Lado Direito (Onde fica o Disco) */
+        /* LADO DIREITO: FUNDO COM ARTE INTERNA TRANSPARENTE */
         .case-right {
-            background: #151515;
-            width: 450px;
-            height: 600px;
+            width: 500px;
+            height: 650px;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            background-color: #000;
+            overflow: hidden;
         }
 
-        /* O Disco de DVD */
+        /* Imagem de fundo do disco (Arte Interna) */
+        .case-bg-image {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px) grayscale(50%) brightness(0.3);
+            opacity: 0.6;
+        }
+
         .dvd-disc {
-            width: 350px;
-            height: 350px;
+            width: 380px;
+            height: 380px;
             border-radius: 50%;
             background-size: cover;
             background-position: center;
-            box-shadow: 0 0 30px rgba(0,0,0,1), inset 0 0 10px rgba(255,255,255,0.2);
-            border: 2px solid #333;
-            animation: spinDisc 15s linear infinite;
-            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            animation: spin 20s linear infinite;
         }
 
-        /* Furo central do DVD */
         .dvd-disc::after {
             content: '';
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 50px; height: 50px;
-            background: #151515;
+            width: 60px; height: 60px;
+            background: #111;
             border-radius: 50%;
-            border: 5px solid #222;
+            border: 6px solid #222;
         }
 
-        @keyframes spinDisc {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* Responsividade para Celular */
-        @media (max-width: 900px) {
+        @media (max-width: 950px) {
             .case-container { flex-direction: column-reverse; }
-            .case-left, .case-right { width: 90vw; height: auto; }
-            .case-right { height: 400px; }
+            .case-left, .case-right { width: 95vw; }
+            .case-right { height: 350px; }
             .dvd-disc { width: 280px; height: 280px; }
-            .close-btn { right: 10px; top: -40px; }
         }
     </style>
 </head>
 <body>
 
-    <h1>🎮 Reviews & Mídia Física</h1>
+    <h1>RGWARADAM <span style="font-weight: 100;">BLACK EDITION</span></h1>
 
     <div class="buttons">
         <button class="active" onclick="filterGames('jogando', event)">Jogando</button>
         <button onclick="filterGames('zerado', event)">Zerados</button>
         <button onclick="filterGames('dropado', event)">Dropado</button>
-        <button onclick="filterGames('nao-joguei', event)">Não comecei</button>
     </div>
 
     <div class="gallery" id="game-gallery"></div>
 
     <div id="modal" class="modal">
-        <div class="modal-content" id="modal-body">
-            </div>
+        <div class="modal-content" id="modal-body"></div>
     </div>
 
     <script>
@@ -192,32 +221,30 @@
         const modalBody = document.getElementById("modal-body");
         const cards = [];
 
-        // Função para criar os cards da prateleira
         function createGameCard(game) {
             const card = document.createElement('div');
             card.className = 'game-card';
             card.dataset.status = game.status;
             card.innerHTML = `
                 <img src="${game.cover_url}" alt="${game.title}">
-                <div class="game-info"><h3>${game.title}</h3></div>
+                <div class="game-info"><strong>${game.title}</strong></div>
             `;
-
             card.addEventListener("click", () => openGameCase(game));
             return card;
         }
 
-        // Função que abre a "Caixa do Jogo"
         function openGameCase(game) {
             modalBody.innerHTML = `
                 <span class="close-btn" onclick="closeModal()">&times;</span>
                 <div class="case-container">
                     <div class="case-left">
                         <h2>${game.title}</h2>
-                        <p><strong>NOTA:</strong> ${game.nota}/10</p>
-                        <hr>
+                        <p><strong>RATING:</strong> ${game.nota}/10</p>
+                        <hr style="border: 1px solid #ddd">
                         <p>${game.review.replace(/\n/g, "<br>")}</p>
                     </div>
                     <div class="case-right">
+                        <div class="case-bg-image" style="background-image: url('${game.cover_url}')"></div>
                         <div class="dvd-disc" style="background-image: url('${game.cover_url}')"></div>
                     </div>
                 </div>
@@ -240,18 +267,13 @@
                 const response = await fetch('reviews.json');
                 const games = await response.json();
                 games.sort((a, b) => a.title.localeCompare(b.title));
-
                 games.forEach(game => {
                     const card = createGameCard(game);
                     cards.push(card);
                     gallery.appendChild(card);
                 });
-                
-                // Simula clique no botão 'jogando' para filtrar inicial
-                const btn = document.querySelector(".buttons button.active");
-                filterGames('jogando', { target: btn });
-
-            } catch (e) { console.error("Erro ao carregar JSON", e); }
+                filterGames('jogando', { target: document.querySelector(".buttons button.active") });
+            } catch (e) { console.error(e); }
         }
 
         window.onclick = (e) => { if (e.target === modal) closeModal(); };
