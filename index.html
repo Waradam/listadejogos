@@ -33,24 +33,26 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 30px;
+            gap: 25px;
             padding: 40px;
             max-width: 1600px;
             margin: 0 auto;
         }
 
-        /* 🚀 VITRINE COM IMAGENS GRANDES (500px) 🚀 */
+        /* 🖼️ CARD DA VITRINE (IGUAL À IMAGEM) */
         .game-card {
             background-color: #1a1a1a;
-            border-radius: 10px;
+            border-radius: 8px; /* Ajustado conforme solicitado */
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.3s ease;
-            position: relative;
-            width: 500px; /* Mantendo o tamanho grande solicitado */
+            transition: 0.3s;
+            width: 300px; /* Tamanho equilibrado para a vitrine */
         }
 
-        .game-card:hover { transform: scale(1.02); }
+        .game-card:hover { 
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
 
         .game-card img {
             width: 100%;
@@ -58,10 +60,15 @@
             display: block;
         }
 
-        .game-info { padding: 15px; text-align: center; background: #222; }
-        .game-info h3 { margin: 0; font-size: 18px; }
+        .game-info { 
+            padding: 12px; 
+            text-align: center; 
+            background: #1a1a1a; 
+            border-top: 1px solid #222;
+        }
+        .game-info h3 { margin: 0; font-size: 16px; font-weight: 500; color: #bbb; }
 
-        /* MODAL E DESIGN DA CAIXA FÍSICA */
+        /* MODAL E CAIXA FÍSICA */
         .modal {
             display: none;
             position: fixed;
@@ -77,23 +84,22 @@
             margin: 5vh auto;
             width: fit-content;
             position: relative;
-            animation: openModal 0.5s ease-out;
+            animation: openModal 0.4s ease-out;
         }
 
         @keyframes openModal {
-            from { opacity: 0; transform: scale(0.8); }
+            from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
 
         .close-btn {
             position: absolute;
-            right: -40px; top: 0;
+            right: -50px; top: 0;
             color: #fff;
-            font-size: 30px;
+            font-size: 40px;
             cursor: pointer;
         }
 
-        /* A CAIXA ABERTA */
         .case-container {
             display: flex;
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
@@ -101,26 +107,42 @@
             overflow: hidden;
         }
 
-        /* ✍️ Lado Esquerdo (Tipografia Exata solicitada) ✍️ */
+        /* ✍️ LADO ESQUERDO (REVIEW) */
         .case-left {
             background: #f4f4f4;
             color: #222;
-            width: 400px;
+            width: 450px;
             padding: 40px;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
             border-right: 2px solid #ddd;
             background-image: linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 5%);
         }
 
         .case-left h2 { margin-top: 0; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .case-left p { font-family: 'Georgia', serif; line-height: 1.6; font-size: 17px; }
+        .case-left p { font-family: 'Georgia', serif; line-height: 1.6; font-size: 17px; color: #333; }
 
-        /* Lado Direito (Disco) */
+        /* ⚠️ MECÂNICA DE SPOILER NA REVIEW */
+        .spoiler-text {
+            background-color: #222;
+            color: #222;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 0 2px;
+            border-radius: 4px;
+        }
+        .spoiler-text:hover { background-color: #444; }
+        .spoiler-text.revealed {
+            background-color: transparent;
+            color: inherit;
+            cursor: text;
+        }
+
+        /* 💿 LADO DIREITO (DISCO) */
         .case-right {
             background: #151515;
             width: 450px;
-            height: 600px;
+            height: 650px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -128,12 +150,12 @@
         }
 
         .dvd-disc {
-            width: 350px;
-            height: 350px;
+            width: 380px;
+            height: 380px;
             border-radius: 50%;
             background-size: cover;
             background-position: center;
-            box-shadow: 0 0 30px rgba(0,0,0,1), inset 0 0 10px rgba(255,255,255,0.2);
+            box-shadow: 0 0 30px rgba(0,0,0,1);
             border: 2px solid #333;
             animation: spinDisc 15s linear infinite;
             position: relative;
@@ -144,7 +166,7 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 50px; height: 50px;
+            width: 55px; height: 55px;
             background: #151515;
             border-radius: 50%;
             border: 5px solid #222;
@@ -158,11 +180,10 @@
         /* Responsividade */
         @media (max-width: 1000px) {
             .case-container { flex-direction: column-reverse; }
-            .case-left, .case-right { width: 90vw; height: auto; }
+            .case-left, .case-right { width: 95vw; height: auto; }
             .case-right { height: 400px; }
             .dvd-disc { width: 280px; height: 280px; }
-            .close-btn { right: 10px; top: -40px; }
-            .game-card { width: 95%; }
+            .close-btn { right: 10px; top: -50px; }
         }
     </style>
 </head>
@@ -201,6 +222,13 @@
             return card;
         }
 
+        // Função para formatar spoilers no texto [spoiler]texto[/spoiler]
+        function formatReviewText(text) {
+            return text
+                .replace(/\n/g, "<br>")
+                .replace(/\[spoiler\](.*?)\[\/spoiler\]/g, '<span class="spoiler-text" onclick="this.classList.toggle(\'revealed\')">$1</span>');
+        }
+
         function openGameCase(game) {
             modalBody.innerHTML = `
                 <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -208,8 +236,8 @@
                     <div class="case-left">
                         <h2>${game.title}</h2>
                         <p><strong>NOTA:</strong> ${game.nota}/10</p>
-                        <hr>
-                        <p>${game.review.replace(/\n/g, "<br>")}</p>
+                        <hr style="border:0; border-top:1px solid #ddd; margin: 20px 0;">
+                        <p>${formatReviewText(game.review)}</p>
                     </div>
                     <div class="case-right">
                         <div class="dvd-disc" style="background-image: url('${game.cover_url}')"></div>
@@ -227,7 +255,7 @@
 
         function filterGames(status, event) {
             document.querySelectorAll(".buttons button").forEach(btn => btn.classList.remove("active"));
-            event.target.classList.add("active");
+            if(event) event.target.classList.add("active");
             cards.forEach(card => {
                 card.style.display = (card.dataset.status === status) ? "block" : "none";
             });
@@ -245,8 +273,7 @@
                     gallery.appendChild(card);
                 });
                 
-                const btn = document.querySelector(".buttons button.active");
-                filterGames('jogando', { target: btn });
+                filterGames('jogando');
 
             } catch (e) { console.error("Erro ao carregar JSON", e); }
         }
