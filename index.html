@@ -5,160 +5,214 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RGWaradam - Reviews</title>
     <style>
-        /* Estilos BASE */
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #161616;
+            --accent-color: #3d3d3d;
+            --text-main: #e0e0e0;
+            --paper-white: #fdfdfd;
+        }
+
         body {
             margin: 0;
-            font-family: "Inter", sans-serif;
-            background-color: #0f0f0f;
-            color: #f0f0f0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
         }
 
-        h1 { text-align: center; margin-top: 30px; font-weight: 600; }
+        h1 { 
+            text-align: center; 
+            margin: 40px 0; 
+            font-weight: 800; 
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            font-size: 2.5rem;
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        .buttons { text-align: center; margin: 20px 0; }
+        /* FILTROS */
+        .buttons { text-align: center; margin-bottom: 40px; }
         .buttons button {
-            background-color: #1a1a1a;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
+            background-color: var(--card-bg);
+            color: #888;
+            border: 1px solid #222;
+            padding: 12px 24px;
             margin: 5px;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: 0.3s;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .buttons button:hover { background-color: #333; }
-        .buttons button.active { background-color: #555; }
+        .buttons button:hover { background-color: #222; color: #fff; transform: translateY(-2px); }
+        .buttons button.active { 
+            background-color: #fff; 
+            color: #000; 
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
 
+        /* GALERIA */
         .gallery {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, 500px);
             justify-content: center;
-            gap: 25px;
-            padding: 40px;
-            max-width: 1600px;
+            gap: 40px;
+            padding: 20px;
+            max-width: 1800px;
             margin: 0 auto;
         }
 
-        /* 🖼️ CARD DA VITRINE (IGUAL À IMAGEM) */
         .game-card {
-            background-color: #1a1a1a;
-            border-radius: 8px; /* Ajustado conforme solicitado */
+            background-color: var(--card-bg);
+            border-radius: 14px;
             overflow: hidden;
             cursor: pointer;
-            transition: 0.3s;
-            width: 300px; /* Tamanho equilibrado para a vitrine */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #222;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .game-card:hover { 
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transform: scale(1.03) translateY(-10px);
+            border-color: #444;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
         }
 
         .game-card img {
             width: 100%;
             height: auto;
             display: block;
+            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
         }
 
-        .game-info { 
-            padding: 12px; 
-            text-align: center; 
-            background: #1a1a1a; 
-            border-top: 1px solid #222;
-        }
-        .game-info h3 { margin: 0; font-size: 16px; font-weight: 500; color: #bbb; }
+        .game-info { padding: 20px; text-align: center; }
+        .game-info h3 { margin: 0; font-size: 1.1rem; font-weight: 500; color: #fff; opacity: 0.9; }
 
-        /* MODAL E CAIXA FÍSICA */
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
-            z-index: 100;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(8px);
+            z-index: 1000;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(12px);
             overflow-y: auto;
         }
 
         .modal-content {
-            margin: 5vh auto;
+            margin: 4vh auto;
             width: fit-content;
             position: relative;
-            animation: openModal 0.4s ease-out;
+            animation: modalScale 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        @keyframes openModal {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes modalScale {
+            from { opacity: 0; transform: scale(0.7) translateY(50px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .close-btn {
             position: absolute;
-            right: -50px; top: 0;
+            right: -60px; top: 0;
             color: #fff;
-            font-size: 40px;
+            font-size: 44px;
             cursor: pointer;
+            opacity: 0.5;
+            transition: 0.3s;
         }
+        .close-btn:hover { opacity: 1; transform: rotate(90deg); }
 
+        /* CASE CONTAINER */
         .case-container {
             display: flex;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            border-radius: 10px;
+            background: #111;
+            border-radius: 15px;
             overflow: hidden;
+            box-shadow: 0 0 100px rgba(0,0,0,1);
+            border: 1px solid #333;
+            position: relative;
         }
 
-        /* ✍️ LADO ESQUERDO (REVIEW) */
+        /* Lombada da caixa */
+        .case-container::before {
+            content: '';
+            position: absolute;
+            left: 450px;
+            top: 0; bottom: 0;
+            width: 20px;
+            background: linear-gradient(to right, #ddd, #999 50%, #ddd);
+            z-index: 5;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
         .case-left {
-            background: #f4f4f4;
-            color: #222;
+            background: var(--paper-white);
+            color: #1a1a1a;
             width: 450px;
-            padding: 40px;
+            padding: 50px;
             max-height: 85vh;
             overflow-y: auto;
-            border-right: 2px solid #ddd;
-            background-image: linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 5%);
+            position: relative;
         }
 
-        .case-left h2 { margin-top: 0; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .case-left p { font-family: 'Georgia', serif; line-height: 1.6; font-size: 17px; color: #333; }
+        .case-left h2 { 
+            font-size: 2rem; 
+            margin-top: 0; 
+            color: #000; 
+            border-bottom: 3px solid #000; 
+            padding-bottom: 10px;
+        }
 
-        /* ⚠️ MECÂNICA DE SPOILER NA REVIEW */
-        .spoiler-text {
-            background-color: #222;
-            color: #222;
+        .case-left p { 
+            font-family: 'Georgia', serif; 
+            line-height: 1.8; 
+            font-size: 1.1rem; 
+            text-align: justify;
+        }
+
+        /* MECÂNICA DE SPOILER */
+        .spoiler {
+            background: #222;
+            color: transparent;
             cursor: pointer;
-            transition: 0.3s;
-            padding: 0 2px;
+            padding: 0 4px;
             border-radius: 4px;
+            transition: all 0.3s;
         }
-        .spoiler-text:hover { background-color: #444; }
-        .spoiler-text.revealed {
-            background-color: transparent;
-            color: inherit;
-            cursor: text;
-        }
+        .spoiler:hover { background: #333; }
+        .spoiler.revealed { background: #eee; color: #d00; cursor: text; }
 
-        /* 💿 LADO DIREITO (DISCO) */
         .case-right {
-            background: #151515;
-            width: 450px;
-            height: 650px;
+            background: #0f0f0f;
+            width: 500px;
+            height: 700px;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
+            padding-left: 20px; /* Espaço para a lombada */
         }
 
         .dvd-disc {
-            width: 380px;
-            height: 380px;
+            width: 420px;
+            height: 420px;
             border-radius: 50%;
             background-size: cover;
             background-position: center;
-            box-shadow: 0 0 30px rgba(0,0,0,1);
-            border: 2px solid #333;
-            animation: spinDisc 15s linear infinite;
             position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: spin 20s linear infinite;
+        }
+
+        .dvd-disc::before { /* Brilho do disco */
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent 30%);
         }
 
         .dvd-disc::after {
@@ -166,36 +220,37 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 55px; height: 55px;
-            background: #151515;
+            width: 60px; height: 60px;
+            background: #0a0a0a;
             border-radius: 50%;
-            border: 5px solid #222;
+            border: 8px solid #1a1a1a;
+            box-shadow: inset 0 0 10px #000;
         }
 
-        @keyframes spinDisc {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* Responsividade */
+        /* Mobile */
         @media (max-width: 1000px) {
-            .case-container { flex-direction: column-reverse; }
-            .case-left, .case-right { width: 95vw; height: auto; }
-            .case-right { height: 400px; }
-            .dvd-disc { width: 280px; height: 280px; }
+            .case-container { flex-direction: column; }
+            .case-container::before { display: none; }
+            .case-left, .case-right { width: 90vw; height: auto; }
+            .case-right { padding: 40px 0; height: 450px; }
+            .dvd-disc { width: 300px; height: 300px; }
+            .gallery { grid-template-columns: 1fr; padding: 10px; }
+            .game-card { width: 100%; }
             .close-btn { right: 10px; top: -50px; }
         }
     </style>
 </head>
 <body>
 
-    <h1>🎮 Reviews & Mídia Física</h1>
+    <h1>Mídia Física & Reviews</h1>
 
-    <div class="buttons">
+    <div class="buttons" id="filter-bar">
         <button class="active" onclick="filterGames('jogando', event)">Jogando</button>
         <button onclick="filterGames('zerado', event)">Zerados</button>
-        <button onclick="filterGames('dropado', event)">Dropado</button>
-        <button onclick="filterGames('nao-joguei', event)">Não comecei</button>
+        <button onclick="filterGames('dropado', event)">Dropados</button>
+        <button onclick="filterGames('nao-joguei', event)">Backlog</button>
     </div>
 
     <div class="gallery" id="game-gallery"></div>
@@ -210,23 +265,23 @@
         const modalBody = document.getElementById("modal-body");
         const cards = [];
 
+        function formatReview(text) {
+            // Suporta [spoiler]texto[/spoiler]
+            let formatted = text.replace(/\n/g, "<br>");
+            formatted = formatted.replace(/\[spoiler\](.*?)\[\/spoiler\]/g, '<span class="spoiler" onclick="this.classList.toggle(\'revealed\')">$1</span>');
+            return formatted;
+        }
+
         function createGameCard(game) {
             const card = document.createElement('div');
             card.className = 'game-card';
             card.dataset.status = game.status;
             card.innerHTML = `
-                <img src="${game.cover_url}" alt="${game.title}">
+                <img src="${game.cover_url}" alt="${game.title}" loading="lazy">
                 <div class="game-info"><h3>${game.title}</h3></div>
             `;
             card.addEventListener("click", () => openGameCase(game));
             return card;
-        }
-
-        // Função para formatar spoilers no texto [spoiler]texto[/spoiler]
-        function formatReviewText(text) {
-            return text
-                .replace(/\n/g, "<br>")
-                .replace(/\[spoiler\](.*?)\[\/spoiler\]/g, '<span class="spoiler-text" onclick="this.classList.toggle(\'revealed\')">$1</span>');
         }
 
         function openGameCase(game) {
@@ -235,9 +290,10 @@
                 <div class="case-container">
                     <div class="case-left">
                         <h2>${game.title}</h2>
-                        <p><strong>NOTA:</strong> ${game.nota}/10</p>
-                        <hr style="border:0; border-top:1px solid #ddd; margin: 20px 0;">
-                        <p>${formatReviewText(game.review)}</p>
+                        <p style="font-size: 1.3rem; margin-bottom: 5px;"><strong>SCORE:</strong> ${game.nota}/10</p>
+                        <p style="color: #666; font-size: 0.9rem; margin-top:0;">RGWaradam Official Review</p>
+                        <hr style="border: 0; border-top: 1px solid #ddd; margin: 30px 0;">
+                        <p>${formatReview(game.review)}</p>
                     </div>
                     <div class="case-right">
                         <div class="dvd-disc" style="background-image: url('${game.cover_url}')"></div>
@@ -248,14 +304,14 @@
             document.body.style.overflow = "hidden";
         }
 
-        function closeModal() { 
-            modal.style.display = "none"; 
+        function closeModal() {
+            modal.style.display = "none";
             document.body.style.overflow = "auto";
         }
 
         function filterGames(status, event) {
             document.querySelectorAll(".buttons button").forEach(btn => btn.classList.remove("active"));
-            if(event) event.target.classList.add("active");
+            event.target.classList.add("active");
             cards.forEach(card => {
                 card.style.display = (card.dataset.status === status) ? "block" : "none";
             });
@@ -273,9 +329,13 @@
                     gallery.appendChild(card);
                 });
                 
-                filterGames('jogando');
-
-            } catch (e) { console.error("Erro ao carregar JSON", e); }
+                // Filtro inicial
+                const initialBtn = document.querySelector(".buttons button.active");
+                filterGames('jogando', { target: initialBtn });
+            } catch (e) { 
+                console.error("Falha ao carregar reviews:", e); 
+                gallery.innerHTML = "<p>Erro ao carregar os jogos. Verifique o arquivo reviews.json.</p>";
+            }
         }
 
         window.onclick = (e) => { if (e.target === modal) closeModal(); };
