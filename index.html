@@ -3,211 +3,170 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RGWaradam - Coleção Black Edition</title>
+    <title>RGWaradam - Coleção 3D</title>
     <style>
         body {
             margin: 0;
             font-family: "Inter", sans-serif;
-            background-color: #0a0a0a;
-            color: #f0f0f0;
-        }
-
-        h1 { text-align: center; margin-top: 30px; font-weight: 600; letter-spacing: 2px; }
-
-        .buttons { text-align: center; margin: 20px 0; }
-        .buttons button {
-            background-color: #1a1a1a;
+            background-color: #080808;
             color: #fff;
-            border: 1px solid #333;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            font-size: 12px;
         }
-        .buttons button:hover { background-color: #333; }
-        .buttons button.active { background-color: #fff; color: #000; }
+
+        h1 { text-align: center; margin: 40px 0; font-weight: 700; letter-spacing: 3px; color: #fff; }
 
         .gallery {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 40px;
+            gap: 50px;
             padding: 40px;
-            max-width: 1400px;
-            margin: 0 auto;
-            perspective: 1000px;
+            perspective: 1200px; /* Essencial para o efeito 3D */
         }
 
-        /* CAPA ESTILO CAIXA 3D NA GALERIA */
+        /* --- CAPA 3D COM BORDA BRANCA --- */
         .game-card {
-            width: 220px;
-            height: 310px;
+            width: 200px;
+            height: 280px;
             position: relative;
             cursor: pointer;
-            transition: transform 0.5s;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
         }
 
         .game-card:hover {
-            transform: rotateY(-20deg) scale(1.05);
+            transform: rotateY(-25deg) rotateX(5deg);
         }
 
-        /* A "Lombada" da caixa */
-        .game-card::before {
-            content: '';
+        /* Face Frontal da Capa */
+        .card-front {
             position: absolute;
-            left: 0;
-            top: 0;
-            width: 20px;
-            height: 100%;
-            background: #111;
-            transform: rotateY(-90deg);
-            transform-origin: left;
-            box-shadow: inset -5px 0 10px rgba(0,0,0,0.8);
-        }
-
-        .game-card img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            border-radius: 2px 5px 5px 2px;
-            box-shadow: 10px 10px 20px rgba(0,0,0,0.5);
+            background: #000;
+            border: 4px solid #ffffff; /* Borda Branca que você pediu */
+            box-sizing: border-box;
+            border-radius: 2px;
+            overflow: hidden;
+            z-index: 2;
+            backface-visibility: hidden;
         }
 
-        .game-info { 
-            position: absolute; 
-            bottom: 0; 
-            width: 100%; 
-            background: rgba(0,0,0,0.8); 
-            padding: 8px 0;
-            text-align: center;
-            font-size: 14px;
+        .card-front img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Lateral da Caixa (Espessura) */
+        .game-card::after {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 2px;
+            width: 15px;
+            height: calc(100% - 4px);
+            background: #d0d0d0; /* Cor lateral simulando plástico/papel */
+            transform: rotateY(-90deg);
+            transform-origin: right;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* MODAL */
+        /* --- MODAL ESTILO UNBOXING --- */
         .modal {
             display: none;
             position: fixed;
-            z-index: 100;
+            z-index: 1000;
             left: 0; top: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.98);
-            backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
         }
 
         .modal-content {
             margin: 5vh auto;
+            display: flex;
             width: fit-content;
+            background: #111;
+            border: 1px solid #333;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
             position: relative;
-            animation: openBox 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: openBox 0.5s ease;
         }
 
         @keyframes openBox {
-            from { opacity: 0; transform: translateY(50px) rotateX(-10deg); }
-            to { opacity: 1; transform: translateY(0) rotateX(0); }
+            from { opacity: 0; transform: scale(0.9) rotateY(-10deg); }
+            to { opacity: 1; transform: scale(1) rotateY(0); }
         }
 
-        .close-btn {
-            position: absolute;
-            right: -50px; top: 0;
-            color: #fff;
-            font-size: 40px;
-            cursor: pointer;
-        }
-
-        /* CONTAINER DA CAIXA ABERTA */
-        .case-container {
-            display: flex;
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
-        }
-
-        /* LADO ESQUERDO: MANUAL */
+        /* LADO ESQUERDO: REVIEW COM BORDA BRANCA */
         .case-left {
-            background: #fff;
-            color: #1a1a1a;
-            width: 400px;
-            padding: 45px;
+            background: #ffffff; /* Fundo Branco */
+            color: #000;
+            width: 380px;
+            padding: 40px;
             max-height: 80vh;
             overflow-y: auto;
-            position: relative;
-            box-shadow: inset 10px 0 20px rgba(0,0,0,0.1);
+            border: 10px solid #ffffff; /* Reforça a borda branca */
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
         }
 
-        .case-left h2 { border-bottom: 2px solid #000; padding-bottom: 10px; font-weight: 800; }
-        .case-left p { font-family: 'Times New Roman', serif; font-size: 18px; line-height: 1.6; }
+        .case-left h2 { margin-top: 0; border-bottom: 3px solid #000; padding-bottom: 10px; font-size: 24px; }
+        .case-left p { font-family: 'Inter', sans-serif; line-height: 1.6; font-size: 16px; }
 
-        /* LADO DIREITO: FUNDO COM ARTE INTERNA TRANSPARENTE */
+        /* LADO DIREITO: DISCO */
         .case-right {
-            width: 500px;
-            height: 650px;
+            width: 450px;
+            height: 600px;
+            background: #111;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
-            background-color: #000;
-            overflow: hidden;
-        }
-
-        /* Imagem de fundo do disco (Arte Interna) */
-        .case-bg-image {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
-            filter: blur(5px) grayscale(50%) brightness(0.3);
-            opacity: 0.6;
+            border-left: 2px solid #222;
         }
 
         .dvd-disc {
-            width: 380px;
-            height: 380px;
+            width: 340px;
+            height: 340px;
             border-radius: 50%;
             background-size: cover;
             background-position: center;
-            z-index: 2;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
             animation: spin 20s linear infinite;
+        }
+
+        /* Efeito de brilho no disco */
+        .dvd-disc::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
+            border-radius: 50%;
         }
 
         .dvd-disc::after {
             content: '';
-            position: absolute;
-            top: 50%; left: 50%;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 60px; height: 60px;
-            background: #111;
-            border-radius: 50%;
-            border: 6px solid #222;
+            width: 50px; height: 50px;
+            background: #111; border-radius: 50%; border: 4px solid #222;
         }
 
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        @media (max-width: 950px) {
-            .case-container { flex-direction: column-reverse; }
-            .case-left, .case-right { width: 95vw; }
+        .close-btn {
+            position: absolute; right: -50px; top: 0;
+            color: #fff; font-size: 40px; cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .modal-content { flex-direction: column-reverse; width: 95vw; }
+            .case-left, .case-right { width: 100%; height: auto; }
             .case-right { height: 350px; }
-            .dvd-disc { width: 280px; height: 280px; }
         }
     </style>
 </head>
 <body>
 
-    <h1>RGWARADAM <span style="font-weight: 100;">BLACK EDITION</span></h1>
-
-    <div class="buttons">
-        <button class="active" onclick="filterGames('jogando', event)">Jogando</button>
-        <button onclick="filterGames('zerado', event)">Zerados</button>
-        <button onclick="filterGames('dropado', event)">Dropado</button>
-    </div>
+    <h1>COLLECTION <span style="font-weight: 300;">3D</span></h1>
 
     <div class="gallery" id="game-gallery"></div>
 
@@ -219,34 +178,18 @@
         const gallery = document.getElementById("game-gallery");
         const modal = document.getElementById("modal");
         const modalBody = document.getElementById("modal-body");
-        const cards = [];
-
-        function createGameCard(game) {
-            const card = document.createElement('div');
-            card.className = 'game-card';
-            card.dataset.status = game.status;
-            card.innerHTML = `
-                <img src="${game.cover_url}" alt="${game.title}">
-                <div class="game-info"><strong>${game.title}</strong></div>
-            `;
-            card.addEventListener("click", () => openGameCase(game));
-            return card;
-        }
 
         function openGameCase(game) {
             modalBody.innerHTML = `
                 <span class="close-btn" onclick="closeModal()">&times;</span>
-                <div class="case-container">
-                    <div class="case-left">
-                        <h2>${game.title}</h2>
-                        <p><strong>RATING:</strong> ${game.nota}/10</p>
-                        <hr style="border: 1px solid #ddd">
-                        <p>${game.review.replace(/\n/g, "<br>")}</p>
-                    </div>
-                    <div class="case-right">
-                        <div class="case-bg-image" style="background-image: url('${game.cover_url}')"></div>
-                        <div class="dvd-disc" style="background-image: url('${game.cover_url}')"></div>
-                    </div>
+                <div class="case-left">
+                    <h2>${game.title}</h2>
+                    <p><strong>SCORE:</strong> ${game.nota}/10</p>
+                    <div style="height:2px; background:#000; margin: 20px 0;"></div>
+                    <p>${game.review.replace(/\n/g, "<br>")}</p>
+                </div>
+                <div class="case-right">
+                    <div class="dvd-disc" style="background-image: url('${game.cover_url}')"></div>
                 </div>
             `;
             modal.style.display = "block";
@@ -254,25 +197,23 @@
 
         function closeModal() { modal.style.display = "none"; }
 
-        function filterGames(status, event) {
-            document.querySelectorAll(".buttons button").forEach(btn => btn.classList.remove("active"));
-            event.target.classList.add("active");
-            cards.forEach(card => {
-                card.style.display = (card.dataset.status === status) ? "block" : "none";
-            });
-        }
-
         async function loadGames() {
             try {
                 const response = await fetch('reviews.json');
                 const games = await response.json();
                 games.sort((a, b) => a.title.localeCompare(b.title));
+                
                 games.forEach(game => {
-                    const card = createGameCard(game);
-                    cards.push(card);
+                    const card = document.createElement('div');
+                    card.className = 'game-card';
+                    card.innerHTML = `
+                        <div class="card-front">
+                            <img src="${game.cover_url}" alt="${game.title}">
+                        </div>
+                    `;
+                    card.onclick = () => openGameCase(game);
                     gallery.appendChild(card);
                 });
-                filterGames('jogando', { target: document.querySelector(".buttons button.active") });
             } catch (e) { console.error(e); }
         }
 
