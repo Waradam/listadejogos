@@ -39,15 +39,15 @@
             margin: 0 auto;
         }
 
-        /* 🚀 IMAGENS GRANDES (500px) 🚀 */
+        /* 🚀 VITRINE COM IMAGENS GRANDES (500px) 🚀 */
         .game-card {
             background-color: #1a1a1a;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
             cursor: pointer;
             transition: transform 0.3s ease;
             position: relative;
-            width: 500px; /* Mantendo o tamanho grande que você pediu */
+            width: 500px; /* Mantendo o tamanho grande solicitado */
         }
 
         .game-card:hover { transform: scale(1.02); }
@@ -59,9 +59,9 @@
         }
 
         .game-info { padding: 15px; text-align: center; background: #222; }
-        .game-info h3 { margin: 0; font-size: 18px; color: #fff; }
+        .game-info h3 { margin: 0; font-size: 18px; }
 
-        /* MODAL E CAIXA FÍSICA */
+        /* MODAL E DESIGN DA CAIXA FÍSICA */
         .modal {
             display: none;
             position: fixed;
@@ -77,22 +77,23 @@
             margin: 5vh auto;
             width: fit-content;
             position: relative;
-            animation: openModal 0.4s ease-out;
+            animation: openModal 0.5s ease-out;
         }
 
         @keyframes openModal {
-            from { opacity: 0; transform: scale(0.9); }
+            from { opacity: 0; transform: scale(0.8); }
             to { opacity: 1; transform: scale(1); }
         }
 
         .close-btn {
             position: absolute;
-            right: -50px; top: 0;
+            right: -40px; top: 0;
             color: #fff;
-            font-size: 40px;
+            font-size: 30px;
             cursor: pointer;
         }
 
+        /* A CAIXA ABERTA */
         .case-container {
             display: flex;
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
@@ -100,36 +101,26 @@
             overflow: hidden;
         }
 
-        /* ✍️ Lado Esquerdo - TIPOGRAFIA EXATA ✍️ */
+        /* ✍️ Lado Esquerdo (Tipografia Exata solicitada) ✍️ */
         .case-left {
-            background: #f4f4f4; 
+            background: #f4f4f4;
             color: #222;
-            width: 450px;
+            width: 400px;
             padding: 40px;
             max-height: 80vh;
             overflow-y: auto;
             border-right: 2px solid #ddd;
+            background-image: linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 5%);
         }
 
-        .case-left h2 { 
-            margin-top: 0; 
-            border-bottom: 2px solid #333; 
-            padding-bottom: 10px; 
-            color: #000;
-        }
+        .case-left h2 { margin-top: 0; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .case-left p { font-family: 'Georgia', serif; line-height: 1.6; font-size: 17px; }
 
-        .case-left p { 
-            font-family: 'Georgia', serif; 
-            line-height: 1.6; 
-            font-size: 17px; 
-            color: #333;
-        }
-
-        /* 💿 Lado Direito - DISCO 💿 */
+        /* Lado Direito (Disco) */
         .case-right {
             background: #151515;
             width: 450px;
-            height: 650px;
+            height: 600px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -137,12 +128,12 @@
         }
 
         .dvd-disc {
-            width: 380px;
-            height: 380px;
+            width: 350px;
+            height: 350px;
             border-radius: 50%;
             background-size: cover;
             background-position: center;
-            box-shadow: 0 0 30px rgba(0,0,0,1);
+            box-shadow: 0 0 30px rgba(0,0,0,1), inset 0 0 10px rgba(255,255,255,0.2);
             border: 2px solid #333;
             animation: spinDisc 15s linear infinite;
             position: relative;
@@ -153,7 +144,7 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 55px; height: 55px;
+            width: 50px; height: 50px;
             background: #151515;
             border-radius: 50%;
             border: 5px solid #222;
@@ -170,7 +161,7 @@
             .case-left, .case-right { width: 90vw; height: auto; }
             .case-right { height: 400px; }
             .dvd-disc { width: 280px; height: 280px; }
-            .close-btn { right: 10px; top: -50px; }
+            .close-btn { right: 10px; top: -40px; }
             .game-card { width: 95%; }
         }
     </style>
