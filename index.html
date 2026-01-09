@@ -39,43 +39,29 @@
             margin: 0 auto;
         }
 
-        /* 🚀 CARD DA VITRINE - VOLTANDO AO TAMANHO GRANDE 🚀 */
+        /* IMAGENS GRANDES (500px) */
         .game-card {
             background-color: #1a1a1a;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
             position: relative;
             width: 500px; /* Tamanho grande restaurado */
-            display: none; /* Controlado pelo JS */
         }
 
-        .game-card:hover { 
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
-        }
+        .game-card:hover { transform: scale(1.02); }
 
         .game-card img {
             width: 100%;
-            height: auto; /* Mantém a proporção da arte original */
+            height: auto;
             display: block;
-            background-color: #000;
         }
 
-        .game-info { 
-            padding: 15px; 
-            text-align: center; 
-            background: #1a1a1a; 
-        }
-        .game-info h3 { 
-            margin: 0; 
-            font-size: 18px; 
-            font-weight: 500;
-            color: #f0f0f0;
-        }
+        .game-info { padding: 15px; text-align: center; background: #222; }
+        .game-info h3 { margin: 0; font-size: 18px; color: #fff; }
 
-        /* MODAL E DESIGN DA CAIXA FÍSICA */
+        /* MODAL E CAIXA FÍSICA */
         .modal {
             display: none;
             position: fixed;
@@ -91,12 +77,12 @@
             margin: 5vh auto;
             width: fit-content;
             position: relative;
-            animation: openModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: openModal 0.4s ease-out;
         }
 
         @keyframes openModal {
-            from { opacity: 0; transform: scale(0.8) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .close-btn {
@@ -105,46 +91,41 @@
             color: #fff;
             font-size: 40px;
             cursor: pointer;
-            transition: 0.3s;
         }
-        .close-btn:hover { color: #e50914; }
 
-        /* A CAIXA ABERTA */
         .case-container {
             display: flex;
-            box-shadow: 0 0 60px rgba(0,0,0,0.9);
-            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border-radius: 10px;
             overflow: hidden;
-            background: #151515;
         }
 
-        /* Lado Esquerdo (Review) */
+        /* Lado Esquerdo - LEITURA AGRADÁVEL */
         .case-left {
-            background: #ffffff; /* Fundo branco conforme imagem 2 anterior */
-            color: #1a1a1a;
+            background: #f4f4f4; /* Papel claro */
+            color: #222;
             width: 450px;
-            padding: 45px;
-            max-height: 85vh;
+            padding: 40px;
+            max-height: 80vh;
             overflow-y: auto;
-            border-right: 1px solid #ccc;
-            background-image: linear-gradient(to right, rgba(0,0,0,0.03) 0%, transparent 5%);
+            border-right: 2px solid #ddd;
         }
 
         .case-left h2 { 
             margin-top: 0; 
-            border-bottom: 2px solid #e50914; 
-            padding-bottom: 15px; 
-            text-transform: uppercase;
-            font-size: 24px;
+            border-bottom: 2px solid #333; 
+            padding-bottom: 10px; 
+            color: #000;
         }
-        
+
         .case-left p { 
-            line-height: 1.7; 
-            font-size: 16px; 
+            font-family: 'Georgia', serif; 
+            line-height: 1.6; 
+            font-size: 17px; 
             color: #333;
         }
 
-        /* Lado Direito (Disco) */
+        /* Lado Direito - DISCO */
         .case-right {
             background: #151515;
             width: 450px;
@@ -155,16 +136,15 @@
             position: relative;
         }
 
-        /* O Disco de DVD */
         .dvd-disc {
             width: 380px;
             height: 380px;
             border-radius: 50%;
             background-size: cover;
             background-position: center;
-            box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 15px rgba(255,255,255,0.1);
-            border: 2px solid #282828;
-            animation: spinDisc 20s linear infinite;
+            box-shadow: 0 0 30px rgba(0,0,0,1);
+            border: 2px solid #333;
+            animation: spinDisc 15s linear infinite;
             position: relative;
         }
 
@@ -176,8 +156,7 @@
             width: 55px; height: 55px;
             background: #151515;
             border-radius: 50%;
-            border: 6px solid #222;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+            border: 5px solid #222;
         }
 
         @keyframes spinDisc {
@@ -185,14 +164,14 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Mobile */
+        /* Responsividade */
         @media (max-width: 1000px) {
             .case-container { flex-direction: column-reverse; }
-            .case-left, .case-right { width: 95vw; height: auto; }
-            .case-right { height: 350px; }
+            .case-left, .case-right { width: 90vw; height: auto; }
+            .case-right { height: 400px; }
             .dvd-disc { width: 280px; height: 280px; }
-            .close-btn { right: 15px; top: -50px; }
-            .game-card { width: 90%; }
+            .close-btn { right: 10px; top: -50px; }
+            .game-card { width: 95%; }
         }
     </style>
 </head>
@@ -237,8 +216,8 @@
                 <div class="case-container">
                     <div class="case-left">
                         <h2>${game.title}</h2>
-                        <p style="font-weight: bold; color: #e50914;">NOTA: ${game.nota}/10</p>
-                        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+                        <p><strong>NOTA:</strong> ${game.nota}/10</p>
+                        <hr>
                         <p>${game.review.replace(/\n/g, "<br>")}</p>
                     </div>
                     <div class="case-right">
@@ -247,7 +226,7 @@
                 </div>
             `;
             modal.style.display = "block";
-            document.body.style.overflow = "hidden"; // Trava o scroll da página ao abrir
+            document.body.style.overflow = "hidden";
         }
 
         function closeModal() { 
